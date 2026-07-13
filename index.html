@@ -1680,3 +1680,369 @@ ul, ol { list-style: none; }
 <button class="sound-toggle muted" id="soundToggle" title="Toggle ambient sound">
   <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path class="wave" d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>
 </button>
+<!-- GSAP + ScrollTrigger -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// ============ PRELOADER ============
+window.addEventListener('load', () => {
+  const tl = gsap.timeline();
+  const progressBar = document.querySelector('.preloader-progress-bar');
+  const percentText = document.querySelector('.preloader-percent');
+  const outline = document.querySelector('.car-outline');
+  
+  tl.to('.preloader-car', { opacity: 1, duration: 0.5 })
+    .to(outline, { strokeDashoffset: 0, duration: 2, ease: 'power2.inOut' }, '-=0.3')
+    .to({ val: 0 }, {
+      val: 100, duration: 2, ease: 'power2.inOut',
+      onUpdate: function() {
+        const v = Math.round(this.targets()[0].val);
+        percentText.textContent = v + '%';
+        progressBar.style.width = v + '%';
+      }
+    }, '-=2')
+    .to('.preloader-brand', { opacity: 1, duration: 0.5 }, '-=0.5')
+    .to('.preloader', { yPercent: -100, duration: 1, ease: 'power4.inOut', delay: 0.3 })
+    .set('.preloader', { display: 'none' })
+    .call(() => initHeroAnimations());
+});
+
+// ============ CUSTOM CURSOR ============
+const cursorRing = document.querySelector('.cursor-ring');
+const cursorDot = document.querySelector('.cursor-dot');
+let mx = 0, my = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; gsap.to(cursorDot, { x: mx - 2, y: my - 2, duration: 0.1 }); });
+(function animateCursor() {
+  const x = parseFloat(cursorRing.style.left) || mx;
+  const y = parseFloat(cursorRing.style.top) || my;
+  const nx = x + (mx - x) * 0.15;
+  const ny = y + (my - y) * 0.15;
+  cursorRing.style.left = nx - 12 + 'px';
+  cursorRing.style.top = ny - 12 + 'px';
+  requestAnimationFrame(animateCursor);
+})();
+document.querySelectorAll('.hoverable, a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => cursorRing.classList.add('hover'));
+  el.addEventListener('mouseleave', () => cursorRing.classList.remove('hover'));
+});
+
+// ============ NAVIGATION ============
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 100);
+  document.getElementById('backToTop').classList.toggle('visible', window.scrollY > 600);
+});
+
+const menuBtn = document.getElementById('menuBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+menuBtn.addEventListener('click', () => {
+  menuBtn.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+  document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+});
+mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  menuBtn.classList.remove('open');
+  mobileMenu.classList.remove('open');
+  document.body.style.overflow = '';
+}));
+
+// ============ HERO ANIMATIONS ============
+function initHeroAnimations() {
+  const tl = gsap.timeline();
+  tl.to('.hero-light-sweep', { opacity: 1, x: '100%', duration: 1.5, ease: 'power2.out' })
+    .to('.hero-car-placeholder', { opacity: 1, duration: 1.2, ease: 'power2.out' }, '-=1')
+    .to('.hero-eyebrow', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.8')
+    .to('.hero-title', { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }, '-=0.5')
+    .to('.hero-subtitle', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.5')
+    .to('.hero-actions', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.4')
+    .to('.hero-scroll-cue', { opacity: 1, duration: 0.8 }, '-=0.3');
+}
+
+// ============ PPF SCROLL ANIMATION ============
+const ppfTl = gsap.timeline({
+  scrollTrigger: {
+    trigger: '.ppf-section',
+    start: 'top top',
+    end: 'bottom bottom',
+    scrub: 1
+  }
+});
+ppfTl.to('.ppf-section-title h2', { opacity: 1, y: 0, duration: 0.3 }, 0)
+  .to('.ppf-film-layer', { yPercent: -110, rotateX: 15, opacity: 0.3, duration: 0.4 }, 0.2)
+  .to('.ann-hood', { opacity: 1, duration: 0.2 }, 0.3)
+  .to('.ann-front', { opacity: 1, duration: 0.2 }, 0.45)
+  .to('.ann-side', { opacity: 1, duration: 0.2 }, 0.6)
+  .to('.ppf-film-layer', { yPercent: 0, rotateX: 0, opacity: 1, duration: 0.3 }, 0.75)
+  .to(['.ann-hood', '.ann-front', '.ann-side'], { opacity: 0, duration: 0.15 }, 0.75)
+  .to('.ppf-section-title h2', { opacity: 0, y: -20, duration: 0.2 }, 0.85)
+  .to('.ppf-closing', { opacity: 1, duration: 0.3 }, 0.9);
+
+// ============ AUTHORITY COUNTERS ============
+document.querySelectorAll('.metric').forEach((m, i) => {
+  gsap.to(m, {
+    opacity: 1, y: 0, duration: 0.8, delay: i * 0.1,
+    scrollTrigger: { trigger: m, start: 'top 85%' },
+    onComplete: () => gsap.to(m.querySelector('.metric-line'), { scaleX: 1, duration: 0.6 })
+  });
+});
+document.querySelectorAll('.counter').forEach(c => {
+  const target = parseInt(c.dataset.target);
+  ScrollTrigger.create({
+    trigger: c, start: 'top 85%', once: true,
+    onEnter: () => {
+      gsap.to({ v: 0 }, { v: target, duration: 2, ease: 'power2.out',
+        onUpdate: function() { c.textContent = Math.round(this.targets()[0].v).toLocaleString(); }
+      });
+    }
+  });
+});
+
+// Map dots
+document.querySelectorAll('.map-dot').forEach((dot, i) => {
+  gsap.to(dot, {
+    opacity: 1, scale: 1, duration: 0.5, delay: i * 0.15,
+    scrollTrigger: { trigger: '.authority-map', start: 'top 80%' }
+  });
+});
+document.querySelectorAll('.map-label').forEach((label, i) => {
+  gsap.to(label, {
+    opacity: 1, duration: 0.5, delay: i * 0.15 + 0.3,
+    scrollTrigger: { trigger: '.authority-map', start: 'top 80%' }
+  });
+});
+
+// ============ REVEAL ANIMATIONS ============
+gsap.utils.toArray('.reveal').forEach(el => {
+  gsap.to(el, { opacity: 1, y: 0, duration: 1, ease: 'power3.out',
+    scrollTrigger: { trigger: el, start: 'top 85%' }
+  });
+});
+gsap.utils.toArray('.reveal-scale').forEach(el => {
+  gsap.to(el, { opacity: 1, scale: 1, duration: 1, ease: 'power3.out',
+    scrollTrigger: { trigger: el, start: 'top 85%' }
+  });
+});
+
+// ============ SERVICE TABS ============
+const serviceData = [
+  { name: 'Paint Protection Film', icon: '🛡️', desc: 'Full-body transparent urethane film that protects against stone chips, scratches, UV damage, and environmental contaminants. Self-healing topcoat erases light marks with heat.' },
+  { name: 'Ceramic Coating', icon: '💎', desc: 'Professional-grade SiO2 ceramic coating that bonds to paint, creating a hydrophobic, UV-resistant layer with exceptional gloss depth and chemical resistance.' },
+  { name: 'Premium Detailing', icon: '✨', desc: 'Multi-stage paint correction using machine polishing to remove swirl marks, oxidation, and light scratches — restoring factory-level clarity.' },
+  { name: 'Windshield Protection', icon: '🪟', desc: 'Hydrophobic glass coating that repels water, improves visibility in rain, and protects against stone chips and environmental damage.' },
+  { name: 'Interior Protection', icon: '🛋️', desc: 'Comprehensive cabin protection for leather, fabric, screens, and trim — guarding against UV damage, spills, and daily wear.' },
+  { name: 'Finish Customisation', icon: '🎨', desc: 'Premium vinyl wraps in satin, matte, gloss, chrome, and color-shift finishes. Transform your vehicle without permanent modification.' }
+];
+document.querySelectorAll('.service-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const idx = parseInt(tab.dataset.service);
+    document.querySelectorAll('.service-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const d = serviceData[idx];
+    gsap.to('#serviceContent', { opacity: 0, y: 10, duration: 0.2, onComplete: () => {
+      document.querySelector('#serviceDetail h3').textContent = d.name;
+      document.querySelector('#serviceDetail p').textContent = d.desc;
+      document.getElementById('serviceMediaInner').textContent = d.icon;
+      gsap.to('#serviceContent', { opacity: 1, y: 0, duration: 0.4 });
+    }});
+  });
+});
+
+// ============ BEFORE/AFTER SLIDER ============
+const baContainer = document.getElementById('baContainer');
+const baAfter = document.getElementById('baAfter');
+const baDivider = document.getElementById('baDivider');
+const baHandle = document.getElementById('baHandle');
+let baDragging = false;
+
+function updateBA(x) {
+  const rect = baContainer.getBoundingClientRect();
+  let pos = (x - rect.left) / rect.width;
+  pos = Math.max(0, Math.min(1, pos));
+  baAfter.style.clipPath = `inset(0 ${(1 - pos) * 100}% 0 0)`;
+  baDivider.style.left = pos * 100 + '%';
+  baHandle.style.left = pos * 100 + '%';
+}
+baContainer.addEventListener('mousedown', e => { baDragging = true; updateBA(e.clientX); });
+window.addEventListener('mousemove', e => { if (baDragging) updateBA(e.clientX); });
+window.addEventListener('mouseup', () => baDragging = false);
+baContainer.addEventListener('touchstart', e => { baDragging = true; updateBA(e.touches[0].clientX); });
+window.addEventListener('touchmove', e => { if (baDragging) updateBA(e.touches[0].clientX); });
+window.addEventListener('touchend', () => baDragging = false);
+document.getElementById('baShowBefore').addEventListener('click', () => {
+  gsap.to(baAfter, { clipPath: 'inset(0 100% 0 0)', duration: 0.6, ease: 'power2.out' });
+  gsap.to([baDivider, baHandle], { left: '0%', duration: 0.6, ease: 'power2.out' });
+});
+document.getElementById('baShowAfter').addEventListener('click', () => {
+  gsap.to(baAfter, { clipPath: 'inset(0 0% 0 0)', duration: 0.6, ease: 'power2.out' });
+  gsap.to([baDivider, baHandle], { left: '100%', duration: 0.6, ease: 'power2.out' });
+});
+// Initial hint animation
+ScrollTrigger.create({
+  trigger: '.before-after-section', start: 'top 70%', once: true,
+  onEnter: () => {
+    gsap.to([baDivider, baHandle], { left: '30%', duration: 0.8, ease: 'power2.inOut', delay: 0.5 })
+      .to([baDivider, baHandle], { left: '70%', duration: 0.8, ease: 'power2.inOut' })
+      .to([baDivider, baHandle], { left: '50%', duration: 0.6, ease: 'power2.inOut' });
+  }
+});
+
+// ============ PROCESS TIMELINE ============
+gsap.to('#processLineFill', {
+  height: '100%', ease: 'none',
+  scrollTrigger: { trigger: '.process-timeline', start: 'top 60%', end: 'bottom 40%', scrub: 1 }
+});
+document.querySelectorAll('.process-step').forEach((step, i) => {
+  gsap.to(step, {
+    opacity: 1, y: 0, duration: 0.8,
+    scrollTrigger: { trigger: step, start: 'top 80%' }
+  });
+});
+
+// ============ PROJECT FILTERS ============
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.project-card').forEach(card => {
+      const show = filter === 'all' || card.dataset.category === filter;
+      gsap.to(card, {
+        opacity: show ? 1 : 0.2, scale: show ? 1 : 0.95,
+        duration: 0.4, ease: 'power2.out',
+        pointerEvents: show ? 'auto' : 'none'
+      });
+    });
+  });
+});
+document.querySelectorAll('.project-card').forEach((card, i) => {
+  gsap.to(card, {
+    opacity: 1, y: 0, duration: 0.8, delay: i * 0.08,
+    scrollTrigger: { trigger: card, start: 'top 85%' }
+  });
+});
+
+// ============ STUDIO HORIZONTAL SCROLL ============
+const studioTrack = document.getElementById('studioTrack');
+const studioSlides = document.querySelectorAll('.studio-slide');
+const studioProgress = document.getElementById('studioProgress');
+studioSlides.forEach(() => {
+  const dot = document.createElement('div');
+  dot.className = 'studio-progress-dot';
+  studioProgress.appendChild(dot);
+});
+const studioDots = document.querySelectorAll('.studio-progress-dot');
+
+gsap.to(studioTrack, {
+  x: () => -(studioTrack.scrollWidth - window.innerWidth),
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '.studio-section',
+    start: 'top top',
+    end: () => `+=${studioTrack.scrollWidth - window.innerWidth}`,
+    scrub: 1, pin: '.studio-pin', anticipatePin: 1, invalidateOnRefresh: true,
+    onUpdate: self => {
+      const idx = Math.round(self.progress * (studioSlides.length - 1));
+      studioDots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    }
+  }
+});
+
+// ============ CERTIFICATIONS ============
+document.querySelectorAll('.cert-item').forEach((item, i) => {
+  gsap.to(item, {
+    opacity: 1, y: 0, duration: 0.6, delay: i * 0.1,
+    scrollTrigger: { trigger: item, start: 'top 85%' }
+  });
+});
+
+// ============ TESTIMONIALS ============
+const testimonials = [
+  { vehicle: 'Lamborghini Huracán', quote: 'The level of precision and care RajShield brought to my Huracán was extraordinary. It\'s like the car is wearing invisible armor that makes the paint look even better than factory.', author: 'Vikram Singh Rathore', meta: 'Udaipur • Full Body PPF' },
+  { vehicle: 'Rolls Royce Ghost', quote: 'I\'ve had my Rolls Royce detailed at many places across India, but RajShield\'s attention to detail is unmatched. The ceramic coating has kept my Ghost pristine through the Rajasthan summer.', author: 'Maharaja Arjun Dev', meta: 'Jodhpur • Ceramic Coating' },
+  { vehicle: 'Porsche 911 GT3', quote: 'They picked up my GT3 from Jaipur, wrapped it in full PPF, and delivered it back in perfect condition. The self-healing film has already saved me from two rock chips. Worth every rupee.', author: 'Rohan Mehta', meta: 'Jaipur • Full Body PPF' }
+];
+let currentTestimonial = 0;
+const tDots = document.querySelectorAll('.testimonial-nav-dot');
+
+function showTestimonial(idx) {
+  const t = testimonials[idx];
+  gsap.to(['.testimonial-vehicle', '.testimonial-quote', '.testimonial-author', '.testimonial-meta'], {
+    opacity: 0, y: -10, duration: 0.3, stagger: 0.05,
+    onComplete: () => {
+      document.getElementById('testimonialVehicle').textContent = t.vehicle;
+      document.getElementById('testimonialQuote').textContent = t.quote;
+      document.getElementById('testimonialAuthor').textContent = t.author;
+      document.getElementById('testimonialMeta').textContent = t.meta;
+      gsap.to(['.testimonial-vehicle', '.testimonial-quote', '.testimonial-author', '.testimonial-meta'], {
+        opacity: 1, y: 0, duration: 0.5, stagger: 0.08
+      });
+    }
+  });
+  tDots.forEach((d, i) => d.classList.toggle('active', i === idx));
+}
+tDots.forEach(dot => dot.addEventListener('click', () => {
+  currentTestimonial = parseInt(dot.dataset.index);
+  showTestimonial(currentTestimonial);
+}));
+setInterval(() => {
+  currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+  showTestimonial(currentTestimonial);
+}, 7000);
+// Initial reveal
+ScrollTrigger.create({
+  trigger: '.testimonials-section', start: 'top 70%', once: true,
+  onEnter: () => showTestimonial(0)
+});
+
+// ============ BOOKING FORM ============
+document.getElementById('bookingForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const form = e.target;
+  const success = document.getElementById('formSuccess');
+  gsap.to(form, { opacity: 0, y: -20, duration: 0.4, onComplete: () => {
+    form.style.display = 'none';
+    success.classList.add('show');
+    gsap.from(success, { opacity: 0, y: 20, duration: 0.6 });
+  }});
+  // TODO: Connect to your backend / WhatsApp / email service here
+});
+
+// ============ BACK TO TOP ============
+document.getElementById('backToTop').addEventListener('click', () => {
+  gsap.to(window, { scrollTo: 0, duration: 1.2, ease: 'power3.inOut' });
+});
+
+// ============ SMOOTH ANCHOR SCROLL ============
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      gsap.to(window, { scrollTo: { y: target, offsetY: 0 }, duration: 1.2, ease: 'power3.inOut' });
+    }
+  });
+});
+
+// ============ SOUND TOGGLE ============
+document.getElementById('soundToggle').addEventListener('click', function() {
+  this.classList.toggle('muted');
+  // TODO: Add ambient audio here if desired
+});
+
+// ============ REFRESH ON LOAD ============
+window.addEventListener('load', () => setTimeout(() => ScrollTrigger.refresh(), 200));
+
+// ============ REDUCED MOTION ============
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  gsap.globalTimeline.timeScale(10);
+  ScrollTrigger.getAll().forEach(st => st.kill());
+  document.querySelectorAll('.reveal, .reveal-scale, .metric, .project-card, .cert-item, .process-step').forEach(el => {
+    el.style.opacity = '1'; el.style.transform = 'none';
+  });
+}
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+</body>
+</html>
