@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RajShield — Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --gold: #c9a84c; --gold-light: #e8d48b; --gold-dark: #a07c1c;
+  --black: #0a0a0a; --dark: #111; --darker: #050505;
+  --graphite: #1a1a1a; --white: #f5f5f5; --gray: #888;
+  --gray-light: #aaa; --gray-dark: #444;
+  --glass: rgba(255,255,255,0.03); --glass-border: rgba(255,255,255,0.06);
+  --success: #4ade80; --error: #f87171; --warning: #fbbf24;
+  --font-body: 'Inter', sans-serif; --font-display: 'Playfair Display', serif;
+}
+html, body { height: 100%; }
+body {
+  font-family: var(--font-body); background: var(--black); color: var(--white);
+  -webkit-font-smoothing: antialiased; overflow: hidden;
+}
+::selection { background: var(--gold); color: var(--black); }
+
+/* ========== AUTH SCREEN ========== */
+.auth-screen {
+  position: fixed; inset: 0; background: var(--darker);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+}
+.auth-screen.hidden { display: none; }
+.auth-box {
+  width: 100%; max-width: 460px; padding: 50px 40px;
+  background: var(--dark); border: 1px solid var(--glass-border);
+  border-radius: 20px; text-align: center;
+}
+.auth-logo {
+  font-family: var(--font-display); font-size: 2rem; font-weight: 700;
+  letter-spacing: 0.15em; margin-bottom: 8px;
+}
+.auth-logo span { color: var(--gold); }
+.auth-subtitle {
+  font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--gray); margin-bottom: 35px;
+}
+.auth-mode-toggle {
+  display: flex; gap: 8px; margin-bottom: 25px;
+  background: var(--graphite); border-radius: 8px; padding: 4px;
+}
+.auth-mode-btn {
+  flex: 1; padding: 10px; font-size: 0.7rem; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--gray); background: transparent;
+  border: none; border-radius: 6px; cursor: pointer;
+  transition: all 0.3s ease; font-family: var(--font-body);
+}
+.auth-mode-btn.active {
+  background: var(--gold); color: var(--black); font-weight: 600;
+}
+.auth-field { margin-bottom: 18px; text-align: left; }
+.auth-field label {
+  display: block; font-size: 0.65rem; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--gray); margin-bottom: 8px;
+}
+.auth-field input {
+  width: 100%; padding: 13px 16px; background: var(--graphite);
+  border: 1px solid var(--glass-border); border-radius: 8px;
+  color: var(--white); font-family: var(--font-body); font-size: 0.85rem;
+  outline: none; transition: border-color 0.3s ease;
+}
+.auth-field input:focus { border-color: var(--gold); }
+.auth-field .hint {
+  font-size: 0.7rem; color: var(--gray); margin-top: 6px; line-height: 1.5;
+}
+.auth-field .hint a { color: var(--gold); text-decoration: underline; }
+.auth-btn {
+  width: 100%; padding: 14px; background: var(--gold); color: var(--black);
+  border: none; border-radius: 8px; font-family: var(--font-body);
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.25em;
+  text-transform: uppercase; cursor: pointer; margin-top: 10px;
+  transition: all 0.3s ease;
+}
+.auth-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 25px rgba(201,168,76,0.3); }
+.auth-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.auth-error {
+  font-size: 0.75rem; color: var(--error); margin-top: 12px;
+  min-height: 18px;
+}
+
+/* ========== ADMIN LAYOUT ========== */
+.admin-app {
+  display: grid; grid-template-columns: 260px 1fr; height: 100vh;
+}
+.admin-app.hidden { display: none; }
+
+/* Sidebar */
+.sidebar {
+  background: var(--darker); border-right: 1px solid var(--glass-border);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.sidebar-header {
+  padding: 25px 22px; border-bottom: 1px solid var(--glass-border);
+}
+.sidebar-logo {
+  font-family: var(--font-display); font-size: 1.2rem; font-weight: 700;
+  letter-spacing: 0.1em;
+}
+.sidebar-logo span { color: var(--gold); }
+.sidebar-tag {
+  font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--gold); margin-top: 4px;
+}
+.sidebar-nav {
+  flex: 1; overflow-y: auto; padding: 15px 10px;
+}
+.sidebar-nav::-webkit-scrollbar { width: 4px; }
+.sidebar-nav::-webkit-scrollbar-thumb { background: var(--graphite); border-radius: 2px; }
+.nav-section-label {
+  font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--gray-dark); padding: 15px 12px 8px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px; border-radius: 8px; cursor: pointer;
+  color: var(--gray-light); font-size: 0.82rem;
+  transition: all 0.2s ease; margin-bottom: 2px;
+  border: 1px solid transparent;
+}
+.nav-item:hover { background: var(--glass); color: var(--white); }
+.nav-item.active {
+  background: rgba(201,168,76,0.08); color: var(--gold);
+  border-color: rgba(201,168,76,0.15);
+}
+.nav-item-icon {
+  width: 28px; height: 28px; border-radius: 6px;
+  background: var(--graphite); display: flex; align-items: center;
+  justify-content: center; font-size: 0.9rem; flex-shrink: 0;
+}
+.nav-item.active .nav-item-icon { background: rgba(201,168,76,0.15); }
+.nav-item-badge {
+  margin-left: auto; font-size: 0.6rem; padding: 2px 7px;
+  background: var(--graphite); border-radius: 10px; color: var(--gray);
+}
+.nav-item.active .nav-item-badge { background: var(--gold); color: var(--black); }
+.sidebar-footer {
+  padding: 15px; border-top: 1px solid var(--glass-border);
+}
+.sidebar-status {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.7rem; color: var(--gray); margin-bottom: 10px;
+}
+.status-dot {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--success);
+  box-shadow: 0 0 8px var(--success);
+}
+.status-dot.offline { background: var(--gray-dark); box-shadow: none; }
+.sidebar-logout {
+  width: 100%; padding: 8px; background: transparent;
+  border: 1px solid var(--glass-border); border-radius: 6px;
+  color: var(--gray); font-size: 0.7rem; letter-spacing: 0.15em;
+  text-transform: uppercase; cursor: pointer; font-family: var(--font-body);
+  transition: all 0.2s ease;
+}
+.sidebar-logout:hover { border-color: var(--error); color: var(--error); }
+
+/* Main Content */
+.main-content {
+  overflow-y: auto; padding: 0;
+  background: var(--black);
+}
+.main-content::-webkit-scrollbar { width: 6px; }
+.main-content::-webkit-scrollbar-thumb { background: var(--graphite); border-radius: 3px; }
+
+/* Page Header */
+.page-header {
+  padding: 35px 45px 25px; border-bottom: 1px solid var(--glass-border);
+  position: sticky; top: 0; background: rgba(10,10,10,0.95);
+  backdrop-filter: blur(20px); z-index: 10;
+}
+.page-header-top {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 8px;
+}
+.page-title {
+  font-family: var(--font-display); font-size: 1.8rem; font-weight: 700;
+}
+.page-title em { color: var(--gold); font-style: italic; }
+.page-actions { display: flex; gap: 10px; }
+.btn {
+  padding: 10px 20px; border-radius: 6px; font-family: var(--font-body);
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em;
+  text-transform: uppercase; cursor: pointer; transition: all 0.2s ease;
+  border: 1px solid transparent; display: inline-flex; align-items: center;
+  gap: 8px;
+}
+.btn-primary { background: var(--gold); color: var(--black); border-color: var(--gold); }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(201,168,76,0.3); }
+.btn-secondary { background: transparent; color: var(--white); border-color: var(--glass-border); }
+.btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+.btn-danger { background: transparent; color: var(--error); border-color: rgba(248,113,113,0.3); }
+.btn-danger:hover { background: rgba(248,113,113,0.1); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+.page-desc {
+  font-size: 0.82rem; color: var(--gray); line-height: 1.6; max-width: 600px;
+}
+
+/* Page Body */
+.page-body { padding: 35px 45px 60px; }
+
+/* ========== DASHBOARD ========== */
+.stats-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 18px; margin-bottom: 35px;
+}
+.stat-card {
+  padding: 22px; background: var(--glass); border: 1px solid var(--glass-border);
+  border-radius: 12px;
+}
+.stat-card-label {
+  font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gray); margin-bottom: 8px;
+}
+.stat-card-value {
+  font-family: var(--font-display); font-size: 2rem; font-weight: 700;
+  color: var(--gold);
+}
+.stat-card-sub { font-size: 0.7rem; color: var(--gray); margin-top: 4px; }
+
+.quick-actions {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px; margin-bottom: 35px;
+}
+.quick-action {
+  padding: 20px; background: var(--glass); border: 1px solid var(--glass-border);
+  border-radius: 12px; cursor: pointer; transition: all 0.2s ease;
+  display: flex; align-items: center; gap: 15px;
+}
+.quick-action:hover {
+  border-color: rgba(201,168,76,0.3); background: rgba(201,168,76,0.03);
+  transform: translateY(-2px);
+}
+.quick-action-icon {
+  width: 42px; height: 42px; border-radius: 10px;
+  background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; flex-shrink: 0;
+}
+.quick-action-text h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 2px; }
+.quick-action-text p { font-size: 0.7rem; color: var(--gray); }
+
+.activity-feed {
+  background: var(--glass); border: 1px solid var(--glass-border);
+  border-radius: 12px; padding: 25px;
+}
+.activity-feed h3 {
+  font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 18px;
+}
+.activity-item {
+  display: flex; gap: 12px; padding: 12px 0;
+  border-bottom: 1px solid var(--glass-border);
+}
+.activity-item:last-child { border-bottom: none; }
+.activity-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--gold);
+  margin-top: 6px; flex-shrink: 0;
+}
+.activity-text { font-size: 0.8rem; color: var(--gray-light); line-height: 1.5; }
+.activity-time { font-size: 0.65rem; color: var(--gray-dark); margin-top: 3px; }
+
+/* ========== UPLOAD ZONE ========== */
+.section-block {
+  background: var(--glass); border: 1px solid var(--glass-border);
+  border-radius: 14px; padding: 28px; margin-bottom: 22px;
+}
+.section-block-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 18px;
+}
+.section-block-title {
+  font-size: 0.95rem; font-weight: 600;
+}
+.section-block-title small {
+  display: block; font-size: 0.7rem; color: var(--gray);
+  font-weight: 400; margin-top: 3px;
+}
+
+.upload-zone {
+  border: 2px dashed var(--glass-border); border-radius: 12px;
+  padding: 40px 20px; text-align: center; cursor: pointer;
+  transition: all 0.3s ease; position: relative; overflow: hidden;
+}
+.upload-zone:hover, .upload-zone.dragover {
+  border-color: var(--gold); background: rgba(201,168,76,0.03);
+}
+.upload-zone.dragover { transform: scale(1.01); }
+.upload-zone-icon {
+  font-size: 2.5rem; margin-bottom: 12px; opacity: 0.5;
+}
+.upload-zone-text {
+  font-size: 0.85rem; color: var(--gray-light); margin-bottom: 6px;
+}
+.upload-zone-hint {
+  font-size: 0.7rem; color: var(--gray-dark);
+}
+.upload-zone input[type="file"] {
+  position: absolute; inset: 0; opacity: 0; cursor: pointer;
+}
+
+/* Preview Grid */
+.preview-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px; margin-top: 18px;
+}
+.preview-item {
+  position: relative; aspect-ratio: 16/10; border-radius: 8px;
+  overflow: hidden; background: var(--graphite);
+  border: 1px solid var(--glass-border);
+}
+.preview-item img, .preview-item video {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.preview-item-badge {
+  position: absolute; top: 6px; left: 6px;
+  font-size: 0.55rem; padding: 2px 7px; border-radius: 4px;
+  background: rgba(0,0,0,0.7); color: var(--gold);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  backdrop-filter: blur(5px);
+}
+.preview-item-remove {
+  position: absolute; top: 6px; right: 6px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: rgba(0,0,0,0.7); border: none; color: var(--error);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem; opacity: 0; transition: opacity 0.2s ease;
+  backdrop-filter: blur(5px);
+}
+.preview-item:hover .preview-item-remove { opacity: 1; }
+.preview-item-name {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 5px 8px; font-size: 0.6rem; color: var(--white);
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* ========== PROJECT CARDS (Admin) ========== */
+.project-list { display: flex; flex-direction: column; gap: 12px; }
+.project-item {
+  display: grid; grid-template-columns: 120px 1fr auto; gap: 18px;
+  padding: 15px; background: var(--graphite); border-radius: 10px;
+  border: 1px solid var(--glass-border); align-items: center;
+  transition: border-color 0.2s ease;
+}
+.project-item:hover { border-color: rgba(201,168,76,0.2); }
+.project-thumb {
+  width: 120px; height: 75px; border-radius: 6px; overflow: hidden;
+  background: var(--black); position: relative;
+}
+.project-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.project-thumb-empty {
+  width: 100%; height: 100%; display: flex; align-items: center;
+  justify-content: center; color: var(--gray-dark); font-size: 0.65rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
+.project-info h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 3px; }
+.project-info-meta {
+  display: flex; gap: 12px; font-size: 0.7rem; color: var(--gray);
+}
+.project-info-meta span { display: flex; align-items: center; gap: 4px; }
+.project-info-desc {
+  font-size: 0.75rem; color: var(--gray); margin-top: 5px;
+  line-height: 1.5; max-width: 500px;
+}
+.project-actions { display: flex; gap: 8px; }
+.icon-btn {
+  width: 34px; height: 34px; border-radius: 6px;
+  background: var(--glass); border: 1px solid var(--glass-border);
+  color: var(--gray-light); cursor: pointer; display: flex;
+  align-items: center; justify-content: center; font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+.icon-btn:hover { border-color: var(--gold); color: var(--gold); }
+.icon-btn.danger:hover { border-color: var(--error); color: var(--error); }
+
+/* ========== MODAL ========== */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(10px); z-index: 100;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  width: 100%; max-width: 560px; max-height: 85vh; overflow-y: auto;
+  background: var(--dark); border: 1px solid var(--glass-border);
+  border-radius: 16px; padding: 35px;
+  transform: translateY(20px); transition: transform 0.3s ease;
+}
+.modal-overlay.open .modal { transform: translateY(0); }
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 25px;
+}
+.modal-title {
+  font-family: var(--font-display); font-size: 1.3rem; font-weight: 700;
+}
+.modal-close {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--graphite); border: none; color: var(--gray);
+  cursor: pointer; font-size: 1.1rem; transition: all 0.2s ease;
+}
+.modal-close:hover { background: var(--error); color: var(--white); }
+.modal-field { margin-bottom: 18px; }
+.modal-field label {
+  display: block; font-size: 0.65rem; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--gray); margin-bottom: 8px;
+}
+.modal-field input, .modal-field select, .modal-field textarea {
+  width: 100%; padding: 12px 15px; background: var(--graphite);
+  border: 1px solid var(--glass-border); border-radius: 8px;
+  color: var(--white); font-family: var(--font-body); font-size: 0.85rem;
+  outline: none; transition: border-color 0.2s ease;
+}
+.modal-field input:focus, .modal-field select:focus, .modal-field textarea:focus {
+  border-color: var(--gold);
+}
+.modal-field select { appearance: none; cursor: pointer; }
+.modal-field select option { background: var(--dark); }
+.modal-field textarea { resize: vertical; min-height: 80px; }
+.modal-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.modal-footer {
+  display: flex; gap: 10px; justify-content: flex-end;
+  margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--glass-border);
+}
+
+/* ========== TOAST ========== */
+.toast-container {
+  position: fixed; bottom: 25px; right: 25px; z-index: 200;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.toast {
+  padding: 14px 20px; background: var(--dark);
+  border: 1px solid var(--glass-border); border-radius: 10px;
+  display: flex; align-items: center; gap: 12px; min-width: 280px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  animation: toastIn 0.3s ease;
+}
+.toast.success { border-color: rgba(74,222,128,0.3); }
+.toast.error { border-color: rgba(248,113,113,0.3); }
+.toast-icon { font-size: 1.2rem; }
+.toast-message { font-size: 0.8rem; color: var(--gray-light); flex: 1; }
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* ========== PROGRESS ========== */
+.progress-bar {
+  width: 100%; height: 3px; background: var(--graphite);
+  border-radius: 2px; overflow: hidden; margin-top: 12px;
+}
+.progress-bar-fill {
+  height: 100%; background: var(--gold); border-radius: 2px;
+  transition: width 0.3s ease;
+}
+.progress-text {
+  font-size: 0.7rem; color: var(--gray); margin-top: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ========== EMPTY STATE ========== */
+.empty-state {
+  text-align: center; padding: 50px 20px;
+  background: var(--glass); border: 1px dashed var(--glass-border);
+  border-radius: 12px;
+}
+.empty-state-icon { font-size: 3rem; opacity: 0.3; margin-bottom: 15px; }
+.empty-state-text {
+  font-size: 0.85rem; color: var(--gray); margin-bottom: 5px;
+}
+.empty-state-hint { font-size: 0.7rem; color: var(--gray-dark); }
+
+/* ========== PUBLISH PAGE ========== */
+.publish-checklist {
+  display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px;
+}
+.checklist-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 18px; background: var(--graphite);
+  border-radius: 8px; border: 1px solid var(--glass-border);
+}
+.checklist-icon {
+  width: 24px; height: 24px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem; flex-shrink: 0;
+}
+.checklist-icon.done { background: rgba(74,222,128,0.15); color: var(--success); }
+.checklist-icon.pending { background: rgba(251,191,36,0.15); color: var(--warning); }
+.checklist-icon.missing { background: rgba(248,113,113,0.15); color: var(--error); }
+.checklist-text { flex: 1; font-size: 0.82rem; }
+.checklist-status {
+  font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 4px;
+}
+.checklist-status.done { background: rgba(74,222,128,0.1); color: var(--success); }
+.checklist-status.pending { background: rgba(251,191,36,0.1); color: var(--warning); }
+.checklist-status.missing { background: rgba(248,113,113,0.1); color: var(--error); }
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 900px) {
+  .admin-app { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .sidebar.mobile-open { display: flex; position: fixed; inset: 0; z-index: 50; width: 260px; }
+  .page-header, .page-body { padding-left: 20px; padding-right: 20px; }
+  .project-item { grid-template-columns: 80px 1fr; }
+  .project-thumb { width: 80px; height: 50px; }
+  .project-actions { grid-column: 1 / -1; justify-content: flex-end; }
+}
+</style>
+</head>
+<body>
+
+<!-- ========== AUTH SCREEN ========== -->
+<div class="auth-screen" id="authScreen">
+  <div class="auth-box">
+    <div class="auth-logo">RAJ<span>SHIELD</span></div>
+    <div class="auth-subtitle">Admin Panel</div>
+    
+    <div class="auth-mode-toggle">
+      <button class="auth-mode-btn active" data-mode="github">GitHub Sync</button>
+      <button class="auth-mode-btn" data-mode="local">Local Export</button>
+    </div>
+
+    <div id="githubFields">
+      <div class="auth-field">
+        <label>Repository</label>
+        <input type="text" id="authRepo" placeholder="username/repo-name">
+        <div class="hint">Your GitHub repo (e.g. rajshield/website)</div>
+      </div>
+      <div class="auth-field">
+        <label>Branch</label>
+        <input type="text" id="authBranch" placeholder="main" value="main">
+      </div>
+      <div class="auth-field">
+        <label>Personal Access Token</label>
+        <input type="password" id="authToken" placeholder="ghp_xxxxxxxxxxxx">
+        <div class="hint">Needs <strong>repo</strong> scope. <a href="https://github.com/settings/tokens" target="_blank">Create one →</a></div>
+      </div>
+    </div>
+
+    <div id="localFields" style="display:none">
+      <div class="auth-field">
+        <label>Studio Name</label>
+        <input type="text" id="authStudioName" placeholder="RajShield" value="RajShield">
+      </div>
+      <div class="auth-field">
+        <label>How it works</label>
+        <div class="hint" style="margin-top:0">Files are saved in your browser. You'll download a ZIP to upload to your hosting.</div>
+      </div>
+    </div>
+
+    <button class="auth-btn" id="authBtn">Enter Admin</button>
+    <div class="auth-error" id="authError"></div>
+  </div>
+</div>
+
+<!-- ========== ADMIN APP ========== -->
+<div class="admin-app hidden" id="adminApp">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">RAJ<span>SHIELD</span></div>
+      <div class="sidebar-tag">Admin Panel</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Overview</div>
+      <div class="nav-item active" data-page="dashboard">
+        <div class="nav-item-icon">📊</div>
+        <span>Dashboard</span>
+      </div>
+
+      <div class="nav-section-label">Content</div>
+      <div class="nav-item" data-page="hero">
+        <div class="nav-item-icon">🎬</div>
+        <span>Hero</span>
+        <span class="nav-item-badge" id="badge-hero">—</span>
+      </div>
+      <div class="nav-item" data-page="ppf">
+        <div class="nav-item-icon">🎞️</div>
+        <span>PPF Sequence</span>
+        <span class="nav-item-badge" id="badge-ppf">—</span>
+      </div>
+      <div class="nav-item" data-page="services">
+        <div class="nav-item-icon">🛠️</div>
+        <span>Services</span>
+        <span class="nav-item-badge" id="badge-services">—</span>
+      </div>
+      <div class="nav-item" data-page="material">
+        <div class="nav-item-icon">🔬</div>
+        <span>Material Science</span>
+        <span class="nav-item-badge" id="badge-material">—</span>
+      </div>
+      <div class="nav-item" data-page="beforeafter">
+        <div class="nav-item-icon">⚖️</div>
+        <span>Before / After</span>
+        <span class="nav-item-badge" id="badge-beforeafter">—</span>
+      </div>
+      <div class="nav-item" data-page="projects">
+        <div class="nav-item-icon">🏎️</div>
+        <span>Projects</span>
+        <span class="nav-item-badge" id="badge-projects">—</span>
+      </div>
+      <div class="nav-item" data-page="studio">
+        <div class="nav-item-icon">🏢</div>
+        <span>Studio Tour</span>
+        <span class="nav-item-badge" id="badge-studio">—</span>
+      </div>
+
+      <div class="nav-section-label">Publish</div>
+      <div class="nav-item" data-page="publish">
+        <div class="nav-item-icon">🚀</div>
+        <span>Publish</span>
+      </div>
+      <div class="nav-item" data-page="settings">
+        <div class="nav-item-icon">⚙️</div>
+        <span>Settings</span>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-status">
+        <div class="status-dot" id="statusDot"></div>
+        <span id="statusText">Connected</span>
+      </div>
+      <button class="sidebar-logout" id="logoutBtn">Logout</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content" id="mainContent">
+    <!-- Pages are injected here -->
+  </main>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<!-- Toasts -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+// ============================================
+// STATE MANAGEMENT
+// ============================================
+const STATE = {
+  mode: 'github', // or 'local'
+  github: { repo: '', branch: 'main', token: '' },
+  local: { studioName: 'RajShield' },
+  content: {
+    hero: { video: null, image: null, poster: null },
+    ppfSequence: { frames: [], totalFrames: 0 },
+    services: { ppf: null, ceramic: null, detailing: null, windshield: null, interior: null, wraps: null },
+    material: { impact: null, healing: null, hydrophobic: null },
+    beforeAfter: { before: null, after: null },
+    projects: [],
+    studio: [],
+    sound: { enabled: false, src: null, volume: 0.3 }
+  },
+  currentPage: 'dashboard',
+  dirty: false
+};
+
+// Load from localStorage
+function loadState() {
+  const saved = localStorage.getItem('rajshield_admin');
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      Object.assign(STATE, parsed);
+    } catch(e) { console.error('State load error', e); }
+  }
+}
+function saveState() {
+  localStorage.setItem('rajshield_admin', JSON.stringify(STATE));
+}
+loadState();
+
+// ============================================
+// TOAST NOTIFICATIONS
+// ============================================
+function toast(message, type = 'success') {
+  const container = document.getElementById('toastContainer');
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+  el.innerHTML = `
+    <div class="toast-icon">${icons[type] || '✅'}</div>
+    <div class="toast-message">${message}</div>
+  `;
+  container.appendChild(el);
+  setTimeout(() => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateX(20px)';
+    el.style.transition = 'all 0.3s ease';
+    setTimeout(() => el.remove(), 300);
+  }, 3500);
+}
+
+// ============================================
+// MODAL SYSTEM
+// ============================================
+function openModal(html) {
+  document.getElementById('modalContent').innerHTML = html;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+document.getElementById('modalOverlay').addEventListener('click', e => {
+  if (e.target.id === 'modalOverlay') closeModal();
+});
+
+// ============================================
+// AUTH
+// ============================================
+document.querySelectorAll('.auth-mode-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.auth-mode-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const mode = btn.dataset.mode;
+    document.getElementById('githubFields').style.display = mode === 'github' ? 'block' : 'none';
+    document.getElementById('localFields').style.display = mode === 'local' ? 'block' : 'none';
+    STATE.mode = mode;
+  });
+});
+
+document.getElementById('authBtn').addEventListener('click', async () => {
+  const errEl = document.getElementById('authError');
+  errEl.textContent = '';
+  
+  if (STATE.mode === 'github') {
+    const repo = document.getElementById('authRepo').value.trim();
+    const branch = document.getElementById('authBranch').value.trim() || 'main';
+    const token = document.getElementById('authToken').value.trim();
+    
+    if (!repo || !token) {
+      errEl.textContent = 'Please fill in all fields';
+      return;
+    }
+    if (!repo.includes('/')) {
+      errEl.textContent = 'Repository must be in format: username/repo';
+      return;
+    }
+    
+    // Test token
+    const btn = document.getElementById('authBtn');
+    btn.disabled = true;
+    btn.textContent = 'Verifying...';
+    
+    try {
+      const res = await fetch(`https://api.github.com/repos/${repo}`, {
+        headers: { Authorization: `token ${token}` }
+      });
+      if (!res.ok) throw new Error('Invalid token or repository');
+      
+      STATE.github = { repo, branch, token };
+      saveState();
+      enterAdmin();
+    } catch(e) {
+      errEl.textContent = 'Authentication failed: ' + e.message;
+      btn.disabled = false;
+      btn.textContent = 'Enter Admin';
+    }
+  } else {
+    STATE.local.studioName = document.getElementById('authStudioName').value.trim() || 'RajShield';
+    saveState();
+    enterAdmin();
+  }
+});
+
+function enterAdmin() {
+  document.getElementById('authScreen').classList.add('hidden');
+  document.getElementById('adminApp').classList.remove('hidden');
+  updateStatus();
+  updateBadges();
+  renderPage('dashboard');
+  loadRemoteContent();
+}
+
+function updateStatus() {
+  const dot = document.getElementById('statusDot');
+  const text = document.getElementById('statusText');
+  if (STATE.mode === 'github') {
+    dot.classList.remove('offline');
+    text.textContent = `GitHub: ${STATE.github.repo}`;
+  } else {
+    dot.classList.add('offline');
+    text.textContent = 'Local mode';
+  }
+}
+
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  if (confirm('Logout? Unpublished changes will remain in browser storage.')) {
+    localStorage.removeItem('rajshield_admin');
+    location.reload();
+  }
+});
+
+// Auto-login if already authenticated
+if (STATE.github.token || STATE.local.studioName) {
+  enterAdmin();
+}
+
+// ============================================
+// NAVIGATION
+// ============================================
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    renderPage(item.dataset.page);
+  });
+});
+
+// ============================================
+// GITHUB API HELPERS
+// ============================================
+async function githubAPI(path, method = 'GET', body = null) {
+  const { repo, branch, token } = STATE.github;
+  const url = `https://api.github.com/repos/${repo}${path}`;
+  const opts = {
+    method,
+    headers: {
+      Authorization: `token ${token}`,
+      Accept: 'application/vnd.github.v3+json'
+    }
+  };
+  if (body) {
+    opts.headers['Content-Type'] = 'application/json';
+    opts.body = JSON.stringify(body);
+  }
+  const res = await fetch(url, opts);
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || `GitHub API error: ${res.status}`);
+  }
+  return res.json();
+}
+
+async function githubUpload(filePath, content, message, sha = null) {
+  const body = {
+    message,
+    content: btoa(String.fromCharCode(...new Uint8Array(content))),
+    branch: STATE.github.branch
+  };
+  if (sha) body.sha = sha;
+  return githubAPI(`/contents/${filePath}`, 'PUT', body);
+}
+
+async function githubGetSHA(filePath) {
+  try {
+    const data = await githubAPI(`/contents/${filePath}?ref=${STATE.github.branch}`);
+    return data.sha;
+  } catch(e) { return null; }
+}
+
+async function githubGetJSON(filePath) {
+  try {
+    const data = await githubAPI(`/contents/${filePath}?ref=${STATE.github.branch}`);
+    const content = atob(data.content);
+    return JSON.parse(content);
+  } catch(e) { return null; }
+}
+
+async function loadRemoteContent() {
+  if (STATE.mode !== 'github') return;
+  try {
+    const remote = await githubGetJSON('content.json');
+    if (remote) {
+      STATE.content = remote;
+      saveState();
+      updateBadges();
+      toast('Loaded content from repository', 'info');
+    }
+  } catch(e) {
+    console.log('No remote content yet');
+  }
+}
+
+// ============================================
+// FILE HELPERS
+// ============================================
+function fileToDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function fileToArrayBuffer(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+function isVideo(file) {
+  return file.type.startsWith('video/') || /\.(mp4|webm|mov)$/i.test(file.name);
+}
+function isImage(file) {
+  return file.type.startsWith('image/') || /\.(jpe?g|png|webp|gif)$/i.test(file.name);
+}
+
+function createPreviewURL(file) {
+  return URL.createObjectURL(file);
+}
+
+// ============================================
+// UPLOAD ZONE BUILDER
+// ============================================
+function createUploadZone(options = {}) {
+  const { accept = 'image/*,video/*', multiple = false, label = 'Drop files here', hint = 'or click to browse' } = options;
+  const zone = document.createElement('div');
+  zone.className = 'upload-zone';
+  zone.innerHTML = `
+    <div class="upload-zone-icon">📁</div>
+    <div class="upload-zone-text">${label}</div>
+    <div class="upload-zone-hint">${hint}</div>
+    <input type="file" accept="${accept}" ${multiple ? 'multiple' : ''}>
+  `;
+  
+  const input = zone.querySelector('input');
+  
+  ['dragenter', 'dragover'].forEach(evt => {
+    zone.addEventListener(evt, e => {
+      e.preventDefault();
+      zone.classList.add('dragover');
+    });
+  });
+  ['dragleave', 'drop'].forEach(evt => {
+    zone.addEventListener(evt, e => {
+      e.preventDefault();
+      zone.classList.remove('dragover');
+    });
+  });
+  
+  zone.addEventListener('drop', e => {
+    const files = Array.from(e.dataTransfer.files);
+    if (options.onFiles) options.onFiles(files);
+  });
+  
+  input.addEventListener('change', e => {
+    const files = Array.from(e.target.files);
+    if (options.onFiles) options.onFiles(files);
+    input.value = '';
+  });
+  
+  return zone;
+}
+
+function createPreviewItem(file, options = {}) {
+  const { badge = '', onRemove = null } = options;
+  const item = document.createElement('div');
+  item.className = 'preview-item';
+  
+  const url = createPreviewURL(file);
+  const isVid = isVideo(file);
+  
+  if (isVid) {
+    item.innerHTML = `
+      <video src="${url}" muted></video>
+      ${badge ? `<div class="preview-item-badge">${badge}</div>` : ''}
+      ${onRemove ? `<button class="preview-item-remove">×</button>` : ''}
+      <div class="preview-item-name">${file.name}</div>
+    `;
+  } else {
+    item.innerHTML = `
+      <img src="${url}" alt="">
+      ${badge ? `<div class="preview-item-badge">${badge}</div>` : ''}
+      ${onRemove ? `<button class="preview-item-remove">×</button>` : ''}
+      <div class="preview-item-name">${file.name}</div>
+    `;
+  }
+  
+  if (onRemove) {
+    item.querySelector('.preview-item-remove').addEventListener('click', e => {
+      e.stopPropagation();
+      onRemove();
+    });
+  }
+  
+  return item;
+}
+
+// ============================================
+// PAGE RENDERERS
+// ============================================
+function renderPage(page) {
+  STATE.currentPage = page;
+  const main = document.getElementById('mainContent');
+  main.scrollTop = 0;
+  
+  const renderers = {
+    dashboard: renderDashboard,
+    hero: renderHero,
+    ppf: renderPPF,
+    services: renderServices,
+    material: renderMaterial,
+    beforeafter: renderBeforeAfter,
+    projects: renderProjects,
+    studio: renderStudio,
+    publish: renderPublish,
+    settings: renderSettings
+  };
+  
+  (renderers[page] || renderDashboard)(main);
+}
+
+// ---------- DASHBOARD ----------
+function renderDashboard(main) {
+  const c = STATE.content;
+  const stats = [
+    { label: 'Projects', value: c.projects.length, sub: 'vehicles protected' },
+    { label: 'PPF Frames', value: c.ppfSequence.totalFrames, sub: 'scroll sequence' },
+    { label: 'Studio Slides', value: c.studio.length, sub: 'tour images' },
+    { label: 'Services', value: Object.values(c.services).filter(v => v).length, sub: 'of 6 configured' }
+  ];
+  
+  main.innerHTML = `
+    <div class="page-header">
+      <div class="page-header-top">
+        <h1 class="page-title">Welcome <em>back.</em></h1>
+        <div class="page-actions">
+          <button class="btn btn-secondary" onclick="renderPage('publish')">🚀 Publish</button>
+        </div>
+      </div>
+      <p class="page-desc">Manage your website content. Upload files, edit projects, and publish changes.</p>
+    </div>
+    <div class="page-body">
+      <div class="stats-grid">
+        ${stats.map(s => `
+          <div class="stat-card">
+            <div class="stat-card-label">${s.label}</div>
+            <div class="stat-card-value">${s.value}</div>
+            <div class="stat-card-sub">${s.sub}</div>
+          </div>
+        `).join('')}
+      </div>
+      
+      <h3 style="font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:15px">Quick Actions</h3>
+      <div class="quick-actions">
+        <div class="quick-action" onclick="renderPage('hero')">
+          <div class="quick-action-icon">🎬</div>
+          <div class="quick-action-text"><h4>Update Hero</h4><p>Change main video/image</p></div>
+        </div>
+        <div class="quick-action" onclick="renderPage('projects')">
+          <div class="quick-action-icon">🏎️</div>
+          <div class="quick-action-text"><h4>Add Project</h4><p>Showcase new work</p></div>
+        </div>
+        <div class="quick-action" onclick="renderPage('ppf')">
+          <div class="quick-action-icon">🎞️</div>
+          <div class="quick-action-text"><h4>PPF Sequence</h4><p>Update scroll frames</p></div>
+        </div>
+        <div class="quick-action" onclick="renderPage('publish')">
+          <div class="quick-action-icon">🚀</div>
+          <div class="quick-action-text"><h4>Publish Changes</h4><p>Push to live site</p></div>
+        </div>
+      </div>
+      
+      <div class="activity-feed">
+        <h3>Getting Started</h3>
+        <div class="activity-item">
+          <div class="activity-dot"></div>
+          <div>
+            <div class="activity-text">Start by uploading your hero video in the <strong>Hero</strong> section</div>
+            <div class="activity-time">Step 1 of 7</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-dot" style="background:var(--gray-dark)"></div>
+          <div>
+            <div class="activity-text">Upload PPF frame sequence for the scroll animation</div>
+            <div class="activity-time">Step 2 of 7</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-dot" style="background:var(--gray-dark)"></div>
+          <div>
+            <div class="activity-text">Add service images (PPF, Ceramic, Detailing, etc.)</div>
+            <div class="activity-time">Step 3 of 7</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-dot" style="background:var(--gray-dark)"></div>
+          <div>
+            <div class="activity-text">Add your project portfolio with before/after images</div>
+            <div class="activity-time">Step 4 of 7</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-dot" style="background:var(--gray-dark)"></div>
+          <div>
+            <div class="activity-text">Upload studio tour photos</div>
+            <div class="activity-time">Step 5 of 7</div>
+          </div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-dot" style="background:var(--gray-dark)"></div>
+          <div>
+            <div class="activity-text">Review and publish when ready</div>
+            <div class="activity-time">Step 6 of 7</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ---------- HERO ----------
+function renderHero(main) {
+  const hero = STATE.content.hero;
+  main.innerHTML = `
+    <div class="page-header">
+      <div class="page-header-top">
+        <h1 class="page-title">Hero <em>Section</em></h1>
+      </div>
+      <p class="page-desc">The first thing visitors see. Use a cinematic video or high-quality image of your best work.</p>
+    </div>
+    <div class="page-body">
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">
+            Hero Video
+            <small>Recommended: 1920×1080, MP4, muted, under 10MB</small>
+          </div>
+          ${hero.video ? `<button class="btn btn-danger" onclick="removeHeroAsset('video')">Remove</button>` : ''}
+        </div>
+        ${hero.video 
+          ? `<div class="preview-grid"><div class="preview-item" style="aspect-ratio:16/9;grid-column:span 2">
+               <video src="${hero.video}" muted loop autoplay style="width:100%;height:100%;object-fit:cover"></video>
+               <div class="preview-item-badge">Hero Video</div>
+             </div></div>`
+          : ''}
+        <div id="heroVideoZone"></div>
+      </div>
+      
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">
+            Fallback Image
+            <small>Shown if video doesn't load (mobile, slow connections)</small>
+          </div>
+          ${hero.image ? `<button class="btn btn-danger" onclick="removeHeroAsset('image')">Remove</button>` : ''}
+        </div>
+        ${hero.image 
+          ? `<div class="preview-grid"><div class="preview-item" style="aspect-ratio:16/9;grid-column:span 2">
+               <img src="${hero.image}" style="width:100%;height:100%;object-fit:cover">
+               <div class="preview-item-badge">Fallback Image</div>
+             </div></div>`
+          : ''}
+        <div id="heroImageZone"></div>
+      </div>
+      
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">
+            Poster Image
+            <small>First frame shown before video plays (optional)</small>
+          </div>
+          ${hero.poster ? `<button class="btn btn-danger" onclick="removeHeroAsset('poster')">Remove</button>` : ''}
+        </div>
+        ${hero.poster 
+          ? `<div class="preview-grid"><div class="preview-item" style="aspect-ratio:16/9;grid-column:span 2">
+               <img src="${hero.poster}" style="width:100%;height:100%;object-fit:cover">
+               <div class="preview-item-badge">Poster</div>
+             </div></div>`
+          : ''}
+        <div id="heroPosterZone"></div>
+      </div>
+    </div>
+  `;
+  
+  // Video zone
+  document.getElementById('heroVideoZone').appendChild(
+    createUploadZone({
+      accept: 'video/mp4,video/webm,video/quicktime',
+      label: 'Drop hero video here',
+      hint: 'MP4 or WebM, max 50MB',
+      onFiles: async (files) => {
+        const file = files.find(f => isVideo(f));
+        if (!file) return toast('Please select a video file', 'error');
+        if (file.size > 50 * 1024 * 1024) return toast('Video too large (max 50MB)', 'error');
+        STATE.content.hero.video = await fileToDataURL(file);
+        STATE.content.hero._videoFile = file;
+        STATE.dirty = true;
+        saveState();
+        toast('Hero video uploaded');
+        renderHero(main);
+      }
+    })
+  );
+  
+  // Image zone
+  document.getElementById('heroImageZone').appendChild(
+    createUploadZone({
+      accept: 'image/*',
+      label: 'Drop fallback image here',
+      hint: 'JPG, PNG, or WebP',
+      onFiles: async (files) => {
+        const file = files.find(f => isImage(f));
+        if (!file) return toast('Please select an image', 'error');
+        STATE.content.hero.image = await fileToDataURL(file);
+        STATE.content.hero._imageFile = file;
+        STATE.dirty = true;
+        saveState();
+        toast('Fallback image uploaded');
+        renderHero(main);
+      }
+    })
+  );
+  
+  // Poster zone
+  document.getElementById('heroPosterZone').appendChild(
+    createUploadZone({
+      accept: 'image/*',
+      label: 'Drop poster image here',
+      hint: 'JPG, PNG, or WebP',
+      onFiles: async (files) => {
+        const file = files.find(f => isImage(f));
+        if (!file) return toast('Please select an image', 'error');
+        STATE.content.hero.poster = await fileToDataURL(file);
+        STATE.content.hero._posterFile = file;
+        STATE.dirty = true;
+        saveState();
+        toast('Poster image uploaded');
+        renderHero(main);
+      }
+    })
+  );
+}
+
+function removeHeroAsset(key) {
+  delete STATE.content.hero[key];
+  delete STATE.content.hero['_' + key + 'File'];
+  STATE.dirty = true;
+  saveState();
+  toast('Removed');
+  renderHero(document.getElementById('mainContent'));
+}
+
+// ---------- PPF SEQUENCE ----------
+function renderPPF(main) {
+  const seq = STATE.content.ppfSequence;
+  main.innerHTML = `
+    <div class="page-header">
+      <div class="page-header-top">
+        <h1 class="page-title">PPF <em>Sequence</em></h1>
+      </div>
+      <p class="page-desc">Upload your rendered frame sequence. Files will be auto-numbered and played as you scroll.</p>
+    </div>
+    <div class="page-body">
+      <div class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-title">
+            Frame Sequence
+            <small>${seq.totalFrames} frames uploaded • Recommended: 100-180 frames, WebP format</small>
+          </div>
+          ${seq.frames.length > 0 ? `<button class="btn btn-danger" onclick="clearPPFSequence()">Clear All</button>` : ''}
+        </div>
+        <div id="ppfUploadZone"></div>
+        ${seq.frames.length > 0 ? `
+          <div class="progress-text" style="margin-top:15px">Preview (every 10th frame):</div>
+          <div class="preview-grid" style="margin-top:10px" id="ppfPreview"></div>
+        ` : ''}
+      </div>
+    </div>
+  `;
+  
+  document.getElementById('ppfUploadZone').appendChild(
+    createUploadZone({
+      accept: 'image/webp,image/jpeg,image/png',
+      multiple: true,
+      label: 'Drop frame sequence here',
+      hint: 'Select all frames at once (WebP/JPG/PNG)',
+      onFiles: async (files) => {
+        const images = files.filter(f => isImage(f)).sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
+        if (images.length === 0) return toast('No image files found', 'error');
+        
+        toast(`Processing ${images.length} frames...`, 'info');
+        
+        // Process in batches
+        const batchSize = 10;
+        for (let i = 0; i < images.length; i += batchSize) {
+          const batch = images.slice(i, i + batchSize);
+          const promises = batch.map(async (file) => {
+            const dataUrl = await fileToDataURL(file);
+            return { dataUrl, name: file.name, file };
+          });
+          const results = await Promise.all(promises);
+          results.forEach(r => {
+            STATE.content.ppfSequence.frames.push(r);
+          });
+        }
+        
+        STATE.content.ppfSequence.totalFrames = STATE.content.ppfSequence.frames.length;
+        STATE.dirty = true;
+        saveState();
+        toast(`Uploaded ${images.length} frames`);
+        renderPPF(main);
+      }
+    })
+  );
+  
+  // Show preview
+  if (seq.frames.length > 0) {
+    const preview = document.getElementById('ppfPreview');
+    seq.frames.forEach((frame, i) => {
+      if (i % 10 !== 0 && i !== seq.frames.length - 1) return;
+      const item = document.createElement('div');
+      item.className = 'preview-item';
+      item.innerHTML = `
+        <img src="${frame.dataUrl}" alt="">
+        <div class="preview-item-badge">Frame ${String(i+1).padStart(3, '0')}</div>
+      `;
+      preview.appendChild(item);
+    });
+  }
+}
+
+function clearPPFSequence() {
+  if (!confirm(`Delete all ${STATE.content.ppfSequence.frames.length} frames?`)) return;
+  STATE.content.ppfSequence = { frames: [], totalFrames: 0 };
+  STATE.dirty = true;
+  saveState();
+  toast('Sequence cleared');
+  renderPPF(document.getElementById('mainContent'));
+}
+
+// ---------- SERVICES ----------
+function renderServices(main) {
+  const services = STATE.content.services;
+  const slots = [
+    { key: 'ppf', name: 'Paint Protection Film', icon: '🛡️' },
+    { key: 'ceramic', name: 'Ceramic Coating', icon: '💎' },
+    { key: 'detailing', name: 'Premium Detailing', icon: '✨' },
+    { key: 'windshield', name: 'Windshield Protection', icon: '🪟' },
+    { key: 'interior', name: 'Interior Protection', icon: '🛋️' },
+    { key: 'wraps', name: 'Finish Customisation', icon: '🎨' }
+  ];
+  
+  main.innerHTML = `
+    <div class="page-header">
+      <div class="page-header-top">
+        <h1 class="page-title">Service <em>Images</em></h1>
+      </div>
+      <p class="page-desc">Upload a representative image for each service. These appear in the services tab section.</p>
+    </div>
+    <div class="page-body">
+      ${slots.map(slot => `
+        <div class="section-block">
+          <div class="section-block-header">
+            <div class="section-block-title">
+              ${slot.icon} ${slot.name}
+              <small>Recommended: 16:10 aspect ratio</small>
+            </div>
+            ${services[slot.key] ? `<button class="btn btn-danger" onclick="removeService('${slot.key}')">Remove</button>` : ''}
+          </div>
+          ${services[slot.key] 
+            ? `<div class="preview-grid"><div class="preview-item" style="aspect-ratio:16/10;grid-column:span 2">
+                 <img src="${services[slot.key]}" style="width:100%;height:100%;object-fit:cover">
+                 <div class="preview-item-badge">${slot.name}</div>
+               </div></div>`
+            : `<div class="empty-state">
+                 <div class="empty-state-icon">${slot.icon}</div>
+                 <div class="empty-state-text">No image uploaded</div>
+               </div>`}
+          <div id="serviceZone-${slot.key}" style="margin-top:15px"></div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  
+  slots.forEach(slot => {
+    const zone = document.getElementById(`serviceZone-${slot.key}`);
+    zone.appendChild(createUploadZone({
+      accept: 'image/*',
+      label: `Drop ${slot.name} image`,
+      onFiles: async (files) => {
+        const file = files.find(f => isImage(f));
+        if (!file) return toast('Please select an image', 'error');
+        STATE.content.services[slot.key] = await fileToDataURL(file);
+        STATE.content.services['_' + slot.key + 'File'] = file;
+        STATE.dirty = true;
+        saveState();
+        toast(`${slot.name} image uploaded`);
+        renderServices(main);
+      }
+    }));
+  });
+}
+
+function removeService(key) {
+  delete STATE.content.services[key];
+  delete STATE.content.services['_' + key + 'File'];
+  STATE.dirty = true;
+  saveState();
+  toast('Removed');
+  renderServices(document.getElementById('mainContent'));
+}
+
+// ---------- MATERIAL SCIENCE ----------
+function renderMaterial(main) {
+  const mat = STATE.content.material;
+  const slots = [
+    { key: 'impact', name: 'Impact Resistance', icon: '💥', desc: 'Stone deflects, paint stays safe' },
+    { key: 'healing', name: 'Self-Healing Topcoat', icon: '✨', desc: 'Scratches vanish with heat' },
+    { key: 'hydrophobic', name: 'Hydrophobic Surface', icon: '💧', desc: 'Water beads, dirt rolls away' }
+  ];
+  
+  main.innerHTML = `
+    <div class="page-header">
+      <div class="page-header-top">
+        <h1 class="page-title">Material <em>Science</em></h1>
+      </div>
+      <p class="page-desc">Macro photography showing the technical benefits of PPF.</p>
+    </div>
+    <div class="page-body">
+      ${slots.map(slot => `
+        <div class="section-block">
+          <div class="section-block-header">
+            <div class="section-block-title">
+              ${slot.icon} ${slot.name}
+              <small>${slot.desc}</small>
+            </div>
+            ${mat[slot.key] ? `<button class="btn btn-danger" onclick="removeMaterial('${slot.key}')">Remove</button>` : ''}
+          </div>
+          ${mat[slot.key] 
+            ? `<div class="preview-grid"><div class="preview-item" style="aspect-ratio:4/3;grid-column:span 2">
+                 <img src="${mat[slot.key]}" style="width:100%;height:100%;object-fit:cover">
+               </div></div>`
+            : ''}
+          <div id="materialZone-${slot.key}" style="margin-top:15px"></div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  
+  slots.forEach(slot => {
+    const zone = document.getElementById(`materialZone-${slot.key}`);
+    zone.appendChild(createUploadZone({
+      accept: 'image/*',
+      label: `Drop ${slot.name} image`,
+      onFiles: async (files) => {
+        const file = files.find(f => isImage(f));
+        if (!file) return toast('Please select an image', 'error');
+        STATE.content.material[slot.key] = await fileToDataURL(file);
+        STATE.content.material['_' + slot.key + 'File'] = file;
+        STATE.dirty = true;
+        saveState();
+        toast(`${slot.name} uploaded`);
+        renderMaterial(main);
+      }
+    }));
