@@ -1,205 +1,1835 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium PPF Rajasthan</title>
-    
-    <!-- This loads the animation engine (GSAP) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RajShield PPF — Rajasthan's Pinnacle of Paint Protection</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    <style>
-        /* This makes the website look premium and dark */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background-color: #050505;
-            color: #ffffff;
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            overflow-x: hidden;
-        }
+:root {
+  --gold: #c9a84c;
+  --gold-light: #e8d48b;
+  --gold-dark: #a07c1c;
+  --black: #0a0a0a;
+  --dark: #111111;
+  --darker: #080808;
+  --white: #f5f5f5;
+  --gray: #888888;
+  --glass: rgba(255, 255, 255, 0.03);
+}
 
-        /* HERO SECTION */
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: radial-gradient(circle at center, #1a1a1a 0%, #050505 70%);
-        }
-        .hero h1 {
-            font-size: 4vw;
-            font-weight: 700;
-            letter-spacing: 2px;
-            background: linear-gradient(to right, #ffffff, #8a8a8a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
-        }
-        .hero p {
-            font-size: 1.2vw;
-            color: #666;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-        }
+html {
+  scroll-behavior: auto;
+  overflow-x: hidden;
+}
 
-        /* SCROLL ANIMATION SECTION */
-        .scroll-section {
-            height: 300vh; /* Very tall so we have room to scroll and animate */
-            position: relative;
-        }
-        .sticky-container {
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-        
-        /* Car Images */
-        .car-layer {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%;
-            max-width: 1200px;
-            height: auto;
-            object-fit: cover;
-        }
-        /* This is the glossy protected layer. It will be "peeled" away */
-        #car-glossy {
-            z-index: 2;
-        }
-        /* This is the dull unprotected layer underneath */
-        #car-matte {
-            z-index: 1;
-        }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--black);
+  color: var(--white);
+  overflow-x: hidden;
+  cursor: default;
+}
 
-        /* Text overlay during scroll */
-        .scroll-text {
-            position: absolute;
-            z-index: 10;
-            text-align: center;
-            pointer-events: none;
-        }
-        .scroll-text h2 {
-            font-size: 3vw;
-            font-weight: 600;
-            color: #fff;
-            opacity: 0; /* Hidden at first */
-            text-shadow: 0 0 20px rgba(0,0,0,0.8);
-        }
-        .scroll-text p {
-            font-size: 1.2vw;
-            color: #ccc;
-            margin-top: 15px;
-            opacity: 0;
-        }
+/* Custom Cursor */
+.cursor {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 10000;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  mix-blend-mode: difference;
+}
 
-        /* STATS SECTION */
-        .stats {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background-color: #0a0a0a;
-        }
-        .stats h2 {
-            font-size: 3vw;
-            color: #d4af37; /* Gold color for premium feel */
-        }
+.cursor-dot {
+  width: 5px;
+  height: 5px;
+  background: var(--gold);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 10001;
+}
 
-        /* Scroll Down Indicator */
-        .scroll-down {
-            position: absolute;
-            bottom: 40px;
-            color: #444;
-            font-size: 14px;
-            letter-spacing: 2px;
-            animation: bounce 2s infinite;
-        }
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-10px);}
-            60% {transform: translateY(-5px);}
-        }
-    </style>
+.cursor.hover {
+  transform: scale(2.5);
+  background: rgba(201, 168, 76, 0.1);
+}
+
+/* Preloader */
+.preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--black);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.preloader-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.3em;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.preloader-line {
+  width: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin-top: 20px;
+}
+
+.preloader-text {
+  font-size: 0.75rem;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-top: 15px;
+  opacity: 0;
+}
+
+/* Navigation */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 25px 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  mix-blend-mode: difference;
+}
+
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--white);
+  text-decoration: none;
+  letter-spacing: 0.15em;
+}
+
+.nav-logo span {
+  color: var(--gold);
+}
+
+.nav-links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--white);
+  text-decoration: none;
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  position: relative;
+  padding-bottom: 5px;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--gold);
+  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.nav-menu-btn {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.nav-menu-btn span {
+  width: 30px;
+  height: 1.5px;
+  background: var(--white);
+  transition: all 0.3s ease;
+}
+
+/* Hero Section */
+.hero {
+  height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at 50% 50%, rgba(201, 168, 76, 0.03) 0%, transparent 70%);
+}
+
+.hero-car-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-car-silhouette {
+  width: 70%;
+  max-width: 900px;
+  opacity: 0;
+  position: relative;
+}
+
+.hero-car-silhouette svg {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 0 60px rgba(201, 168, 76, 0.15));
+}
+
+.hero-light-beam {
+  position: absolute;
+  top: -10%;
+  left: 50%;
+  width: 2px;
+  height: 0;
+  background: linear-gradient(180deg, transparent, var(--gold-light), var(--gold), transparent);
+  transform: translateX(-50%);
+  opacity: 0;
+  box-shadow: 0 0 40px 10px rgba(201, 168, 76, 0.3), 0 0 80px 20px rgba(201, 168, 76, 0.1);
+}
+
+.hero-light-sweep {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(201, 168, 76, 0.05), rgba(255, 255, 255, 0.08), rgba(201, 168, 76, 0.05), transparent);
+  transform: skewX(-15deg);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.hero-eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.6em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 25px;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 25px;
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.hero-title .line {
+  display: block;
+  overflow: hidden;
+}
+
+.hero-title .highlight {
+  color: var(--gold);
+  font-style: italic;
+}
+
+.hero-subtitle {
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--gray);
+  letter-spacing: 0.1em;
+  max-width: 500px;
+  margin: 0 auto 40px;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.hero-scroll-cue {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+}
+
+.hero-scroll-cue span {
+  font-size: 0.65rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(180deg, var(--gold), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.5); }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+
+/* Particle Canvas */
+#particles-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.4;
+}
+
+/* Section Common */
+.section {
+  position: relative;
+  padding: 150px 50px;
+  overflow: hidden;
+}
+
+.section-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.6em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.section-label::before {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.section-desc {
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--gray);
+  line-height: 1.8;
+  max-width: 550px;
+}
+
+/* PPF Peel Section */
+.peel-section {
+  min-height: 300vh;
+  position: relative;
+}
+
+.peel-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.peel-car-visual {
+  position: relative;
+  width: 80%;
+  max-width: 800px;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.peel-layer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.peel-layer-paint {
+  background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+  z-index: 1;
+}
+
+.peel-layer-paint.damaged {
+  background: linear-gradient(135deg, #2a2a2a, #333, #2a2a2a);
+}
+
+.paint-texture {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.paint-swirls {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  background: 
+    radial-gradient(ellipse at 20% 50%, rgba(255,255,255,0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(255,255,255,0.02) 0%, transparent 40%),
+    radial-gradient(ellipse at 50% 80%, rgba(255,255,255,0.04) 0%, transparent 45%);
+}
+
+.paint-scratches {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.scratch-line {
+  position: absolute;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.15);
+  transform-origin: left center;
+}
+
+.peel-layer-film {
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.08), 
+    rgba(255, 255, 255, 0.02), 
+    rgba(255, 255, 255, 0.06));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 2;
+  backdrop-filter: blur(2px);
+  transform-origin: top center;
+}
+
+.film-shine {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.film-shine::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, 
+    transparent 30%, 
+    rgba(255, 255, 255, 0.05) 45%, 
+    rgba(255, 255, 255, 0.1) 50%, 
+    rgba(255, 255, 255, 0.05) 55%, 
+    transparent 70%);
+  animation: filmShine 4s ease-in-out infinite;
+}
+
+@keyframes filmShine {
+  0% { transform: translateX(-30%) translateY(-30%) rotate(0deg); }
+  100% { transform: translateX(30%) translateY(30%) rotate(0deg); }
+}
+
+.peel-label {
+  position: absolute;
+  font-size: 0.65rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold);
+  z-index: 10;
+  opacity: 0;
+}
+
+.peel-label-film {
+  top: -30px;
+  right: 0;
+}
+
+.peel-label-paint {
+  bottom: -30px;
+  left: 0;
+}
+
+.peel-text-overlay {
+  position: absolute;
+  z-index: 20;
+  text-align: center;
+}
+
+.peel-text-overlay h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  font-weight: 700;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.peel-text-overlay p {
+  font-size: 0.9rem;
+  color: var(--gray);
+  margin-top: 10px;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* Self-Healing Section */
+.healing-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(180deg, var(--black), var(--darker), var(--black));
+}
+
+.healing-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.healing-visual {
+  position: relative;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.healing-surface {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 0 60px rgba(201, 168, 76, 0.1),
+    inset 0 0 60px rgba(0, 0, 0, 0.5);
+}
+
+.healing-scratch {
+  position: absolute;
+  top: 50%;
+  left: 20%;
+  width: 60%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-50%) rotate(-5deg);
+  opacity: 0;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.healing-scratch::before,
+.healing-scratch::after {
+  content: '';
+  position: absolute;
+  width: 80%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.healing-scratch::before {
+  top: -4px;
+  left: 10%;
+  transform: rotate(1deg);
+}
+
+.healing-scratch::after {
+  top: 4px;
+  left: 5%;
+  transform: rotate(-0.5deg);
+}
+
+.healing-heat {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201, 168, 76, 0.3), transparent 70%);
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+.healing-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 320px;
+  height: 320px;
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  opacity: 0;
+}
+
+.healing-ring:nth-child(2) {
+  width: 360px;
+  height: 360px;
+  border-color: rgba(201, 168, 76, 0.1);
+}
+
+.healing-info {
+  padding: 20px;
+}
+
+.healing-steps {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.healing-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+.step-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: var(--gold);
+  font-weight: 700;
+  line-height: 1;
+  min-width: 40px;
+}
+
+.step-content h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+  letter-spacing: 0.05em;
+}
+
+.step-content p {
+  font-size: 0.8rem;
+  color: var(--gray);
+  line-height: 1.6;
+}
+
+/* Exploded View Section */
+.exploded-section {
+  min-height: 250vh;
+  position: relative;
+}
+
+.exploded-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.exploded-layers {
+  position: relative;
+  width: 500px;
+  height: 400px;
+  perspective: 1000px;
+}
+
+.exploded-layer {
+  position: absolute;
+  width: 100%;
+  height: 80px;
+  border-radius: 15px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: none;
+  backface-visibility: hidden;
+}
+
+.layer-ppf {
+  background: linear-gradient(135deg, 
+    rgba(201, 168, 76, 0.15), 
+    rgba(255, 255, 255, 0.05), 
+    rgba(201, 168, 76, 0.1));
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  box-shadow: 0 0 30px rgba(201, 168, 76, 0.1);
+}
+
+.layer-clear {
+  background: linear-gradient(135deg, 
+    rgba(100, 150, 255, 0.1), 
+    rgba(150, 200, 255, 0.05));
+  border: 1px solid rgba(100, 150, 255, 0.2);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.layer-base {
+  background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+  border: 1px solid rgba(15, 52, 96, 0.5);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.layer-label {
+  position: absolute;
+  right: -200px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  opacity: 0;
+  white-space: nowrap;
+}
+
+.layer-label-line {
+  width: 60px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.layer-label-text {
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.layer-label-desc {
+  font-size: 0.65rem;
+  color: var(--gray);
+  margin-top: 3px;
+  letter-spacing: 0.05em;
+  text-transform: none;
+}
+
+.exploded-info {
+  position: absolute;
+  left: 50px;
+  top: 50%;
+  transform: translateY(-50%);
+  max-width: 350px;
+  z-index: 10;
+}
+
+/* Horizontal Scroll Stats */
+.stats-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.stats-wrapper {
+  display: flex;
+  width: fit-content;
+}
+
+.stats-pin {
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.stats-track {
+  display: flex;
+  gap: 0;
+  will-change: transform;
+}
+
+.stat-card {
+  width: 100vw;
+  height: 100vh;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.stat-card-inner {
+  text-align: center;
+  padding: 40px;
+}
+
+.stat-number {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(4rem, 10vw, 8rem);
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 15px;
+}
+
+.stat-suffix {
+  font-size: 0.5em;
+  color: var(--gold-light);
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 10px;
+}
+
+.stat-desc {
+  font-size: 0.9rem;
+  color: var(--gray);
+  max-width: 400px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201, 168, 76, 0.05), transparent 70%);
+  transform: translate(-50%, -50%);
+}
+
+.stat-bg-text {
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 20vw;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.015);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* Services Section */
+.services-section {
+  padding: 150px 50px;
+  background: linear-gradient(180deg, var(--black), var(--darker));
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  max-width: 1200px;
+  margin: 60px auto 0;
+}
+
+.service-card {
+  background: var(--glass);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 50px 40px;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: border-color 0.4s ease, background 0.4s ease;
+}
+
+.service-card:hover {
+  border-color: rgba(201, 168, 76, 0.2);
+  background: rgba(201, 168, 76, 0.02);
+}
+
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 0%, rgba(201, 168, 76, 0.05), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.service-card:hover::before {
+  opacity: 1;
+}
+
+.service-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 15px;
+  background: linear-gradient(135deg, rgba(201, 168, 76, 0.1), rgba(201, 168, 76, 0.05));
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+  font-size: 1.5rem;
+}
+
+.service-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.service-card p {
+  font-size: 0.85rem;
+  color: var(--gray);
+  line-height: 1.7;
+}
+
+.service-card .service-price {
+  margin-top: 25px;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* Gallery Section */
+.gallery-section {
+  padding: 150px 0;
+  overflow: hidden;
+}
+
+.gallery-header {
+  text-align: center;
+  padding: 0 50px;
+  margin-bottom: 60px;
+}
+
+.gallery-track {
+  display: flex;
+  gap: 20px;
+  width: fit-content;
+  animation: galleryScroll 30s linear infinite;
+}
+
+.gallery-item {
+  width: 400px;
+  height: 300px;
+  border-radius: 15px;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+}
+
+.gallery-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, 
+    rgba(201, 168, 76, 0.05), 
+    transparent, 
+    rgba(201, 168, 76, 0.03));
+  z-index: 1;
+}
+
+.gallery-item-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.gallery-car-icon {
+  font-size: 4rem;
+  opacity: 0.3;
+}
+
+.gallery-item-label {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  z-index: 2;
+}
+
+.gallery-item-label span {
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(0, 0, 0, 0.6);
+  padding: 8px 15px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+}
+
+@keyframes galleryScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Testimonials */
+.testimonials-section {
+  padding: 150px 50px;
+  background: var(--darker);
+}
+
+.testimonials-container {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.testimonial-card {
+  padding: 60px 40px;
+  position: relative;
+}
+
+.testimonial-quote {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+  font-style: italic;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  color: rgba(245, 245, 245, 0.9);
+}
+
+.testimonial-quote::before {
+  content: '"';
+  font-size: 4rem;
+  color: var(--gold);
+  display: block;
+  margin-bottom: -20px;
+  font-style: normal;
+}
+
+.testimonial-author {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.testimonial-role {
+  font-size: 0.7rem;
+  color: var(--gold);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-top: 5px;
+}
+
+.testimonial-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 40px;
+}
+
+.testimonial-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.testimonial-dot.active {
+  background: var(--gold);
+  transform: scale(1.3);
+}
+
+/* Booking CTA Section */
+.booking-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.booking-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(ellipse at 30% 50%, rgba(201, 168, 76, 0.05), transparent 50%),
+    radial-gradient(ellipse at 70% 50%, rgba(201, 168, 76, 0.03), transparent 50%);
+}
+
+.booking-container {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  max-width: 1100px;
+  width: 100%;
+  padding: 0 50px;
+  align-items: center;
+}
+
+.booking-info h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.booking-info h2 .highlight {
+  color: var(--gold);
+  font-style: italic;
+}
+
+.booking-info p {
+  font-size: 0.95rem;
+  color: var(--gray);
+  line-height: 1.8;
+  margin-bottom: 30px;
+}
+
+.booking-perks {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.booking-perks li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: var(--gray);
+}
+
+.booking-perks li::before {
+  content: '◆';
+  color: var(--gold);
+  font-size: 0.5rem;
+}
+
+.booking-form {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 25px;
+  padding: 50px 40px;
+  backdrop-filter: blur(20px);
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 10px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 15px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--gold);
+  background: rgba(201, 168, 76, 0.03);
+}
+
+.form-group select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.form-group select option {
+  background: var(--dark);
+  color: var(--white);
+}
+
+.form-group textarea {
+  resize: none;
+  height: 100px;
+}
+
+.form-submit {
+  width: 100%;
+  padding: 18px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  border: none;
+  border-radius: 12px;
+  color: var(--black);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 40px rgba(201, 168, 76, 0.3);
+}
+
+.form-submit::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.form-submit:hover::before {
+  left: 100%;
+}
+
+/* Footer */
+.footer {
+  padding: 80px 50px 40px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 60px;
+  max-width: 1200px;
+  margin: 0 auto 60px;
+}
+
+.footer-brand h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.footer-brand h3 span {
+  color: var(--gold);
+}
+
+.footer-brand p {
+  font-size: 0.85rem;
+  color: var(--gray);
+  line-height: 1.7;
+  max-width: 300px;
+}
+
+.footer-col h4 {
+  font-size: 0.7rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+
+.footer-col ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-col a {
+  color: var(--gray);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: color 0.3s ease;
+}
+
+.footer-col a:hover {
+  color: var(--white);
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-bottom p {
+  font-size: 0.75rem;
+  color: var(--gray);
+  letter-spacing: 0.1em;
+}
+
+/* Magnetic Button Effect */
+.magnetic-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 35px;
+  border: 1px solid var(--gold);
+  border-radius: 50px;
+  color: var(--gold);
+  text-decoration: none;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  overflow: hidden;
+}
+
+.magnetic-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: var(--gold);
+  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: -1;
+}
+
+.magnetic-btn:hover {
+  color: var(--black);
+}
+
+.magnetic-btn:hover::before {
+  width: 100%;
+}
+
+.magnetic-btn .arrow {
+  transition: transform 0.3s ease;
+}
+
+.magnetic-btn:hover .arrow {
+  transform: translateX(5px);
+}
+
+/* Divider */
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201, 168, 76, 0.2), transparent);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Smooth Reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(40px);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+/* Grain Overlay */
+.grain-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .healing-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  
+  .booking-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .footer-top {
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+  
+  .exploded-info {
+    position: relative;
+    left: 0;
+    top: 0;
+    transform: none;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .exploded-sticky {
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 100px 25px;
+  }
+  
+  .nav {
+    padding: 20px 25px;
+  }
+  
+  .nav-links {
+    display: none;
+  }
+  
+  .nav-menu-btn {
+    display: flex;
+  }
+  
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .footer-top {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .footer-bottom {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .booking-container {
+    padding: 0 25px;
+  }
+  
+  .booking-form {
+    padding: 30px 25px;
+  }
+  
+  .gallery-item {
+    width: 300px;
+    height: 220px;
+  }
+  
+  .cursor, .cursor-dot {
+    display: none;
+  }
+  
+  .peel-car-visual {
+    width: 90%;
+    height: 250px;
+  }
+  
+  .exploded-layers {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .layer-label {
+    right: -150px;
+  }
+}
+
+/* Smooth scroll override */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+</style>
 </head>
 <body>
 
-    <!-- 1. HERO SECTION -->
-    <section class="hero">
-        <h1>RAJASTHAN'S PINNACLE OF PAINT PROTECTION</h1>
-        <p>Invisible Armor. Flawless Finish.</p>
-        <div class="scroll-down">SCROLL TO UNWRAP</div>
-    </section>
+<!-- Grain Overlay -->
+<div class="grain-overlay"></div>
 
-    <!-- 2. THE SCROLL ANIMATION SECTION -->
-    <section class="scroll-section">
-        <div class="sticky-container">
-            
-            <!-- Matte Dull Car (Bottom Layer) -->
-            <img id="car-matte" src="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?q=80&w=1200&auto=format&fit=crop" class="car-layer" alt="Matte Car">
-            
-            <!-- Glossy PPF Car (Top Layer - Will be peeled) -->
-            <img id="car-glossy" src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1200&auto=format&fit=crop" class="car-layer" alt="Glossy Car">
+<!-- Custom Cursor -->
+<div class="cursor"></div>
+<div class="cursor-dot"></div>
 
-            <!-- Text that appears during animation -->
-            <div class="scroll-text">
-                <h2>The Difference is Clear.</h2>
-                <p>Self-healing technology. Mirror gloss finish.</p>
-            </div>
+<!-- Particle Canvas -->
+<canvas id="particles-canvas"></canvas>
 
+<!-- Preloader -->
+<div class="preloader">
+  <div class="preloader-logo">RAJSHIELD</div>
+  <div class="preloader-line"></div>
+  <div class="preloader-text">Loading Experience</div>
+</div>
+
+<!-- Navigation -->
+<nav class="nav">
+  <a href="#" class="nav-logo">RAJ<span>SHIELD</span></a>
+  <ul class="nav-links">
+    <li><a href="#services" class="hoverable">Services</a></li>
+    <li><a href="#technology" class="hoverable">Technology</a></li>
+    <li><a href="#gallery" class="hoverable">Gallery</a></li>
+    <li><a href="#booking" class="hoverable">Book Now</a></li>
+  </ul>
+  <div class="nav-menu-btn hoverable">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-car-container">
+    <div class="hero-car-silhouette">
+      <svg viewBox="0 0 800 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Stylized car silhouette -->
+        <path d="M100 200 Q120 200 140 195 L200 180 Q250 165 300 155 Q350 148 400 145 Q500 140 550 142 Q600 145 650 155 L700 170 Q720 178 740 185 L760 195 Q770 200 780 200" 
+              stroke="rgba(201, 168, 76, 0.4)" stroke-width="1.5" fill="none" class="car-body"/>
+        <path d="M100 200 Q120 200 140 195 L200 180 Q250 165 300 155 Q350 148 400 145 Q500 140 550 142 Q600 145 650 155 L700 170 Q720 178 740 185 L760 195 Q770 200 780 200 L780 210 Q770 215 740 215 L140 215 Q110 215 100 210 Z" 
+              fill="rgba(201, 168, 76, 0.03)" stroke="rgba(201, 168, 76, 0.15)" stroke-width="0.5" class="car-fill"/>
+        <!-- Roof line -->
+        <path d="M280 155 Q320 120 380 108 Q440 100 500 105 Q540 110 570 125 L600 145" 
+              stroke="rgba(201, 168, 76, 0.3)" stroke-width="1" fill="none" class="car-roof"/>
+        <!-- Window -->
+        <path d="M300 150 Q330 125 380 115 Q430 108 480 112 Q520 118 550 132 L570 145 L300 150 Z" 
+              fill="rgba(201, 168, 76, 0.02)" stroke="rgba(201, 168, 76, 0.1)" stroke-width="0.5"/>
+        <!-- Wheels -->
+        <circle cx="220" cy="210" r="30" stroke="rgba(201, 168, 76, 0.3)" stroke-width="1.5" fill="rgba(201, 168, 76, 0.02)"/>
+        <circle cx="220" cy="210" r="18" stroke="rgba(201, 168, 76, 0.15)" stroke-width="0.5" fill="none"/>
+        <circle cx="650" cy="210" r="30" stroke="rgba(201, 168, 76, 0.3)" stroke-width="1.5" fill="rgba(201, 168, 76, 0.02)"/>
+        <circle cx="650" cy="210" r="18" stroke="rgba(201, 168, 76, 0.15)" stroke-width="0.5" fill="none"/>
+        <!-- Headlight -->
+        <ellipse cx="740" cy="188" rx="15" ry="8" fill="rgba(201, 168, 76, 0.1)" stroke="rgba(201, 168, 76, 0.3)" stroke-width="0.5"/>
+        <!-- Reflection line -->
+        <path d="M150 190 Q300 182 450 180 Q600 182 750 190" stroke="rgba(255, 255, 255, 0.05)" stroke-width="0.5" fill="none"/>
+      </svg>
+    </div>
+  </div>
+  <div class="hero-light-beam"></div>
+  <div class="hero-light-sweep"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Rajasthan's Premier Paint Protection</p>
+    <h1 class="hero-title">
+      <span class="line">The Art of</span>
+      <span class="line"><span class="highlight">Invisible</span> Armor</span>
+    </h1>
+    <p class="hero-subtitle">Where cutting-edge film technology meets master craftsmanship. Your vehicle deserves nothing less than perfection.</p>
+    <a href="#booking" class="magnetic-btn hoverable">
+      Claim Your Slot <span class="arrow">→</span>
+    </a>
+  </div>
+  <div class="hero-scroll-cue">
+    <span>Scroll to Unwrap</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- PPF Peel Section -->
+<section class="peel-section" id="peel">
+  <div class="peel-sticky">
+    <div class="peel-car-visual">
+      <div class="peel-layer peel-layer-paint">
+        <div class="paint-texture">
+          <div class="paint-swirls"></div>
+          <div class="paint-scratches">
+            <div class="scratch-line" style="top: 30%; left: 10%; width: 35%; transform: rotate(-2deg);"></div>
+            <div class="scratch-line" style="top: 50%; left: 20%; width: 45%; transform: rotate(1deg);"></div>
+            <div class="scratch-line" style="top: 65%; left: 5%; width: 30%; transform: rotate(-1deg);"></div>
+            <div class="scratch-line" style="top: 40%; left: 40%; width: 25%; transform: rotate(3deg);"></div>
+          </div>
         </div>
-    </section>
+      </div>
+      <div class="peel-layer peel-layer-film">
+        <div class="film-shine"></div>
+      </div>
+      <span class="peel-label peel-label-film">XPEL Ultimate Plus™</span>
+      <span class="peel-label peel-label-paint">Factory Paint</span>
+    </div>
+    <div class="peel-text-overlay" style="bottom: 15%; left: 50%; transform: translateX(-50%);">
+      <h2>Invisible Armor.<br>Flawless Finish.</h2>
+      <p>Watch the protection reveal the perfection beneath.</p>
+    </div>
+  </div>
+</section>
 
-    <!-- 3. STATS SECTION -->
-    <section class="stats">
-        <div>
-            <h2>10,000+ Cars Protected</h2>
-            <p style="margin-top: 20px; color: #666; font-size: 1.5vw;">Rajasthan's Largest Premium Installer</p>
+<!-- Self-Healing Section -->
+<section class="healing-section section" id="technology">
+  <div class="healing-container">
+    <div class="healing-visual">
+      <div class="healing-ring"></div>
+      <div class="healing-ring"></div>
+      <div class="healing-surface">
+        <div class="healing-scratch"></div>
+        <div class="healing-heat"></div>
+      </div>
+    </div>
+    <div class="healing-info">
+      <div class="section-label reveal">Self-Healing Technology</div>
+      <h2 class="section-title reveal">Scratches <span style="color: var(--gold); font-style: italic;">Disappear.</span><br>Like They Never Were.</h2>
+      <p class="section-desc reveal">Our XPEL films feature a proprietary self-healing topcoat that uses ambient heat to erase swirl marks and light scratches — keeping your car showroom-perfect, always.</p>
+      <div class="healing-steps">
+        <div class="healing-step">
+          <span class="step-number">01</span>
+          <div class="step-content">
+            <h4>Micro-Scratch Appears</h4>
+            <p>Daily driving causes micro-marring and swirl marks on your clear coat.</p>
+          </div>
         </div>
-    </section>
+        <div class="healing-step">
+          <span class="step-number">02</span>
+          <div class="step-content">
+            <h4>Heat Activation</h4>
+            <p>Sunlight or warm water activates the elastomeric polymer topcoat.</p>
+          </div>
+        </div>
+        <div class="healing-step">
+          <span class="step-number">03</span>
+          <div class="step-content">
+            <h4>Perfect Restoration</h4>
+            <p>The film returns to its original flawless state. No buffing needed.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- THE MAGIC JAVASCRIPT -->
-    <script>
-        // Register the ScrollTrigger plugin
-        gsap.registerPlugin(ScrollTrigger);
+<!-- Exploded View Section -->
+<section class="exploded-section" id="exploded">
+  <div class="exploded-sticky">
+    <div class="exploded-info">
+      <div class="section-label reveal">Layer Technology</div>
+      <h2 class="section-title reveal">Engineered in<br><span style="color: var(--gold); font-style: italic;">Layers.</span></h2>
+      <p class="section-desc reveal">Each layer serves a purpose. Together, they create the ultimate shield for your vehicle's paint.</p>
+    </div>
+    <div class="exploded-layers">
+      <div class="exploded-layer layer-ppf">
+        <span style="font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold);">PPF Top Coat</span>
+        <div class="layer-label">
+          <div class="layer-label-line"></div>
+          <div>
+            <div class="layer-label-text">Self-Healing Topcoat</div>
+            <div class="layer-label-desc">Elastomeric polymer • Scratch repair</div>
+          </div>
+        </div>
+      </div>
+      <div class="exploded-layer layer-clear">
+        <span style="font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(100, 150, 255, 0.7);">Clear Coat</span>
+        <div class="layer-label">
+          <div class="layer-label-line" style="background: rgba(100, 150, 255, 0.5);"></div>
+          <div>
+            <div class="layer-label-text" style="color: rgba(100, 150, 255, 0.7);">Factory Clear Coat</div>
+            <div class="layer-label-desc">OEM protection • UV resistance</div>
+          </div>
+        </div>
+      </div>
+      <div class="exploded-layer layer-base">
+        <span style="font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(150, 200, 255, 0.5);">Base Paint</span>
+        <div class="layer-label">
+          <div class="layer-label-line" style="background: rgba(150, 200, 255, 0.3);"></div>
+          <div>
+            <div class="layer-label-text" style="color: rgba(150, 200, 255, 0.5);">Base Color Coat</div>
+            <div class="layer-label-desc">Metallic pigment • Depth & shine</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        // Create the animation timeline tied to scrolling
-        let tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: ".scroll-section",
-                start: "top top",     // Start when top of section hits top of screen
-                end: "bottom bottom", // End when bottom of section hits bottom of screen
-                scrub: true,          // Makes animation follow scroll wheel perfectly
-            }
-        });
+<!-- Stats Horizontal Scroll -->
+<section class="stats-section" id="stats">
+  <div class="stats-pin">
+    <div class="stats-track">
+      <div class="stat-card">
+        <div class="stat-bg-text">CARS</div>
+        <div class="stat-card-inner">
+          <div class="stat-label">Vehicles Protected</div>
+          <div class="stat-number"><span class="counter" data-target="10000">0</span><span class="stat-suffix">+</span></div>
+          <div class="stat-desc">Every car tells a story. We've protected over ten thousand of Rajasthan's finest automobiles.</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-bg-text">SPACE</div>
+        <div class="stat-card-inner">
+          <div class="stat-label">Climate-Controlled Facility</div>
+          <div class="stat-number"><span class="counter" data-target="50000">0</span><span class="stat-suffix"> sqft</span></div>
+          <div class="stat-desc">Rajasthan's largest dedicated PPF installation facility. Dust-free, temperature-controlled perfection.</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-bg-text">MASTER</div>
+        <div class="stat-card-inner">
+          <div class="stat-label">Certified Installers</div>
+          <div class="stat-number"><span class="counter" data-target="25">0</span><span class="stat-suffix">+</span></div>
+          <div class="stat-desc">XPEL-certified master technicians with an average of 8 years experience in paint protection.</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-bg-text">YEARS</div>
+        <div class="stat-card-inner">
+          <div class="stat-label">Warranty Coverage</div>
+          <div class="stat-number"><span class="counter" data-target="10">0</span><span class="stat-suffix"> Years</span></div>
+          <div class="stat-desc">Industry-leading warranty that covers yellowing, cracking, peeling, and manufacturer defects.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        // 1. Peel the glossy layer away using a clip-path (like a window blind going up)
-        tl.to("#car-glossy", {
-            clipPath: "inset(100% 0% 0% 0%)", // Starts at 0% (full image), goes to 100% (hidden)
-            ease: "none"
-        });
+<!-- Services Section -->
+<section class="services-section section" id="services">
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <div class="section-label reveal">Our Services</div>
+    <h2 class="section-title reveal">Crafted for <span style="color: var(--gold); font-style: italic;">Perfection.</span></h2>
+    <p class="section-desc reveal">From full-body armor to precision detail work, every service is executed with obsessive attention to detail.</p>
+    
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🛡️</div>
+        <h3>Full Body PPF</h3>
+        <p>Complete paint protection film coverage for your entire vehicle. Every panel, every curve, every edge wrapped in invisible armor.</p>
+        <div class="service-price">Starting ₹1,50,000</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">✨</div>
+        <h3>PPF + Ceramic Coating</h3>
+        <p>The ultimate combination. PPF for physical protection, ceramic coating for hydrophobic gloss that makes maintenance effortless.</p>
+        <div class="service-price">Starting ₹2,00,000</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🎨</div>
+        <h3>Color Change Wraps</h3>
+        <p>Transform your vehicle's appearance with premium vinyl wraps. Satin, matte, gloss, or chrome — any color imaginable.</p>
+        <div class="service-price">Starting ₹80,000</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">💎</div>
+        <h3>Windshield Protection</h3>
+        <p>Exterior glass coating that repels water, prevents chips, and improves visibility in Rajasthan's harsh conditions.</p>
+        <div class="service-price">Starting ₹15,000</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🔧</div>
+        <h3>Detailing & Correction</h3>
+        <p>Multi-stage paint correction to remove existing defects before protection. Your paint restored to better-than-new condition.</p>
+        <div class="service-price">Starting ₹25,000</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🏠</div>
+        <h3>Interior Protection</h3>
+        <p>Leather, fabric, and surface coatings that protect your cabin from UV damage, spills, and daily wear.</p>
+        <div class="service-price">Starting ₹35,000</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        // 2. Make the text fade in at the same time
-        tl.to(".scroll-text h2", { opacity: 1, duration: 1 }, 0)
-          .to(".scroll-text p", { opacity: 1, duration: 1, delay: 0.3 }, 0);
-
-        // 3. Fade text back out when you keep scrolling past it
-        tl.to(".scroll-text h2", { opacity: 0, duration: 1 })
-          .to(".scroll-text p", { opacity: 0, duration: 1 }, "<");
-    </script>
-
-</body>
-</html>
+<!-- Gallery Section -->
+<section class="gallery-section" id="gallery">
+  <div class="gallery-header">
+    <div class="section-label reveal" style="justify-content: center;">Our Work</div>
