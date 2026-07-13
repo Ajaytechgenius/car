@@ -710,4 +710,172 @@ gsap.utils.toArray('.service-card').forEach((card, i) => {
 // ============ TESTIMONIALS ============
 const testimonials = [
   { quote: "The level of precision and care RajShield brought to my Huracán was extraordinary. It's like the car is wearing invisible armor that makes the paint look even better than factory.", author: "Vikram Singh Rathore", role: "Lamborghini Huracán Owner, Udaipur" },
-  { quote: "I've had my Rolls Royce detailed
+  { quote: "I've had my Rolls Royce detailed at many places across India, but RajShield's attention to detail is unmatched. The ceramic coating they applied has kept my Ghost looking pristine through the Rajasthan summer.", author: "Maharaja Arjun Dev", role: "Rolls Royce Ghost Owner, Jodhpur" },
+  { quote: "They picked up my GT3 from Jaipur, wrapped it in full PPF, and delivered it back in perfect condition. The self-healing film has already saved me from two rock chips on the highway. Worth every rupee.", author: "Rohan Mehta", role: "Porsche 911 GT3 Owner, Jaipur" }
+];
+
+let currentTestimonial = 0;
+const dots = document.querySelectorAll('.testimonial-dot');
+
+function updateTestimonial(index) {
+  const quoteEl = document.getElementById('testimonial-quote');
+  const authorEl = document.getElementById('testimonial-author');
+  const roleEl = document.getElementById('testimonial-role');
+  
+  gsap.to('.testimonial-card', {
+    opacity: 0, y: 20, duration: 0.3,
+    onComplete: () => {
+      quoteEl.textContent = testimonials[index].quote;
+      authorEl.textContent = testimonials[index].author;
+      roleEl.textContent = testimonials[index].role;
+      gsap.to('.testimonial-card', { opacity: 1, y: 0, duration: 0.5 });
+    }
+  });
+  
+  dots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === index);
+  });
+}
+
+dots.forEach(dot => {
+  dot.addEventListener('click', () => {
+    currentTestimonial = parseInt(dot.dataset.index);
+    updateTestimonial(currentTestimonial);
+  });
+});
+
+// Auto-rotate testimonials
+setInterval(() => {
+  currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+  updateTestimonial(currentTestimonial);
+}, 6000);
+
+// ============ SMOOTH SCROLL FOR NAV LINKS ============
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      gsap.to(window, {
+        duration: 1.2,
+        scrollTo: { y: target, offsetY: 0 },
+        ease: 'power3.inOut'
+      });
+    }
+  });
+});
+
+// ============ PARALLAX EFFECTS ============
+gsap.to('.hero-car-silhouette', {
+  yPercent: 30,
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '.hero',
+    start: 'top top',
+    end: 'bottom top',
+    scrub: true
+  }
+});
+
+gsap.to('.hero-content', {
+  yPercent: 50,
+  opacity: 0,
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '.hero',
+    start: 'top top',
+    end: 'bottom top',
+    scrub: true
+  }
+});
+
+// ============ GALLERY HOVER EFFECT ============
+document.querySelectorAll('.gallery-item').forEach(item => {
+  item.addEventListener('mouseenter', () => {
+    gsap.to(item, { scale: 1.05, duration: 0.4, ease: 'power2.out' });
+  });
+  item.addEventListener('mouseleave', () => {
+    gsap.to(item, { scale: 1, duration: 0.4, ease: 'power2.out' });
+  });
+});
+
+// ============ FORM INTERACTIONS ============
+document.querySelectorAll('.form-group input, .form-group textarea, .form-group select').forEach(input => {
+  input.addEventListener('focus', () => {
+    gsap.to(input.previousElementSibling, { color: '#c9a84c', duration: 0.3 });
+  });
+  input.addEventListener('blur', () => {
+    gsap.to(input.previousElementSibling, { color: '#888', duration: 0.3 });
+  });
+});
+
+// ============ MAGNETIC BUTTON EFFECT ============
+document.querySelectorAll('.magnetic-btn').forEach(btn => {
+  btn.addEventListener('mousemove', (e) => {
+    const rect = btn.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    gsap.to(btn, { x: x * 0.3, y: y * 0.3, duration: 0.3, ease: 'power2.out' });
+  });
+  btn.addEventListener('mouseleave', () => {
+    gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.5)' });
+  });
+});
+
+// ============ REFRESH SCROLLTRIGGER ON LOAD ============
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    ScrollTrigger.refresh();
+  }, 100);
+});
+
+// ============ PERFORMANCE: REDUCE ANIMATIONS ON LOW-END DEVICES ============
+if (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) {
+  gsap.globalTimeline.timeScale(1.5);
+  document.querySelectorAll('.gallery-track').forEach(track => {
+    track.style.animationDuration = '60s';
+  });
+}
+
+// ============ INTERSECTION OBSERVER FOR LAZY LOADING ============
+const observerOptions = {
+  threshold: 0.1,
+  rootMargin: '50px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('loaded');
+      observer.unobserve(entry.target);
+    }
+  });
+}, observerOptions);
+
+document.querySelectorAll('.service-card, .gallery-item, .stat-card').forEach(el => {
+  observer.observe(el);
+});
+
+// ============ KEYBOARD NAVIGATION ============
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
+  }
+  if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    window.scrollBy({ top: -window.innerHeight, behavior: 'smooth' });
+  }
+});
+
+// ============ CONSOLE EASTER EGG ============
+console.log('%c🛡️ RajShield PPF', 'font-size: 24px; font-weight: bold; color: #c9a84c;');
+console.log('%cRajasthan\'s Premier Paint Protection', 'font-size: 12px; color: #888;');
+console.log('%cBuilt with precision. Crafted with passion.', 'font-size: 10px; color: #666;');
+</script>
+
+<!-- ScrollTo Plugin for smooth anchor scrolling -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+
+</body>
+</html>
