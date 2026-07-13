@@ -8,31 +8,24 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--gold:#c9a84c;--black:#0a0a0a;--dark:#111;--darker:#050505;--graphite:#1a1a1a;--white:#f5f5f5;--gray:#888;--gray-light:#aaa;--gray-dark:#444;--glass:rgba(255,255,255,0.03);--glass-border:rgba(255,255,255,0.06);--success:#4ade80;--error:#f87171;--warning:#fbbf24}
-body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);-webkit-font-smoothing:antialiased;overflow:hidden}
+body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);overflow:hidden}
 ::selection{background:var(--gold);color:var(--black)}
-
 .auth{position:fixed;inset:0;background:var(--darker);display:flex;align-items:center;justify-content:center;z-index:100}
 .auth.hidden{display:none}
 .auth-box{width:100%;max-width:440px;padding:45px 35px;background:var(--dark);border:1px solid var(--glass-border);border-radius:18px;text-align:center}
 .auth-logo{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;letter-spacing:0.15em;margin-bottom:6px}
 .auth-logo span{color:var(--gold)}
 .auth-sub{font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gray);margin-bottom:30px}
-.auth-modes{display:flex;gap:6px;margin-bottom:22px;background:var(--graphite);border-radius:8px;padding:4px}
-.auth-mode{flex:1;padding:9px;font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);background:transparent;border:none;border-radius:6px;cursor:pointer;font-family:inherit;transition:all 0.2s}
-.auth-mode.active{background:var(--gold);color:var(--black);font-weight:600}
 .field{margin-bottom:15px;text-align:left}
 .field label{display:block;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray);margin-bottom:7px}
-.field input,.field select,.field textarea{width:100%;padding:12px 15px;background:var(--graphite);border:1px solid var(--glass-border);border-radius:7px;color:var(--white);font-family:inherit;font-size:0.82rem;outline:none;transition:border-color 0.2s}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold)}
+.field input,.field select{width:100%;padding:12px 15px;background:var(--graphite);border:1px solid var(--glass-border);border-radius:7px;color:var(--white);font-family:inherit;font-size:0.82rem;outline:none}
+.field input:focus{border-color:var(--gold)}
 .field .hint{font-size:0.68rem;color:var(--gray);margin-top:5px;line-height:1.5}
-.field .hint a{color:var(--gold)}
-.auth-btn{width:100%;padding:13px;background:var(--gold);color:var(--black);border:none;border-radius:7px;font-family:inherit;font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;margin-top:8px;transition:all 0.2s}
-.auth-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,168,76,0.3)}
+.auth-btn{width:100%;padding:13px;background:var(--gold);color:var(--black);border:none;border-radius:7px;font-family:inherit;font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;margin-top:8px}
+.auth-btn:hover{box-shadow:0 6px 20px rgba(201,168,76,0.3)}
 .auth-err{font-size:0.72rem;color:var(--error);margin-top:10px;min-height:16px}
-
 .app{display:grid;grid-template-columns:240px 1fr;height:100vh}
 .app.hidden{display:none}
-
 .side{background:var(--darker);border-right:1px solid var(--glass-border);display:flex;flex-direction:column;overflow:hidden}
 .side-head{padding:22px 20px;border-bottom:1px solid var(--glass-border)}
 .side-logo{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;letter-spacing:0.1em}
@@ -42,7 +35,7 @@ body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);-
 .side-nav::-webkit-scrollbar{width:3px}
 .side-nav::-webkit-scrollbar-thumb{background:var(--graphite);border-radius:2px}
 .nav-label{font-size:0.58rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gray-dark);padding:14px 10px 6px}
-.nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:7px;cursor:pointer;color:var(--gray-light);font-size:0.78rem;transition:all 0.15s;margin-bottom:1px;border:1px solid transparent}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:7px;cursor:pointer;color:var(--gray-light);font-size:0.78rem;margin-bottom:1px;border:1px solid transparent}
 .nav-item:hover{background:var(--glass);color:var(--white)}
 .nav-item.active{background:rgba(201,168,76,0.08);color:var(--gold);border-color:rgba(201,168,76,0.15)}
 .nav-icon{width:26px;height:26px;border-radius:5px;background:var(--graphite);display:flex;align-items:center;justify-content:center;font-size:0.85rem;flex-shrink:0}
@@ -53,13 +46,11 @@ body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);-
 .side-status{display:flex;align-items:center;gap:7px;font-size:0.68rem;color:var(--gray);margin-bottom:8px}
 .status-dot{width:6px;height:6px;border-radius:50%;background:var(--success);box-shadow:0 0 6px var(--success)}
 .status-dot.off{background:var(--gray-dark);box-shadow:none}
-.logout-btn{width:100%;padding:7px;background:transparent;border:1px solid var(--glass-border);border-radius:5px;color:var(--gray);font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;font-family:inherit;transition:all 0.2s}
+.logout-btn{width:100%;padding:7px;background:transparent;border:1px solid var(--glass-border);border-radius:5px;color:var(--gray);font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;font-family:inherit}
 .logout-btn:hover{border-color:var(--error);color:var(--error)}
-
 .main{overflow-y:auto;background:var(--black)}
 .main::-webkit-scrollbar{width:5px}
 .main::-webkit-scrollbar-thumb{background:var(--graphite);border-radius:3px}
-
 .pg-head{padding:30px 40px 22px;border-bottom:1px solid var(--glass-border);position:sticky;top:0;background:rgba(10,10,10,0.95);backdrop-filter:blur(15px);z-index:10}
 .pg-head-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
 .pg-title{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700}
@@ -67,97 +58,81 @@ body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);-
 .pg-actions{display:flex;gap:8px}
 .pg-desc{font-size:0.78rem;color:var(--gray);line-height:1.6;max-width:550px}
 .pg-body{padding:30px 40px 50px}
-
-.btn{padding:9px 18px;border-radius:6px;font-family:inherit;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;border:1px solid transparent;display:inline-flex;align-items:center;gap:7px}
+.btn{padding:9px 18px;border-radius:6px;font-family:inherit;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;border:1px solid transparent;display:inline-flex;align-items:center;gap:7px;background:none}
 .btn-p{background:var(--gold);color:var(--black);border-color:var(--gold)}
-.btn-p:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(201,168,76,0.3)}
+.btn-p:hover{box-shadow:0 5px 18px rgba(201,168,76,0.3)}
 .btn-s{background:transparent;color:var(--white);border-color:var(--glass-border)}
 .btn-s:hover{border-color:var(--gold);color:var(--gold)}
 .btn-d{background:transparent;color:var(--error);border-color:rgba(248,113,113,0.3)}
 .btn-d:hover{background:rgba(248,113,113,0.1)}
-.btn:disabled{opacity:0.4;cursor:not-allowed;transform:none!important}
-
+.btn:disabled{opacity:0.4;cursor:not-allowed}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px;margin-bottom:30px}
 .stat{padding:20px;background:var(--glass);border:1px solid var(--glass-border);border-radius:10px}
 .stat-lbl{font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gray);margin-bottom:6px}
 .stat-val{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--gold)}
 .stat-sub{font-size:0.68rem;color:var(--gray);margin-top:3px}
-
 .qactions{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:30px}
-.qaction{padding:18px;background:var(--glass);border:1px solid var(--glass-border);border-radius:10px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:13px}
-.qaction:hover{border-color:rgba(201,168,76,0.3);background:rgba(201,168,76,0.03);transform:translateY(-2px)}
+.qaction{padding:18px;background:var(--glass);border:1px solid var(--glass-border);border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:13px}
+.qaction:hover{border-color:rgba(201,168,76,0.3);background:rgba(201,168,76,0.03)}
 .qaction-icon{width:38px;height:38px;border-radius:8px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
 .qaction h4{font-size:0.82rem;font-weight:600;margin-bottom:1px}
 .qaction p{font-size:0.68rem;color:var(--gray)}
-
 .block{background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;padding:24px;margin-bottom:18px}
 .block-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}
 .block-title{font-size:0.9rem;font-weight:600}
 .block-title small{display:block;font-size:0.68rem;color:var(--gray);font-weight:400;margin-top:2px}
-
-.drop{border:2px dashed var(--glass-border);border-radius:10px;padding:35px 18px;text-align:center;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden}
+.drop{border:2px dashed var(--glass-border);border-radius:10px;padding:35px 18px;text-align:center;cursor:pointer;position:relative;overflow:hidden}
 .drop:hover,.drop.over{border-color:var(--gold);background:rgba(201,168,76,0.03)}
 .drop-icon{font-size:2.2rem;margin-bottom:10px;opacity:0.5}
 .drop-text{font-size:0.82rem;color:var(--gray-light);margin-bottom:4px}
 .drop-hint{font-size:0.68rem;color:var(--gray-dark)}
 .drop input{position:absolute;inset:0;opacity:0;cursor:pointer}
-
 .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-top:15px}
 .pitem{position:relative;aspect-ratio:16/10;border-radius:7px;overflow:hidden;background:var(--graphite);border:1px solid var(--glass-border)}
 .pitem img,.pitem video{width:100%;height:100%;object-fit:cover}
-.pitem-badge{position:absolute;top:5px;left:5px;font-size:0.52rem;padding:2px 6px;border-radius:3px;background:rgba(0,0,0,0.7);color:var(--gold);letter-spacing:0.08em;text-transform:uppercase;backdrop-filter:blur(4px)}
-.pitem-rm{position:absolute;top:5px;right:5px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,0.7);border:none;color:var(--error);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.75rem;opacity:0;transition:opacity 0.2s;backdrop-filter:blur(4px)}
+.pitem-badge{position:absolute;top:5px;left:5px;font-size:0.52rem;padding:2px 6px;border-radius:3px;background:rgba(0,0,0,0.7);color:var(--gold);letter-spacing:0.08em;text-transform:uppercase}
+.pitem-rm{position:absolute;top:5px;right:5px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,0.7);border:none;color:var(--error);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.75rem;opacity:0}
 .pitem:hover .pitem-rm{opacity:1}
-.pitem-name{position:absolute;bottom:0;left:0;right:0;padding:4px 7px;font-size:0.58rem;color:var(--white);background:linear-gradient(to top,rgba(0,0,0,0.8),transparent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
 .plist{display:flex;flex-direction:column;gap:10px}
-.pcard{display:grid;grid-template-columns:110px 1fr auto;gap:15px;padding:13px;background:var(--graphite);border-radius:9px;border:1px solid var(--glass-border);align-items:center;transition:border-color 0.2s}
-.pcard:hover{border-color:rgba(201,168,76,0.2)}
+.pcard{display:grid;grid-template-columns:110px 1fr auto;gap:15px;padding:13px;background:var(--graphite);border-radius:9px;border:1px solid var(--glass-border);align-items:center}
 .pthumb{width:110px;height:68px;border-radius:5px;overflow:hidden;background:var(--black)}
 .pthumb img{width:100%;height:100%;object-fit:cover}
-.pthumb-empty{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--gray-dark);font-size:0.6rem;letter-spacing:0.08em;text-transform:uppercase}
+.pthumb-empty{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--gray-dark);font-size:0.6rem;text-transform:uppercase}
 .pinfo h4{font-size:0.85rem;font-weight:600;margin-bottom:2px}
 .pinfo-meta{display:flex;gap:10px;font-size:0.68rem;color:var(--gray)}
 .pinfo-desc{font-size:0.72rem;color:var(--gray);margin-top:4px;line-height:1.5;max-width:450px}
 .pactions{display:flex;gap:6px}
-.ibtn{width:32px;height:32px;border-radius:5px;background:var(--glass);border:1px solid var(--glass-border);color:var(--gray-light);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.8rem;transition:all 0.2s}
+.ibtn{width:32px;height:32px;border-radius:5px;background:var(--glass);border:1px solid var(--glass-border);color:var(--gray-light);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.8rem}
 .ibtn:hover{border-color:var(--gold);color:var(--gold)}
 .ibtn.danger:hover{border-color:var(--error);color:var(--error)}
-
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);z-index:100;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);z-index:100;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none}
 .modal-bg.open{opacity:1;pointer-events:all}
-.modal{width:100%;max-width:520px;max-height:85vh;overflow-y:auto;background:var(--dark);border:1px solid var(--glass-border);border-radius:14px;padding:30px;transform:translateY(15px);transition:transform 0.25s}
-.modal-bg.open .modal{transform:translateY(0)}
+.modal{width:100%;max-width:520px;max-height:85vh;overflow-y:auto;background:var(--dark);border:1px solid var(--glass-border);border-radius:14px;padding:30px}
 .modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
 .modal-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700}
-.modal-close{width:30px;height:30px;border-radius:50%;background:var(--graphite);border:none;color:var(--gray);cursor:pointer;font-size:1rem;transition:all 0.2s}
+.modal-close{width:30px;height:30px;border-radius:50%;background:var(--graphite);border:none;color:var(--gray);cursor:pointer;font-size:1rem}
 .modal-close:hover{background:var(--error);color:var(--white)}
 .mfield{margin-bottom:15px}
 .mfield label{display:block;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray);margin-bottom:6px}
-.mfield input,.mfield select,.mfield textarea{width:100%;padding:11px 14px;background:var(--graphite);border:1px solid var(--glass-border);border-radius:7px;color:var(--white);font-family:inherit;font-size:0.82rem;outline:none;transition:border-color 0.2s}
+.mfield input,.mfield select,.mfield textarea{width:100%;padding:11px 14px;background:var(--graphite);border:1px solid var(--glass-border);border-radius:7px;color:var(--white);font-family:inherit;font-size:0.82rem;outline:none}
 .mfield input:focus,.mfield select:focus,.mfield textarea:focus{border-color:var(--gold)}
 .mfield select{appearance:none;cursor:pointer}
 .mfield select option{background:var(--dark)}
 .mfield textarea{resize:vertical;min-height:70px}
 .mrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .modal-foot{display:flex;gap:8px;justify-content:flex-end;margin-top:22px;padding-top:18px;border-top:1px solid var(--glass-border)}
-
 .toasts{position:fixed;bottom:22px;right:22px;z-index:200;display:flex;flex-direction:column;gap:8px}
 .toast{padding:12px 18px;background:var(--dark);border:1px solid var(--glass-border);border-radius:9px;display:flex;align-items:center;gap:10px;min-width:260px;box-shadow:0 8px 30px rgba(0,0,0,0.5);animation:tIn 0.25s ease}
 .toast.success{border-color:rgba(74,222,128,0.3)}
 .toast.error{border-color:rgba(248,113,113,0.3)}
 .toast-msg{font-size:0.78rem;color:var(--gray-light);flex:1}
 @keyframes tIn{from{opacity:0;transform:translateX(15px)}to{opacity:1;transform:translateX(0)}}
-
 .pbar{width:100%;height:3px;background:var(--graphite);border-radius:2px;overflow:hidden;margin-top:10px}
-.pbar-fill{height:100%;background:var(--gold);border-radius:2px;transition:width 0.3s}
+.pbar-fill{height:100%;background:var(--gold);transition:width 0.3s}
 .ptxt{font-size:0.68rem;color:var(--gray);margin-top:5px;font-variant-numeric:tabular-nums}
-
 .empty{text-align:center;padding:45px 18px;background:var(--glass);border:1px dashed var(--glass-border);border-radius:10px}
 .empty-icon{font-size:2.8rem;opacity:0.3;margin-bottom:12px}
 .empty-text{font-size:0.82rem;color:var(--gray);margin-bottom:4px}
-.empty-hint{font-size:0.68rem;color:var(--gray-dark)}
-
 .checklist{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
 .ck-item{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--graphite);border-radius:7px;border:1px solid var(--glass-border)}
 .ck-icon{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;flex-shrink:0}
@@ -167,15 +142,7 @@ body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);-
 .ck-status{font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;padding:2px 8px;border-radius:3px}
 .ck-status.done{background:rgba(74,222,128,0.1);color:var(--success)}
 .ck-status.miss{background:rgba(248,113,113,0.1);color:var(--error)}
-
-@media(max-width:900px){
-  .app{grid-template-columns:1fr}
-  .side{display:none}
-  .pg-head,.pg-body{padding-left:18px;padding-right:18px}
-  .pcard{grid-template-columns:80px 1fr}
-  .pthumb{width:80px;height:50px}
-  .pactions{grid-column:1/-1;justify-content:flex-end}
-}
+@media(max-width:900px){.app{grid-template-columns:1fr}.side{display:none}.pg-head,.pg-body{padding-left:18px;padding-right:18px}.pcard{grid-template-columns:80px 1fr}.pthumb{width:80px;height:50px}.pactions{grid-column:1/-1;justify-content:flex-end}}
 </style>
 </head>
 <body>
@@ -184,35 +151,13 @@ body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);-
   <div class="auth-box">
     <div class="auth-logo">RAJ<span>SHIELD</span></div>
     <div class="auth-sub">Admin Panel</div>
-    <div class="auth-modes">
-      <button type="button" class="auth-mode active" data-mode="local">Local Mode</button>
-      <button type="button" class="auth-mode" data-mode="github">GitHub Sync</button>
+    <div class="field">
+      <label>Studio Name</label>
+      <input type="text" id="authName" value="RajShield">
     </div>
-    <div id="localFields">
-      <div class="field">
-        <label>Studio Name</label>
-        <input type="text" id="authName" value="RajShield">
-      </div>
-      <div class="field">
-        <label>How it works</label>
-        <div class="hint">Upload files, then download content.json + media folder. Upload both to your hosting.</div>
-      </div>
-    </div>
-    <div id="githubFields" style="display:none">
-      <div class="field">
-        <label>Repository</label>
-        <input type="text" id="authRepo" placeholder="username/repo">
-        <div class="hint">e.g. rajshield/website</div>
-      </div>
-      <div class="field">
-        <label>Branch</label>
-        <input type="text" id="authBranch" value="main">
-      </div>
-      <div class="field">
-        <label>Personal Access Token</label>
-        <input type="password" id="authToken" placeholder="ghp_xxxx">
-        <div class="hint">Needs <strong>repo</strong> scope. <a href="https://github.com/settings/tokens" target="_blank">Create →</a></div>
-      </div>
+    <div class="field">
+      <label>How it works</label>
+      <div class="hint">Upload files in browser. Files stored locally using IndexedDB (handles 124MB+). Download everything as a single ZIP when done.</div>
     </div>
     <button type="button" class="auth-btn" id="authBtn">Enter Admin</button>
     <div class="auth-err" id="authErr"></div>
@@ -241,7 +186,7 @@ body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);-
       <div class="nav-item" data-page="settings"><div class="nav-icon">⚙️</div><span>Settings</span></div>
     </nav>
     <div class="side-foot">
-      <div class="side-status"><div class="status-dot" id="sDot"></div><span id="sText">Ready</span></div>
+      <div class="side-status"><div class="status-dot"></div><span id="sText">Local mode</span></div>
       <button type="button" class="logout-btn" id="logoutBtn">Logout</button>
     </div>
   </aside>
@@ -251,50 +196,95 @@ body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);-
 <div class="modal-bg" id="modalBg"><div class="modal" id="modalBox"></div></div>
 <div class="toasts" id="toasts"></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <script>
-// ============ STATE (Files stored in memory, not localStorage) ============
+// ============ INDEXEDDB FOR LARGE FILES ============
+const DB_NAME = 'rajshield_db';
+const DB_VERSION = 1;
+const STORE_NAME = 'files';
+let db = null;
+
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onerror = () => reject(req.error);
+    req.onsuccess = () => { db = req.result; resolve(db); };
+    req.onupgradeneeded = (e) => {
+      const d = e.target.result;
+      if (!d.objectStoreNames.contains(STORE_NAME)) {
+        d.createObjectStore(STORE_NAME);
+      }
+    };
+  });
+}
+
+function dbPut(key, blob) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    tx.objectStore(STORE_NAME).put(blob, key);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+function dbGet(key) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readonly');
+    const req = tx.objectStore(STORE_NAME).get(key);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+function dbDelete(key) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    tx.objectStore(STORE_NAME).delete(key);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+function dbClear() {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    tx.objectStore(STORE_NAME).clear();
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+// ============ STATE ============
 const S = {
-  mode: 'local',
-  github: { repo: '', branch: 'main', token: '' },
   name: 'RajShield',
   content: {
-    hero: { video: null, image: null, poster: null },
-    ppf: { frames: [], count: 0 },
+    hero: { videoId: null, imageId: null },
+    ppf: { frameIds: [], count: 0 },
     services: { ppf:null, ceramic:null, detailing:null, windshield:null, interior:null, wraps:null },
     material: { impact:null, healing:null, hydrophobic:null },
-    ba: { before:null, after:null },
+    ba: { beforeId:null, afterId:null },
     projects: [],
     studio: [],
     settings: { phone:'', whatsapp:'', email:'', city:'', tagline:'' }
   },
-  files: new Map(), // Store File objects in memory
+  urls: new Map(),
   page: 'dashboard'
 };
 
-// Load metadata only (not files)
 try {
-  const saved = localStorage.getItem('rs_meta');
+  const saved = localStorage.getItem('rs_meta_v2');
   if (saved) {
     const meta = JSON.parse(saved);
-    S.mode = meta.mode || 'local';
-    S.github = meta.github || S.github;
     S.name = meta.name || 'RajShield';
-    S.content.settings = meta.settings || S.content.settings;
+    S.content = meta.content || S.content;
   }
 } catch(e) {}
 
 function saveMeta() {
-  const meta = {
-    mode: S.mode,
-    github: S.github,
-    name: S.name,
-    settings: S.content.settings
-  };
   try {
-    localStorage.setItem('rs_meta', JSON.stringify(meta));
-  } catch(e) {
-    console.error('Save failed:', e);
-  }
+    localStorage.setItem('rs_meta_v2', JSON.stringify({ name: S.name, content: S.content }));
+  } catch(e) { console.error('Save failed:', e); }
 }
 
 // ============ TOAST ============
@@ -313,69 +303,26 @@ function openModal(html) { document.getElementById('modalBox').innerHTML = html;
 function closeModal() { document.getElementById('modalBg').classList.remove('open'); }
 document.getElementById('modalBg').addEventListener('click', e => { if (e.target.id === 'modalBg') closeModal(); });
 
-// ============ AUTH ============
-document.querySelectorAll('.auth-mode').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.auth-mode').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    S.mode = btn.dataset.mode;
-    document.getElementById('localFields').style.display = S.mode === 'local' ? 'block' : 'none';
-    document.getElementById('githubFields').style.display = S.mode === 'github' ? 'block' : 'none';
-  });
-});
-
-document.getElementById('authBtn').addEventListener('click', async () => {
-  const err = document.getElementById('authErr');
-  err.textContent = '';
-  if (S.mode === 'github') {
-    const repo = document.getElementById('authRepo').value.trim();
-    const branch = document.getElementById('authBranch').value.trim() || 'main';
-    const token = document.getElementById('authToken').value.trim();
-    if (!repo || !token) { err.textContent = 'Fill all fields'; return; }
-    if (!repo.includes('/')) { err.textContent = 'Format: username/repo'; return; }
-    const btn = document.getElementById('authBtn');
-    btn.disabled = true; btn.textContent = 'Verifying...';
-    try {
-      const res = await fetch(`https://api.github.com/repos/${repo}`, { headers: { Authorization: `token ${token}` } });
-      if (!res.ok) throw new Error('Invalid token or repo');
-      S.github = { repo, branch, token };
-      saveMeta(); enter();
-    } catch(e) { err.textContent = 'Auth failed: ' + e.message; btn.disabled = false; btn.textContent = 'Enter Admin'; }
-  } else {
-    S.name = document.getElementById('authName').value.trim() || 'RajShield';
-    saveMeta(); enter();
-  }
-});
-
-function enter() {
-  document.getElementById('authScreen').classList.add('hidden');
-  document.getElementById('adminApp').classList.remove('hidden');
-  updateStatus(); updateBadges(); render('dashboard');
-}
-
-function updateStatus() {
-  const dot = document.getElementById('sDot');
-  const txt = document.getElementById('sText');
-  if (S.mode === 'github') { dot.classList.remove('off'); txt.textContent = `GitHub: ${S.github.repo}`; }
-  else { dot.classList.add('off'); txt.textContent = 'Local mode'; }
-}
-
-document.getElementById('logoutBtn').addEventListener('click', () => {
-  if (confirm('Logout?')) { localStorage.removeItem('rs_meta'); location.reload(); }
-});
-
-// ============ NAV ============
-document.querySelectorAll('.nav-item').forEach(item => {
-  item.addEventListener('click', () => {
-    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-    item.classList.add('active');
-    render(item.dataset.page);
-  });
-});
-
 // ============ FILE HELPERS ============
-function fileToURL(file) {
-  return URL.createObjectURL(file);
+async function storeFile(file) {
+  const id = 'f_' + Date.now() + '_' + Math.random().toString(36).substr(2,9);
+  await dbPut(id, file);
+  return id;
+}
+
+async function getFileUrl(id) {
+  if (!id) return null;
+  if (S.urls.has(id)) return S.urls.get(id);
+  const blob = await dbGet(id);
+  if (!blob) return null;
+  const url = URL.createObjectURL(blob);
+  S.urls.set(id, url);
+  return url;
+}
+
+async function getFileBlob(id) {
+  if (!id) return null;
+  return dbGet(id);
 }
 
 function isVideo(f) { return f.type.startsWith('video/') || /\.(mp4|webm|mov)$/i.test(f.name); }
@@ -395,6 +342,39 @@ function makeDrop(opts={}) {
   return z;
 }
 
+// ============ AUTH ============
+document.getElementById('authBtn').addEventListener('click', async () => {
+  const err = document.getElementById('authErr');
+  err.textContent = '';
+  try {
+    await openDB();
+    S.name = document.getElementById('authName').value.trim() || 'RajShield';
+    saveMeta();
+    document.getElementById('authScreen').classList.add('hidden');
+    document.getElementById('adminApp').classList.remove('hidden');
+    updateBadges();
+    render('dashboard');
+  } catch(e) {
+    err.textContent = 'Failed to open database: ' + e.message;
+  }
+});
+
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  if (confirm('Logout? All uploaded files will be deleted.')) {
+    localStorage.removeItem('rs_meta_v2');
+    dbClear().then(() => location.reload());
+  }
+});
+
+// ============ NAV ============
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    render(item.dataset.page);
+  });
+});
+
 // ============ RENDER ============
 function render(page) {
   S.page = page;
@@ -405,7 +385,7 @@ function render(page) {
 }
 
 // ---- DASHBOARD ----
-function rDash(m) {
+async function rDash(m) {
   const c = S.content;
   const stats = [
     { l:'Projects', v:c.projects.length, s:'vehicles' },
@@ -422,92 +402,89 @@ function rDash(m) {
         <div class="qaction" onclick="render('hero')"><div class="qaction-icon">🎬</div><div><h4>Update Hero</h4><p>Main video/image</p></div></div>
         <div class="qaction" onclick="render('projects')"><div class="qaction-icon">🏎️</div><div><h4>Add Project</h4><p>Showcase work</p></div></div>
         <div class="qaction" onclick="render('ppf')"><div class="qaction-icon">🎞️</div><div><h4>PPF Sequence</h4><p>Scroll frames</p></div></div>
-        <div class="qaction" onclick="render('publish')"><div class="qaction-icon">🚀</div><div><h4>Publish</h4><p>Push updates</p></div></div>
+        <div class="qaction" onclick="render('publish')"><div class="qaction-icon">🚀</div><div><h4>Publish</h4><p>Download ZIP</p></div></div>
       </div>
     </div>`;
 }
 
 // ---- HERO ----
-function rHero(m) {
+async function rHero(m) {
   const h = S.content.hero;
+  const videoUrl = h.videoId ? await getFileUrl(h.videoId) : null;
+  const imageUrl = h.imageId ? await getFileUrl(h.imageId) : null;
   m.innerHTML = `
     <div class="pg-head"><div class="pg-head-top"><h1 class="pg-title">Hero <em>Section</em></h1></div><p class="pg-desc">First thing visitors see. Use a cinematic video or image.</p></div>
     <div class="pg-body">
-      <div class="block"><div class="block-head"><div class="block-title">Hero Video<small>MP4/WebM, max 50MB</small></div>${h.video?`<button type="button" class="btn btn-d" onclick="rmHero('video')">Remove</button>`:''}</div>
-        ${h.video?`<div class="pgrid"><div class="pitem" style="aspect-ratio:16/9;grid-column:span 2"><video src="${h.video}" muted loop autoplay style="width:100%;height:100%;object-fit:cover"></video><div class="pitem-badge">Video</div></div></div>`:''}
+      <div class="block"><div class="block-head"><div class="block-title">Hero Video<small>MP4/WebM, any size</small></div>${h.videoId?`<button type="button" class="btn btn-d" onclick="rmHero('videoId')">Remove</button>`:''}</div>
+        ${videoUrl?`<div class="pgrid"><div class="pitem" style="aspect-ratio:16/9;grid-column:span 2"><video src="${videoUrl}" muted loop autoplay style="width:100%;height:100%;object-fit:cover"></video><div class="pitem-badge">Video</div></div></div>`:''}
         <div id="hVidZone" style="margin-top:12px"></div></div>
-      <div class="block"><div class="block-head"><div class="block-title">Fallback Image<small>Shown if video fails</small></div>${h.image?`<button type="button" class="btn btn-d" onclick="rmHero('image')">Remove</button>`:''}</div>
-        ${h.image?`<div class="pgrid"><div class="pitem" style="aspect-ratio:16/9;grid-column:span 2"><img src="${h.image}" style="width:100%;height:100%;object-fit:cover"><div class="pitem-badge">Image</div></div></div>`:''}
+      <div class="block"><div class="block-head"><div class="block-title">Fallback Image<small>Shown if video fails</small></div>${h.imageId?`<button type="button" class="btn btn-d" onclick="rmHero('imageId')">Remove</button>`:''}</div>
+        ${imageUrl?`<div class="pgrid"><div class="pitem" style="aspect-ratio:16/9;grid-column:span 2"><img src="${imageUrl}" style="width:100%;height:100%;object-fit:cover"><div class="pitem-badge">Image</div></div></div>`:''}
         <div id="hImgZone" style="margin-top:12px"></div></div>
     </div>`;
-  document.getElementById('hVidZone').appendChild(makeDrop({ accept:'video/*', label:'Drop hero video', onFiles: fs => {
+  document.getElementById('hVidZone').appendChild(makeDrop({ accept:'video/*', label:'Drop hero video', onFiles: async fs => {
     const f = fs.find(isVideo); if (!f) return toast('Select a video','error');
-    if (f.size > 50*1024*1024) return toast('Max 50MB','error');
-    const id = 'hero_video_' + Date.now();
-    S.files.set(id, f);
-    S.content.hero.video = fileToURL(f);
-    S.content.hero._videoFileId = id;
-    toast('Video uploaded'); rHero(m);
+    toast('Storing video...','info');
+    S.content.hero.videoId = await storeFile(f);
+    saveMeta(); toast('Video uploaded'); rHero(m); updateBadges();
   }}));
-  document.getElementById('hImgZone').appendChild(makeDrop({ accept:'image/*', label:'Drop fallback image', onFiles: fs => {
+  document.getElementById('hImgZone').appendChild(makeDrop({ accept:'image/*', label:'Drop fallback image', onFiles: async fs => {
     const f = fs.find(isImage); if (!f) return toast('Select an image','error');
-    const id = 'hero_image_' + Date.now();
-    S.files.set(id, f);
-    S.content.hero.image = fileToURL(f);
-    S.content.hero._imageFileId = id;
-    toast('Image uploaded'); rHero(m);
+    toast('Storing image...','info');
+    S.content.hero.imageId = await storeFile(f);
+    saveMeta(); toast('Image uploaded'); rHero(m); updateBadges();
   }}));
 }
-function rmHero(k) {
-  const fileId = S.content.hero['_'+k+'FileId'];
-  if (fileId) S.files.delete(fileId);
-  delete S.content.hero[k];
-  delete S.content.hero['_'+k+'FileId'];
-  toast('Removed'); rHero(document.getElementById('mainContent'));
+async function rmHero(key) {
+  const id = S.content.hero[key];
+  if (id) { await dbDelete(id); S.urls.delete(id); }
+  S.content.hero[key] = null;
+  saveMeta(); toast('Removed'); rHero(document.getElementById('mainContent')); updateBadges();
 }
 
 // ---- PPF ----
-function rPPF(m) {
+async function rPPF(m) {
   const p = S.content.ppf;
   m.innerHTML = `
     <div class="pg-head"><div class="pg-head-top"><h1 class="pg-title">PPF <em>Sequence</em></h1></div><p class="pg-desc">Upload frame sequence for scroll animation. 100-180 frames recommended.</p></div>
     <div class="pg-body">
-      <div class="block"><div class="block-head"><div class="block-title">Frames<small>${p.count} frames uploaded</small></div>${p.frames.length?`<button type="button" class="btn btn-d" onclick="clearPPF()">Clear All</button>`:''}</div>
+      <div class="block"><div class="block-head"><div class="block-title">Frames<small>${p.count} frames uploaded</small></div>${p.frameIds.length?`<button type="button" class="btn btn-d" onclick="clearPPF()">Clear All</button>`:''}</div>
         <div id="ppfZone"></div>
-        ${p.frames.length?`<div class="ptxt" style="margin-top:12px">Preview (every 10th):</div><div class="pgrid" id="ppfPrev"></div>`:''}
+        ${p.frameIds.length?`<div class="ptxt" style="margin-top:12px">Preview (every 10th):</div><div class="pgrid" id="ppfPrev"></div>`:''}
       </div>
     </div>`;
-  document.getElementById('ppfZone').appendChild(makeDrop({ accept:'image/*', multi:true, label:'Drop all frames', hint:'WebP/JPG/PNG — select all at once', onFiles: fs => {
+  document.getElementById('ppfZone').appendChild(makeDrop({ accept:'image/*', multi:true, label:'Drop all frames', hint:'WebP/JPG/PNG — select all at once', onFiles: async fs => {
     const imgs = fs.filter(isImage).sort((a,b)=>a.name.localeCompare(b.name,undefined,{numeric:true}));
     if (!imgs.length) return toast('No images','error');
-    toast(`Processing ${imgs.length}...`,'info');
-    imgs.forEach((f, i) => {
-      const id = 'ppf_' + Date.now() + '_' + i;
-      S.files.set(id, f);
-      S.content.ppf.frames.push({ url: fileToURL(f), name: f.name, fileId: id });
-    });
-    S.content.ppf.count = S.content.ppf.frames.length;
-    toast(`${imgs.length} frames added`); rPPF(m); updateBadges();
+    toast(`Storing ${imgs.length} frames...`,'info');
+    for (const f of imgs) {
+      const id = await storeFile(f);
+      S.content.ppf.frameIds.push(id);
+    }
+    S.content.ppf.count = S.content.ppf.frameIds.length;
+    saveMeta(); toast(`${imgs.length} frames added`); rPPF(m); updateBadges();
   }}));
-  if (p.frames.length) {
+  if (p.frameIds.length) {
     const prev = document.getElementById('ppfPrev');
-    p.frames.forEach((f,i) => {
-      if (i%10!==0 && i!==p.frames.length-1) return;
+    for (let i = 0; i < p.frameIds.length; i++) {
+      if (i%10!==0 && i!==p.frameIds.length-1) continue;
+      const url = await getFileUrl(p.frameIds[i]);
+      if (!url) continue;
       const el = document.createElement('div'); el.className='pitem';
-      el.innerHTML = `<img src="${f.url}"><div class="pitem-badge">#${String(i+1).padStart(3,'0')}</div>`;
+      el.innerHTML = `<img src="${url}"><div class="pitem-badge">#${String(i+1).padStart(3,'0')}</div>`;
       prev.appendChild(el);
-    });
+    }
   }
 }
-function clearPPF() {
+async function clearPPF() {
   if (!confirm(`Delete ${S.content.ppf.count} frames?`)) return;
-  S.content.ppf.frames.forEach(f => S.files.delete(f.fileId));
-  S.content.ppf = { frames: [], count: 0 };
-  toast('Cleared'); rPPF(document.getElementById('mainContent')); updateBadges();
+  for (const id of S.content.ppf.frameIds) { await dbDelete(id); S.urls.delete(id); }
+  S.content.ppf = { frameIds: [], count: 0 };
+  saveMeta(); toast('Cleared'); rPPF(document.getElementById('mainContent')); updateBadges();
 }
 
 // ---- SERVICES ----
-function rSvc(m) {
+async function rSvc(m) {
   const slots = [
     {k:'ppf',n:'Paint Protection Film',i:'🛡️'},
     {k:'ceramic',n:'Ceramic Coating',i:'💎'},
@@ -516,33 +493,36 @@ function rSvc(m) {
     {k:'interior',n:'Interior Protection',i:'🛋️'},
     {k:'wraps',n:'Finish Customisation',i:'🎨'}
   ];
-  m.innerHTML = `
+  const html = `
     <div class="pg-head"><div class="pg-head-top"><h1 class="pg-title">Service <em>Images</em></h1></div><p class="pg-desc">One image per service for the tabs section.</p></div>
     <div class="pg-body">${slots.map(s => `
       <div class="block"><div class="block-head"><div class="block-title">${s.i} ${s.n}</div>${S.content.services[s.k]?`<button type="button" class="btn btn-d" onclick="rmSvc('${s.k}')">Remove</button>`:''}</div>
-        ${S.content.services[s.k]?`<div class="pgrid"><div class="pitem" style="aspect-ratio:16/10;grid-column:span 2"><img src="${S.content.services[s.k]}" style="width:100%;height:100%;object-fit:cover"></div></div>`:''}
+        <div id="svc-${s.k}"></div>
         <div id="sz-${s.k}" style="margin-top:12px"></div></div>`).join('')}</div>`;
-  slots.forEach(s => {
-    document.getElementById('sz-'+s.k).appendChild(makeDrop({ accept:'image/*', label:`Drop ${s.n} image`, onFiles: fs => {
+  m.innerHTML = html;
+  for (const s of slots) {
+    const container = document.getElementById('svc-'+s.k);
+    if (S.content.services[s.k]) {
+      const url = await getFileUrl(S.content.services[s.k]);
+      if (url) container.innerHTML = `<div class="pgrid"><div class="pitem" style="aspect-ratio:16/10;grid-column:span 2"><img src="${url}" style="width:100%;height:100%;object-fit:cover"></div></div>`;
+    }
+    document.getElementById('sz-'+s.k).appendChild(makeDrop({ accept:'image/*', label:`Drop ${s.n} image`, onFiles: async fs => {
       const f = fs.find(isImage); if (!f) return toast('Select image','error');
-      const id = 'svc_' + s.k + '_' + Date.now();
-      S.files.set(id, f);
-      S.content.services[s.k] = fileToURL(f);
-      S.content.services['_'+s.k+'FileId'] = id;
-      toast(`${s.n} uploaded`); rSvc(m); updateBadges();
+      toast('Storing...','info');
+      S.content.services[s.k] = await storeFile(f);
+      saveMeta(); toast(`${s.n} uploaded`); rSvc(m); updateBadges();
     }}));
-  });
+  }
 }
-function rmSvc(k) {
-  const fileId = S.content.services['_'+k+'FileId'];
-  if (fileId) S.files.delete(fileId);
-  delete S.content.services[k];
-  delete S.content.services['_'+k+'FileId'];
-  toast('Removed'); rSvc(document.getElementById('mainContent')); updateBadges();
+async function rmSvc(k) {
+  const id = S.content.services[k];
+  if (id) { await dbDelete(id); S.urls.delete(id); }
+  S.content.services[k] = null;
+  saveMeta(); toast('Removed'); rSvc(document.getElementById('mainContent')); updateBadges();
 }
 
 // ---- MATERIAL ----
-function rMat(m) {
+async function rMat(m) {
   const slots = [
     {k:'impact',n:'Impact Resistance',i:'💥'},
     {k:'healing',n:'Self-Healing',i:'✨'},
@@ -552,78 +532,82 @@ function rMat(m) {
     <div class="pg-head"><div class="pg-head-top"><h1 class="pg-title">Material <em>Science</em></h1></div><p class="pg-desc">Macro photography for technical benefits.</p></div>
     <div class="pg-body">${slots.map(s => `
       <div class="block"><div class="block-head"><div class="block-title">${s.i} ${s.n}</div>${S.content.material[s.k]?`<button type="button" class="btn btn-d" onclick="rmMat('${s.k}')">Remove</button>`:''}</div>
-        ${S.content.material[s.k]?`<div class="pgrid"><div class="pitem" style="aspect-ratio:4/3;grid-column:span 2"><img src="${S.content.material[s.k]}" style="width:100%;height:100%;object-fit:cover"></div></div>`:''}
+        <div id="mat-${s.k}"></div>
         <div id="mz-${s.k}" style="margin-top:12px"></div></div>`).join('')}</div>`;
-  slots.forEach(s => {
-    document.getElementById('mz-'+s.k).appendChild(makeDrop({ accept:'image/*', label:`Drop ${s.n} image`, onFiles: fs => {
+  for (const s of slots) {
+    const container = document.getElementById('mat-'+s.k);
+    if (S.content.material[s.k]) {
+      const url = await getFileUrl(S.content.material[s.k]);
+      if (url) container.innerHTML = `<div class="pgrid"><div class="pitem" style="aspect-ratio:4/3;grid-column:span 2"><img src="${url}" style="width:100%;height:100%;object-fit:cover"></div></div>`;
+    }
+    document.getElementById('mz-'+s.k).appendChild(makeDrop({ accept:'image/*', label:`Drop ${s.n} image`, onFiles: async fs => {
       const f = fs.find(isImage); if (!f) return toast('Select image','error');
-      const id = 'mat_' + s.k + '_' + Date.now();
-      S.files.set(id, f);
-      S.content.material[s.k] = fileToURL(f);
-      S.content.material['_'+s.k+'FileId'] = id;
-      toast(`${s.n} uploaded`); rMat(m); updateBadges();
+      toast('Storing...','info');
+      S.content.material[s.k] = await storeFile(f);
+      saveMeta(); toast(`${s.n} uploaded`); rMat(m); updateBadges();
     }}));
-  });
+  }
 }
-function rmMat(k) {
-  const fileId = S.content.material['_'+k+'FileId'];
-  if (fileId) S.files.delete(fileId);
-  delete S.content.material[k];
-  delete S.content.material['_'+k+'FileId'];
-  toast('Removed'); rMat(document.getElementById('mainContent')); updateBadges();
+async function rmMat(k) {
+  const id = S.content.material[k];
+  if (id) { await dbDelete(id); S.urls.delete(id); }
+  S.content.material[k] = null;
+  saveMeta(); toast('Removed'); rMat(document.getElementById('mainContent')); updateBadges();
 }
 
 // ---- BEFORE/AFTER ----
-function rBA(m) {
+async function rBA(m) {
   const b = S.content.ba;
+  const beforeUrl = b.beforeId ? await getFileUrl(b.beforeId) : null;
+  const afterUrl = b.afterId ? await getFileUrl(b.afterId) : null;
   m.innerHTML = `
     <div class="pg-head"><div class="pg-head-top"><h1 class="pg-title">Before / <em>After</em></h1></div><p class="pg-desc">Images for the comparison slider.</p></div>
     <div class="pg-body">
-      <div class="block"><div class="block-head"><div class="block-title">Before<small>Unprotected state</small></div>${b.before?`<button type="button" class="btn btn-d" onclick="rmBA('before')">Remove</button>`:''}</div>
-        ${b.before?`<div class="pgrid"><div class="pitem" style="aspect-ratio:16/9;grid-column:span 2"><img src="${b.before}" style="width:100%;height:100%;object-fit:cover"><div class="pitem-badge">Before</div></div></div>`:''}
+      <div class="block"><div class="block-head"><div class="block-title">Before<small>Unprotected state</small></div>${b.beforeId?`<button type="button" class="btn btn-d" onclick="rmBA('beforeId')">Remove</button>`:''}</div>
+        ${beforeUrl?`<div class="pgrid"><div class="pitem" style="aspect-ratio:16/9;grid-column:span 2"><img src="${beforeUrl}" style="width:100%;height:100%;object-fit:cover"><div class="pitem-badge">Before</div></div></div>`:''}
         <div id="baBZone" style="margin-top:12px"></div></div>
-      <div class="block"><div class="block-head"><div class="block-title">After<small>Protected result</small></div>${b.after?`<button type="button" class="btn btn-d" onclick="rmBA('after')">Remove</button>`:''}</div>
-        ${b.after?`<div class="pgrid"><div class="pitem" style="aspect-ratio:16/9;grid-column:span 2"><img src="${b.after}" style="width:100%;height:100%;object-fit:cover"><div class="pitem-badge">After</div></div></div>`:''}
+      <div class="block"><div class="block-head"><div class="block-title">After<small>Protected result</small></div>${b.afterId?`<button type="button" class="btn btn-d" onclick="rmBA('afterId')">Remove</button>`:''}</div>
+        ${afterUrl?`<div class="pgrid"><div class="pitem" style="aspect-ratio:16/9;grid-column:span 2"><img src="${afterUrl}" style="width:100%;height:100%;object-fit:cover"><div class="pitem-badge">After</div></div></div>`:''}
         <div id="baAZone" style="margin-top:12px"></div></div>
     </div>`;
-  document.getElementById('baBZone').appendChild(makeDrop({ accept:'image/*', label:'Drop BEFORE image', onFiles: fs => {
+  document.getElementById('baBZone').appendChild(makeDrop({ accept:'image/*', label:'Drop BEFORE image', onFiles: async fs => {
     const f=fs.find(isImage); if(!f) return toast('Select image','error');
-    const id = 'ba_before_' + Date.now();
-    S.files.set(id, f);
-    S.content.ba.before = fileToURL(f);
-    S.content.ba._beforeFileId = id;
-    toast('Before uploaded'); rBA(m); updateBadges();
+    toast('Storing...','info');
+    S.content.ba.beforeId = await storeFile(f);
+    saveMeta(); toast('Before uploaded'); rBA(m); updateBadges();
   }}));
-  document.getElementById('baAZone').appendChild(makeDrop({ accept:'image/*', label:'Drop AFTER image', onFiles: fs => {
+  document.getElementById('baAZone').appendChild(makeDrop({ accept:'image/*', label:'Drop AFTER image', onFiles: async fs => {
     const f=fs.find(isImage); if(!f) return toast('Select image','error');
-    const id = 'ba_after_' + Date.now();
-    S.files.set(id, f);
-    S.content.ba.after = fileToURL(f);
-    S.content.ba._afterFileId = id;
-    toast('After uploaded'); rBA(m); updateBadges();
+    toast('Storing...','info');
+    S.content.ba.afterId = await storeFile(f);
+    saveMeta(); toast('After uploaded'); rBA(m); updateBadges();
   }}));
 }
-function rmBA(k) {
-  const fileId = S.content.ba['_'+k+'FileId'];
-  if (fileId) S.files.delete(fileId);
-  delete S.content.ba[k];
-  delete S.content.ba['_'+k+'FileId'];
-  toast('Removed'); rBA(document.getElementById('mainContent')); updateBadges();
+async function rmBA(k) {
+  const id = S.content.ba[k];
+  if (id) { await dbDelete(id); S.urls.delete(id); }
+  S.content.ba[k] = null;
+  saveMeta(); toast('Removed'); rBA(document.getElementById('mainContent')); updateBadges();
 }
 
 // ---- PROJECTS ----
-function rProj(m) {
+async function rProj(m) {
   const p = S.content.projects;
+  let cardsHtml = '';
+  for (let i = 0; i < p.length; i++) {
+    const pr = p[i];
+    const imgUrl = pr.imageId ? await getFileUrl(pr.imageId) : null;
+    cardsHtml += `
+      <div class="pcard">
+        <div class="pthumb">${imgUrl?`<img src="${imgUrl}">`:`<div class="pthumb-empty">No Image</div>`}</div>
+        <div class="pinfo"><h4>${pr.vehicle||'Untitled'}</h4><div class="pinfo-meta"><span>🏷️ ${pr.service||'—'}</span><span>📍 ${pr.category||'—'}</span></div><div class="pinfo-desc">${pr.description||''}</div></div>
+        <div class="pactions"><button type="button" class="ibtn" onclick="openProj(${i})" title="Edit">✏️</button><button type="button" class="ibtn danger" onclick="delProj(${i})" title="Delete">🗑️</button></div>
+      </div>`;
+  }
   m.innerHTML = `
     <div class="pg-head"><div class="pg-head-top"><h1 class="pg-title">Project <em>Portfolio</em></h1><div class="pg-actions"><button type="button" class="btn btn-p" onclick="openProj()">+ Add Project</button></div></div><p class="pg-desc">Showcase transformations. Each becomes a card.</p></div>
     <div class="pg-body">
-      ${p.length===0 ? `<div class="empty"><div class="empty-icon">🏎️</div><div class="empty-text">No projects yet</div><div class="empty-hint">Click "Add Project" to start</div></div>` :
-      `<div class="plist">${p.map((pr,i)=>`
-        <div class="pcard">
-          <div class="pthumb">${pr.image?`<img src="${pr.image}">`:`<div class="pthumb-empty">No Image</div>`}</div>
-          <div class="pinfo"><h4>${pr.vehicle||'Untitled'}</h4><div class="pinfo-meta"><span>🏷️ ${pr.service||'—'}</span><span>📍 ${pr.category||'—'}</span></div><div class="pinfo-desc">${pr.description||''}</div></div>
-          <div class="pactions"><button type="button" class="ibtn" onclick="openProj(${i})" title="Edit">✏️</button><button type="button" class="ibtn danger" onclick="delProj(${i})" title="Delete">🗑️</button></div>
-        </div>`).join('')}</div>`}
+      ${p.length===0 ? `<div class="empty"><div class="empty-icon">🏎️</div><div class="empty-text">No projects yet</div></div>` : `<div class="plist">${cardsHtml}</div>`}
     </div>`;
 }
 
@@ -632,7 +616,7 @@ function openProj(idx=null) {
   const p = isEdit ? S.content.projects[idx] : {};
   openModal(`
     <div class="modal-head"><div class="modal-title">${isEdit?'Edit':'Add'} Project</div><button type="button" class="modal-close" onclick="closeModal()">×</button></div>
-    <div class="mfield"><label>Image</label>${p.image?`<div style="margin-bottom:10px"><img src="${p.image}" style="width:100%;max-height:180px;object-fit:cover;border-radius:7px"></div>`:''}<input type="file" id="mImg" accept="image/*"></div>
+    <div class="mfield"><label>Image</label><input type="file" id="mImg" accept="image/*"></div>
     <div class="mrow">
       <div class="mfield"><label>Vehicle</label><input type="text" id="mVeh" placeholder="Porsche 911 GT3" value="${p.vehicle||''}"></div>
       <div class="mfield"><label>Service</label><input type="text" id="mSvc" placeholder="Full Body PPF" value="${p.service||''}"></div>
@@ -646,106 +630,110 @@ function openProj(idx=null) {
   `);
 }
 
-function saveProj(idx) {
+async function saveProj(idx) {
   const veh = document.getElementById('mVeh').value.trim();
   if (!veh) return toast('Vehicle name required','error');
   const imgInp = document.getElementById('mImg');
-  let img = idx>=0 ? S.content.projects[idx].image : null;
-  let fileId = idx>=0 ? S.content.projects[idx].fileId : null;
-  
+  let imageId = idx>=0 ? S.content.projects[idx].imageId : null;
   if (imgInp.files.length) {
-    const f = imgInp.files[0];
-    fileId = 'proj_' + Date.now();
-    S.files.set(fileId, f);
-    img = fileToURL(f);
+    toast('Storing image...','info');
+    imageId = await storeFile(imgInp.files[0]);
   }
-  
   const p = {
     vehicle: veh,
     service: document.getElementById('mSvc').value.trim(),
     category: document.getElementById('mCat').value,
     city: document.getElementById('mCity').value.trim(),
     description: document.getElementById('mDesc').value.trim(),
-    image: img,
-    fileId: fileId
+    imageId: imageId
   };
-  
   if (idx>=0) { S.content.projects[idx]=p; toast('Updated'); }
   else { S.content.projects.push(p); toast('Added'); }
-  
-  closeModal(); rProj(document.getElementById('mainContent')); updateBadges();
+  saveMeta(); closeModal(); rProj(document.getElementById('mainContent')); updateBadges();
 }
 
-function delProj(i) {
+async function delProj(i) {
   if (!confirm(`Delete "${S.content.projects[i].vehicle}"?`)) return;
-  const fileId = S.content.projects[i].fileId;
-  if (fileId) S.files.delete(fileId);
+  const id = S.content.projects[i].imageId;
+  if (id) { await dbDelete(id); S.urls.delete(id); }
   S.content.projects.splice(i,1);
-  toast('Deleted'); rProj(document.getElementById('mainContent')); updateBadges();
+  saveMeta(); toast('Deleted'); rProj(document.getElementById('mainContent')); updateBadges();
 }
 
 // ---- STUDIO ----
-function rStudio(m) {
+async function rStudio(m) {
   const s = S.content.studio;
+  let slidesHtml = '';
+  for (let i = 0; i < s.length; i++) {
+    const url = await getFileUrl(s[i].imageId);
+    if (!url) continue;
+    slidesHtml += `<div class="pitem"><img src="${url}"><div class="pitem-badge">${String(i+1).padStart(2,'0')}</div><button type="button" class="pitem-rm" onclick="rmStudio(${i})">×</button><div class="pitem-name">${s[i].title}</div></div>`;
+  }
   m.innerHTML = `
     <div class="pg-head"><div class="pg-head-top"><h1 class="pg-title">Studio <em>Tour</em></h1></div><p class="pg-desc">Facility photos for horizontal scroll gallery.</p></div>
     <div class="pg-body">
       <div class="block"><div class="block-head"><div class="block-title">Photos<small>${s.length} uploaded</small></div>${s.length?`<button type="button" class="btn btn-d" onclick="clearStudio()">Clear All</button>`:''}</div>
         <div id="stZone"></div>
-        ${s.length?`<div class="pgrid" style="margin-top:15px">${s.map((sl,i)=>`<div class="pitem"><img src="${sl.image}"><div class="pitem-badge">${String(i+1).padStart(2,'0')}</div><button type="button" class="pitem-rm" onclick="rmStudio(${i})">×</button><div class="pitem-name">${sl.title}</div></div>`).join('')}</div>`:''}
+        ${s.length?`<div class="pgrid" style="margin-top:15px">${slidesHtml}</div>`:''}
       </div>
     </div>`;
-  document.getElementById('stZone').appendChild(makeDrop({ accept:'image/*', multi:true, label:'Drop studio photos', hint:'Multiple at once — auto-numbered', onFiles: fs => {
+  document.getElementById('stZone').appendChild(makeDrop({ accept:'image/*', multi:true, label:'Drop studio photos', hint:'Multiple at once — auto-numbered', onFiles: async fs => {
     const imgs = fs.filter(isImage); if (!imgs.length) return toast('No images','error');
-    toast(`Processing ${imgs.length}...`,'info');
-    imgs.forEach((f, i) => {
-      const id = 'studio_' + Date.now() + '_' + i;
-      S.files.set(id, f);
-      S.content.studio.push({ image: fileToURL(f), title:`Scene ${String(S.content.studio.length+1).padStart(2,'0')}`, fileId:id });
-    });
-    toast(`${imgs.length} added`); rStudio(m); updateBadges();
+    toast(`Storing ${imgs.length} photos...`,'info');
+    for (const f of imgs) {
+      const id = await storeFile(f);
+      S.content.studio.push({ imageId: id, title:`Scene ${String(S.content.studio.length+1).padStart(2,'0')}` });
+    }
+    saveMeta(); toast(`${imgs.length} added`); rStudio(m); updateBadges();
   }}));
 }
-function rmStudio(i) {
-  const fileId = S.content.studio[i].fileId;
-  if (fileId) S.files.delete(fileId);
+async function rmStudio(i) {
+  const id = S.content.studio[i].imageId;
+  if (id) { await dbDelete(id); S.urls.delete(id); }
   S.content.studio.splice(i,1);
   S.content.studio.forEach((s,j)=>s.title=`Scene ${String(j+1).padStart(2,'0')}`);
-  toast('Removed'); rStudio(document.getElementById('mainContent')); updateBadges();
+  saveMeta(); toast('Removed'); rStudio(document.getElementById('mainContent')); updateBadges();
 }
-function clearStudio() {
+async function clearStudio() {
   if (!confirm(`Delete all ${S.content.studio.length} photos?`)) return;
-  S.content.studio.forEach(s => S.files.delete(s.fileId));
+  for (const s of S.content.studio) { await dbDelete(s.imageId); S.urls.delete(s.imageId); }
   S.content.studio = [];
-  toast('Cleared'); rStudio(document.getElementById('mainContent')); updateBadges();
+  saveMeta(); toast('Cleared'); rStudio(document.getElementById('mainContent')); updateBadges();
 }
 
 // ---- PUBLISH ----
 function rPub(m) {
   const c = S.content;
   const checks = [
-    { l:'Hero video/image', d:!!(c.hero.video||c.hero.image) },
+    { l:'Hero video/image', d:!!(c.hero.videoId||c.hero.imageId) },
     { l:'PPF frames', d:c.ppf.count>0 },
-    { l:'Services (3+)', d:Object.values(c.services).filter(x=>x&&typeof x==='string').length>=3 },
-    { l:'Before/After', d:!!(c.ba.before&&c.ba.after) },
+    { l:'Services (3+)', d:Object.values(c.services).filter(x=>x).length>=3 },
+    { l:'Before/After', d:!!(c.ba.beforeId&&c.ba.afterId) },
     { l:'1+ project', d:c.projects.length>0 },
     { l:'Studio (3+)', d:c.studio.length>=3 }
   ];
   const allDone = checks.every(x=>x.d);
   const doneN = checks.filter(x=>x.d).length;
   m.innerHTML = `
-    <div class="pg-head"><div class="pg-head-top"><h1 class="pg-title">Publish <em>Changes</em></h1></div><p class="pg-desc">Review and push updates.</p></div>
+    <div class="pg-head"><div class="pg-head-top"><h1 class="pg-title">Publish <em>Changes</em></h1></div><p class="pg-desc">Download everything as a single ZIP file ready to upload to hosting.</p></div>
     <div class="pg-body">
       <div class="block"><div class="block-head"><div class="block-title">Checklist<small>${doneN}/${checks.length} complete</small></div></div>
         <div class="checklist">${checks.map(ch=>`<div class="ck-item"><div class="ck-icon ${ch.d?'done':'miss'}">${ch.d?'✓':'!'}</div><div class="ck-text">${ch.l}</div><div class="ck-status ${ch.d?'done':'miss'}">${ch.d?'Ready':'Missing'}</div></div>`).join('')}</div>
         ${!allDone?'<p style="font-size:0.78rem;color:var(--warning);margin-top:8px">⚠️ Complete all items for best experience.</p>':''}
       </div>
-      <div class="block"><div class="block-head"><div class="block-title">${S.mode==='github'?'Push to GitHub':'Download Site'}<small>${S.mode==='github'?`Commits to ${S.github.repo}`:'Downloads files to upload'}</small></div></div>
+      <div class="block"><div class="block-head"><div class="block-title">Download Complete Site<small>ONE ZIP file with index.html + content.json + all media files</small></div></div>
         <div id="pubProg" style="display:none"><div class="pbar"><div class="pbar-fill" id="pubBar" style="width:0%"></div></div><div class="ptxt" id="pubTxt">Preparing...</div></div>
-        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-          ${S.mode==='github'
-            ?`<button type="button" class="btn btn-p" id="pubBtn" onclick="pubGH()">🚀 Push to GitHub</button>`
-            :`<button type="button" class="btn btn-p" id="pubBtn" onclick="downloadSite()">📦 Download Site</button>`}
+        <div style="margin-top:12px">
+          <button type="button" class="btn btn-p" id="pubBtn" onclick="downloadZIP()" style="width:100%;padding:15px;font-size:0.75rem">📦 Download Complete Site (ZIP)</button>
+        </div>
+        <div style="margin-top:15px;font-size:0.72rem;color:var(--gray);line-height:1.7">
+          <p><strong>What's included:</strong></p>
+          <ul style="margin-top:8px;padding-left:20px">
+            <li>index.html (complete website)</li>
+            <li>content.json (your content data)</li>
+            <li>media/ folder (all uploaded files)</li>
+          </ul>
+          <p style="margin-top:10px">Upload the extracted folder to your hosting (Netlify, Vercel, cPanel, etc.)</p>
         </div>
       </div>
     </div>`;
@@ -760,130 +748,58 @@ function pubProg(p,t) {
   if(tx) tx.textContent=t;
 }
 
-async function pubGH() {
+async function downloadZIP() {
   const btn = document.getElementById('pubBtn');
-  btn.disabled=true; btn.textContent='Publishing...';
+  btn.disabled=true; btn.textContent='Building ZIP...';
+  
   try {
-    pubProg(5,'Preparing content.json...');
-    const contentMeta = JSON.stringify(S.content, null, 2);
-    const buf = new TextEncoder().encode(contentMeta);
+    pubProg(5,'Creating ZIP file...');
+    const zip = new JSZip();
     
-    pubProg(10,'Uploading content.json...');
-    let sha = await ghSHA('content.json');
-    await ghUpload('content.json', buf, 'Update content', sha);
+    pubProg(10,'Adding index.html...');
+    zip.file('index.html', generateIndexHTML());
     
-    const files = collectFiles();
+    pubProg(15,'Adding content.json...');
+    zip.file('content.json', JSON.stringify(S.content, null, 2));
+    
+    // Collect all files
+    const files = [];
+    const c = S.content;
+    if (c.hero.videoId) files.push({path:'media/hero/video.mp4', id:c.hero.videoId});
+    if (c.hero.imageId) files.push({path:'media/hero/image.jpg', id:c.hero.imageId});
+    c.ppf.frameIds.forEach((id,i) => files.push({path:`media/ppf-sequence/frame-${String(i+1).padStart(3,'0')}.webp`, id}));
+    Object.entries(c.services).forEach(([k,id]) => { if(id) files.push({path:`media/services/${k}.jpg`, id}); });
+    Object.entries(c.material).forEach(([k,id]) => { if(id) files.push({path:`media/material/${k}.jpg`, id}); });
+    if (c.ba.beforeId) files.push({path:'media/before-after/before.jpg', id:c.ba.beforeId});
+    if (c.ba.afterId) files.push({path:'media/before-after/after.jpg', id:c.ba.afterId});
+    c.studio.forEach((s,i) => files.push({path:`media/studio/slide-${String(i+1).padStart(2,'0')}.jpg`, id:s.imageId}));
+    c.projects.forEach((p,i) => { if(p.imageId) files.push({path:`media/projects/project-${i+1}.jpg`, id:p.imageId}); });
+    
     const total = files.length;
-    let done = 0;
-    
-    for (const f of files) {
-      pubProg(10 + (done/total)*85, `Uploading ${f.path} (${done+1}/${total})`);
-      const ab = await f.file.arrayBuffer();
-      sha = await ghSHA(f.path);
-      await ghUpload(f.path, ab, `Upload ${f.path}`, sha);
-      done++;
-    }
-    
-    pubProg(100,'Done!');
-    toast('Published!','success'); updateBadges();
-  } catch(e) {
-    toast('Failed: '+e.message,'error');
-  } finally {
-    btn.disabled=false; btn.textContent='🚀 Push to GitHub';
-  }
-}
-
-async function ghAPI(path, method='GET', body=null) {
-  const { repo, token } = S.github;
-  const opts = { method, headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' } };
-  if (body) { opts.headers['Content-Type'] = 'application/json'; opts.body = JSON.stringify(body); }
-  const res = await fetch(`https://api.github.com/repos/${repo}${path}`, opts);
-  if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error(e.message || res.status); }
-  return res.json();
-}
-
-async function ghUpload(path, buf, msg, sha=null) {
-  const body = { message: msg, content: btoa(String.fromCharCode(...new Uint8Array(buf))), branch: S.github.branch };
-  if (sha) body.sha = sha;
-  return ghAPI(`/contents/${path}`, 'PUT', body);
-}
-
-async function ghSHA(path) {
-  try { const d = await ghAPI(`/contents/${path}?ref=${S.github.branch}`); return d.sha; }
-  catch(e) { return null; }
-}
-
-function collectFiles() {
-  const fs = [];
-  const c = S.content;
-  
-  if (c.hero._videoFileId) fs.push({path:'media/hero/video.mp4', file:S.files.get(c.hero._videoFileId)});
-  if (c.hero._imageFileId) fs.push({path:'media/hero/image.jpg', file:S.files.get(c.hero._imageFileId)});
-  
-  c.ppf.frames.forEach((f,i) => {
-    if (f.fileId) fs.push({path:`media/ppf-sequence/frame-${String(i+1).padStart(3,'0')}.webp`, file:S.files.get(f.fileId)});
-  });
-  
-  Object.entries(c.services).forEach(([k,v]) => {
-    const fileId = c.services['_'+k+'FileId'];
-    if (v && fileId) fs.push({path:`media/services/${k}.jpg`, file:S.files.get(fileId)});
-  });
-  
-  Object.entries(c.material).forEach(([k,v]) => {
-    const fileId = c.material['_'+k+'FileId'];
-    if (v && fileId) fs.push({path:`media/material/${k}.jpg`, file:S.files.get(fileId)});
-  });
-  
-  if (c.ba._beforeFileId) fs.push({path:'media/before-after/before.jpg', file:S.files.get(c.ba._beforeFileId)});
-  if (c.ba._afterFileId) fs.push({path:'media/before-after/after.jpg', file:S.files.get(c.ba._afterFileId)});
-  
-  c.studio.forEach((s,i) => {
-    if (s.fileId) fs.push({path:`media/studio/slide-${String(i+1).padStart(2,'0')}.jpg`, file:S.files.get(s.fileId)});
-  });
-  
-  return fs;
-}
-
-async function downloadSite() {
-  const btn = document.getElementById('pubBtn');
-  btn.disabled=true; btn.textContent='Preparing...';
-  
-  try {
-    pubProg(10,'Building content.json...');
-    const contentMeta = JSON.stringify(S.content, null, 2);
-    const blob = new Blob([contentMeta], {type:'application/json'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href=url; a.download='content.json'; a.click();
-    URL.revokeObjectURL(url);
-    
-    pubProg(30,'Downloading media files...');
-    const files = collectFiles();
-    
-    for (let i = 0; i < files.length; i++) {
+    for (let i = 0; i < total; i++) {
       const f = files[i];
-      pubProg(30 + (i/files.length)*60, `Downloading ${f.path} (${i+1}/${files.length})`);
-      const fileBlob = new Blob([await f.file.arrayBuffer()], {type: f.file.type});
-      const fileUrl = URL.createObjectURL(fileBlob);
-      const a = document.createElement('a');
-      a.href=fileUrl; a.download=f.path.split('/').pop(); a.click();
-      URL.revokeObjectURL(fileUrl);
-      await new Promise(r => setTimeout(r, 100));
+      pubProg(20 + (i/total)*70, `Adding ${f.path.split('/').pop()} (${i+1}/${total})`);
+      const blob = await getFileBlob(f.id);
+      if (blob) zip.file(f.path, blob);
     }
     
-    pubProg(95,'Downloading index.html...');
-    const htmlBlob = new Blob([generateIndexHTML()], {type:'text/html'});
-    const htmlUrl = URL.createObjectURL(htmlBlob);
-    const a2 = document.createElement('a');
-    a2.href=htmlUrl; a2.download='index.html'; a2.click();
-    URL.revokeObjectURL(htmlUrl);
+    pubProg(92,'Compressing files...');
+    const content = await zip.generateAsync(
+      {type:'blob', compression:'DEFLATE', compressionOptions:{level:6}},
+      meta => {
+        pubProg(92 + meta.percent * 0.08, `Compressing ${Math.round(meta.percent)}%`);
+      }
+    );
     
-    pubProg(100,'Done!');
-    toast('Downloaded all files!','success');
+    pubProg(100,'Downloading...');
+    saveAs(content, 'rajshield-site.zip');
+    
+    toast('ZIP downloaded successfully!','success');
   } catch(e) {
+    console.error(e);
     toast('Failed: '+e.message,'error');
   } finally {
-    btn.disabled=false; btn.textContent='📦 Download Site';
+    btn.disabled=false; btn.textContent='📦 Download Complete Site (ZIP)';
   }
 }
 
@@ -897,10 +813,70 @@ function rSet(m) {
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px">
           <div class="mfield"><label>Studio Name</label><input type="text" id="stName" value="${S.name}"></div>
           <div class="mfield"><label>Tagline</label><input type="text" id="stTag" value="${s.tagline||''}"></div>
-          <div class="mfield"><label>.nav-links a{font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray-light);transition:color 0.3s}
+          <div class="mfield"><label>Phone</label><input type="text" id="stPhone" value="${s.phone||''}"></div>
+          <div class="mfield"><label>WhatsApp</label><input type="text" id="stWA" value="${s.whatsapp||''}"></div>
+          <div class="mfield"><label>Email</label><input type="email" id="stEmail" value="${s.email||''}"></div>
+          <div class="mfield"><label>City</label><input type="text" id="stCity" value="${s.city||''}"></div>
+        </div>
+        <button type="button" class="btn btn-p" style="margin-top:12px" onclick="saveSet()">Save</button>
+      </div>
+      <div class="block"><div class="block-head"><div class="block-title">Data</div></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+          <button type="button" class="btn btn-d" onclick="resetAll()">🗑️ Reset All</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function saveSet() {
+  S.name = document.getElementById('stName').value.trim();
+  S.content.settings = {
+    tagline: document.getElementById('stTag').value.trim(),
+    phone: document.getElementById('stPhone').value.trim(),
+    whatsapp: document.getElementById('stWA').value.trim(),
+    email: document.getElementById('stEmail').value.trim(),
+    city: document.getElementById('stCity').value.trim()
+  };
+  saveMeta(); toast('Saved');
+}
+
+async function resetAll() {
+  if (!confirm('Delete ALL data and files?')) return;
+  if (!confirm('Really? This cannot be undone.')) return;
+  await dbClear();
+  localStorage.removeItem('rs_meta_v2');
+  location.reload();
+}
+
+// ============ GENERATE INDEX HTML ============
+function generateIndexHTML() {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RajShield — Automotive Protection Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"><\/script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"><\/script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#c9a84c;--gold-light:#e8d48b;--gold-dark:#a07c1c;--black:#0a0a0a;--dark:#111;--darker:#050505;--white:#f5f5f5;--gray:#888;--gray-light:#aaa;--glass:rgba(255,255,255,0.03);--glass-border:rgba(255,255,255,0.06);--font-body:'Inter',sans-serif;--font-display:'Playfair Display',serif}
+html{scroll-behavior:auto;overflow-x:hidden}
+body{font-family:var(--font-body);background:var(--black);color:var(--white);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img,video{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--gold);color:var(--black)}
+.nav{position:fixed;top:0;left:0;width:100%;padding:25px 50px;display:flex;justify-content:space-between;align-items:center;z-index:1000;transition:all 0.4s}
+.nav.scrolled{padding:15px 50px;background:rgba(10,10,10,0.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.04)}
+.nav-logo{font-family:var(--font-display);font-size:1.4rem;font-weight:700;letter-spacing:0.15em}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray-light);transition:color 0.3s}
 .nav-links a:hover{color:var(--white)}
 .nav-cta{padding:10px 22px;border:1px solid var(--gold);border-radius:2px;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);transition:all 0.3s}
 .nav-cta:hover{background:var(--gold);color:var(--black)}
+@media(max-width:900px){.nav{padding:.nav-cta:hover{background:var(--gold);color:var(--black)}
 @media(max-width:900px){.nav{padding:18px 20px}.nav-links,.nav-cta{display:none}}
 .hero{height:100vh;min-height:600px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--darker)}
 .hero-media{position:absolute;inset:0}
@@ -1072,11 +1048,6 @@ function updateBadges() {
 // ============ KEYBOARD SHORTCUTS ============
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeModal();
-});
-
-// ============ WARN BEFORE LEAVING ============
-window.addEventListener('beforeunload', e => {
-  // Always warn since files are in IndexedDB
 });
 
 </script>
