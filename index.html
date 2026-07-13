@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium PPF Rajasthan</title>
+    
+    <!-- This loads the animation engine (GSAP) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* This makes the website look premium and dark */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #050505 70%);
+        }
+        .hero h1 {
+            font-size: 4vw;
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: linear-gradient(to right, #ffffff, #8a8a8a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+        .hero p {
+            font-size: 1.2vw;
+            color: #666;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        /* SCROLL ANIMATION SECTION */
+        .scroll-section {
+            height: 300vh; /* Very tall so we have room to scroll and animate */
+            position: relative;
+        }
+        .sticky-container {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        /* Car Images */
+        .car-layer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 1200px;
+            height: auto;
+            object-fit: cover;
+        }
+        /* This is the glossy protected layer. It will be "peeled" away */
+        #car-glossy {
+            z-index: 2;
+        }
+        /* This is the dull unprotected layer underneath */
+        #car-matte {
+            z-index: 1;
+        }
+
+        /* Text overlay during scroll */
+        .scroll-text {
+            position: absolute;
+            z-index: 10;
+            text-align: center;
+            pointer-events: none;
+        }
+        .scroll-text h2 {
+            font-size: 3vw;
+            font-weight: 600;
+            color: #fff;
+            opacity: 0; /* Hidden at first */
+            text-shadow: 0 0 20px rgba(0,0,0,0.8);
+        }
+        .scroll-text p {
+            font-size: 1.2vw;
+            color: #ccc;
+            margin-top: 15px;
+            opacity: 0;
+        }
+
+        /* STATS SECTION */
+        .stats {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: #0a0a0a;
+        }
+        .stats h2 {
+            font-size: 3vw;
+            color: #d4af37; /* Gold color for premium feel */
+        }
+
+        /* Scroll Down Indicator */
+        .scroll-down {
+            position: absolute;
+            bottom: 40px;
+            color: #444;
+            font-size: 14px;
+            letter-spacing: 2px;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. HERO SECTION -->
+    <section class="hero">
+        <h1>RAJASTHAN'S PINNACLE OF PAINT PROTECTION</h1>
+        <p>Invisible Armor. Flawless Finish.</p>
+        <div class="scroll-down">SCROLL TO UNWRAP</div>
+    </section>
+
+    <!-- 2. THE SCROLL ANIMATION SECTION -->
+    <section class="scroll-section">
+        <div class="sticky-container">
+            
+            <!-- Matte Dull Car (Bottom Layer) -->
+            <img id="car-matte" src="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?q=80&w=1200&auto=format&fit=crop" class="car-layer" alt="Matte Car">
+            
+            <!-- Glossy PPF Car (Top Layer - Will be peeled) -->
+            <img id="car-glossy" src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1200&auto=format&fit=crop" class="car-layer" alt="Glossy Car">
+
+            <!-- Text that appears during animation -->
+            <div class="scroll-text">
+                <h2>The Difference is Clear.</h2>
+                <p>Self-healing technology. Mirror gloss finish.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 3. STATS SECTION -->
+    <section class="stats">
+        <div>
+            <h2>10,000+ Cars Protected</h2>
+            <p style="margin-top: 20px; color: #666; font-size: 1.5vw;">Rajasthan's Largest Premium Installer</p>
+        </div>
+    </section>
+
+    <!-- THE MAGIC JAVASCRIPT -->
+    <script>
+        // Register the ScrollTrigger plugin
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Create the animation timeline tied to scrolling
+        let tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: ".scroll-section",
+                start: "top top",     // Start when top of section hits top of screen
+                end: "bottom bottom", // End when bottom of section hits bottom of screen
+                scrub: true,          // Makes animation follow scroll wheel perfectly
+            }
+        });
+
+        // 1. Peel the glossy layer away using a clip-path (like a window blind going up)
+        tl.to("#car-glossy", {
+            clipPath: "inset(100% 0% 0% 0%)", // Starts at 0% (full image), goes to 100% (hidden)
+            ease: "none"
+        });
+
+        // 2. Make the text fade in at the same time
+        tl.to(".scroll-text h2", { opacity: 1, duration: 1 }, 0)
+          .to(".scroll-text p", { opacity: 1, duration: 1, delay: 0.3 }, 0);
+
+        // 3. Fade text back out when you keep scrolling past it
+        tl.to(".scroll-text h2", { opacity: 0, duration: 1 })
+          .to(".scroll-text p", { opacity: 0, duration: 1 }, "<");
+    </script>
+
+</body>
+</html>
