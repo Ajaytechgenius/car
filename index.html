@@ -150,22 +150,37 @@ section{position:relative;}
    Navigation
    ============================================================ */
 header{
-  position:fixed;top:0;left:0;right:0;z-index:100;padding:26px 0;
-  transition:padding .4s var(--ease),background .4s var(--ease),backdrop-filter .4s var(--ease),border-color .4s var(--ease);
-  border-bottom:1px solid transparent;
+  position:fixed;top:0;left:0;right:0;z-index:100;padding:22px 0;
+  transition:padding .4s var(--ease);
 }
-header.scrolled{padding:16px 0;background:rgba(10,10,11,0.72);backdrop-filter:blur(14px);border-color:var(--line);}
-.nav-inner{display:flex;align-items:center;justify-content:space-between;}
+header .container{transition:max-width .4s var(--ease);}
+.nav-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:13px 14px 13px 26px;
+  border-radius:100px;
+  background:rgba(255,255,255,0.035);
+  border:1px solid rgba(255,255,255,0.09);
+  backdrop-filter:blur(22px) saturate(180%);
+  -webkit-backdrop-filter:blur(22px) saturate(180%);
+  box-shadow:0 10px 36px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.06);
+  transition:background .45s var(--ease),border-color .45s var(--ease),box-shadow .45s var(--ease),padding .4s var(--ease);
+}
+header.scrolled{padding:14px 0;}
+header.scrolled .container{max-width:1240px;}
+header.scrolled .nav-inner{
+  background:rgba(19,19,21,0.6);
+  border-color:rgba(255,255,255,0.14);
+  box-shadow:0 14px 44px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.08);
+  padding:10px 10px 10px 24px;
+}
 .logo{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:0.01em;display:flex;align-items:center;gap:10px;}
 .logo .mark{width:26px;height:26px;flex-shrink:0;}
 .logo .mark svg{width:100%;height:100%;}
 .logo .sub{font-family:var(--mono);font-weight:400;font-size:9px;letter-spacing:.14em;color:var(--ink-faint);text-transform:uppercase;border-left:1px solid var(--line-strong);padding-left:9px;margin-left:1px;}
-nav.links{display:flex;gap:36px;}
-nav.links a{font-size:13.5px;font-weight:500;color:var(--ink-dim);position:relative;padding-bottom:4px;transition:color .3s var(--ease);}
-nav.links a::after{content:'';position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--accent);transition:width .35s var(--ease);}
-nav.links a:hover{color:var(--ink);}
-nav.links a:hover::after{width:100%;}
-.nav-actions{display:flex;align-items:center;gap:18px;}
+nav.links{display:flex;gap:8px;}
+nav.links a{font-size:13.5px;font-weight:500;color:var(--ink-dim);position:relative;padding:9px 16px;border-radius:100px;transition:color .3s var(--ease),background .3s var(--ease);}
+nav.links a:hover{color:var(--ink);background:rgba(255,255,255,0.06);}
+.nav-actions{display:flex;align-items:center;gap:12px;}
 .nav-actions .btn{padding:11px 22px;font-size:13px;}
 .menu-trigger{display:none;flex-direction:column;gap:5px;width:26px;background:none;border:none;padding:4px;}
 .menu-trigger span{display:block;height:1.5px;background:var(--ink);}
@@ -261,23 +276,12 @@ body.menu-open{overflow:hidden;}
   background-size:64px 64px;opacity:0.35;
   mask-image:radial-gradient(ellipse at 50% 50%, black 0%, transparent 72%);
 }
-.ppf-heading{position:absolute;top:110px;left:0;right:0;text-align:center;z-index:5;opacity:0;transition:opacity .5s var(--ease);}
-.ppf-heading.active{opacity:1;}
-.ppf-heading h3{font-size:clamp(22px,3vw,32px);}
-.ppf-heading .eyebrow{justify-content:center;margin-bottom:12px;}
-.ppf-stage{position:relative;width:min(78vw,760px);height:min(48vw,420px);}
+.ppf-stage{position:relative;width:min(86vw,1180px);height:min(54vw,660px);max-height:78vh;}
 .ppf-stage svg{width:100%;height:100%;overflow:visible;}
 .armor-plate{transition:transform .1s linear,opacity .1s linear;}
-.ppf-callouts{position:absolute;inset:0;pointer-events:none;}
-.ppf-callout{position:absolute;font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--ink);display:flex;align-items:center;gap:10px;opacity:0;transition:opacity .4s var(--ease);white-space:nowrap;}
-.ppf-callout.active{opacity:1;}
-.ppf-callout .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);}
-.ppf-callout .stem{width:26px;height:1px;background:var(--line-strong);}
-.ppf-progress{position:absolute;bottom:56px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:5;}
+.ppf-progress{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:5;}
 .ppf-progress i{width:26px;height:2px;background:var(--line-strong);transition:background .3s var(--ease);}
 .ppf-progress i.active{background:var(--accent);}
-.ppf-final-msg{position:absolute;bottom:110px;left:0;right:0;text-align:center;z-index:5;font-family:var(--display);font-size:clamp(18px,2.2vw,26px);opacity:0;transition:opacity .6s var(--ease);}
-.ppf-final-msg.active{opacity:1;}
 
 /* ============================================================
    SERVICES
@@ -295,7 +299,7 @@ body.menu-open{overflow:hidden;}
 .service-item[data-panel="0"].active svg{color:var(--ignition-bright);}
 .service-desc{max-height:0;overflow:hidden;font-size:14px;color:var(--ink-dim);transition:max-height .4s var(--ease);}
 .service-item.active .service-desc{max-height:60px;margin-top:8px;}
-.service-media{position:sticky;top:120px;aspect-ratio:4/5;border-radius:4px;overflow:hidden;background:var(--surface);border:1px solid var(--line);position:relative;}
+.service-media{position:sticky;top:96px;margin-top:-18px;aspect-ratio:4/5;border-radius:4px;overflow:hidden;background:var(--surface);border:1px solid var(--line);}
 .service-media .panel{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .6s var(--ease);background:radial-gradient(ellipse at 50% 30%, var(--surface-raised) 0%, var(--void) 100%);}
 .service-media .panel.active{opacity:1;}
 .service-media .panel svg{width:52%;opacity:.9;}
@@ -597,11 +601,6 @@ footer{background:var(--graphite);border-top:1px solid var(--line);padding:80px 
 <section id="ppf-scene">
   <div class="ppf-sticky">
     <div class="ppf-bg-grid"></div>
-    <div class="ppf-heading" data-stage="0"><div class="eyebrow">Signature Sequence</div><h3>Protection beneath the surface.</h3></div>
-    <div class="ppf-heading" data-stage="1"><div class="eyebrow">Layer 01</div><h3>Optically clear protection</h3></div>
-    <div class="ppf-heading" data-stage="2"><div class="eyebrow">Layer 02</div><h3>Impact resistance</h3></div>
-    <div class="ppf-heading" data-stage="3"><div class="eyebrow">Layer 03</div><h3>Self-healing top coat</h3></div>
-    <div class="ppf-heading" data-stage="4"><div class="eyebrow">Full System</div><h3>Every panel, engineered as armor.</h3></div>
 
     <div class="ppf-stage">
       <svg viewBox="0 0 760 420">
@@ -626,13 +625,7 @@ footer{background:var(--graphite);border-top:1px solid var(--line);padding:80px 
           <path d="M300 246 L470 246 L470 150 L410 150 Z" fill="rgba(224,165,101,0.06)"/>
         </g>
       </svg>
-      <div class="ppf-callouts">
-        <div class="ppf-callout" data-stage="1" style="top:8%;left:34%;"><span class="dot"></span><span class="stem"></span>Optically clear protection</div>
-        <div class="ppf-callout" data-stage="2" style="top:34%;left:2%;"><span class="dot"></span><span class="stem"></span>Impact resistance</div>
-        <div class="ppf-callout" data-stage="3" style="top:6%;left:64%;"><span class="dot"></span><span class="stem"></span>Self-healing top coat</div>
-      </div>
     </div>
-    <div class="ppf-final-msg" data-stage="5">Invisible protection. Visible confidence.</div>
     <div class="ppf-progress"><i data-p="0"></i><i data-p="1"></i><i data-p="2"></i><i data-p="3"></i><i data-p="4"></i><i data-p="5"></i></div>
   </div>
 </section>
@@ -1033,6 +1026,12 @@ function drawCover(ctx, canvas, img){
   ctx.drawImage(img, dx, dy, dw, dh);
 }
 
+function sizeCanvasCrisp(canvas){
+  var dpr = Math.min(window.devicePixelRatio || 1, 2.5); // cap for perf on very high-DPR big screens
+  canvas.width = Math.round(canvas.clientWidth * dpr);
+  canvas.height = Math.round(canvas.clientHeight * dpr);
+}
+
 async function setupHeroFrameLoop(urls, reduceMotion){
   var images = (await preloadImages(urls)).filter(Boolean);
   if(!images.length) return;
@@ -1045,11 +1044,11 @@ async function setupHeroFrameLoop(urls, reduceMotion){
   video.style.display = 'none';
   try{ video.pause(); }catch(e){}
   var ctx = canvas.getContext('2d');
-  function resize(){ canvas.width = canvas.clientWidth; canvas.height = canvas.clientHeight; drawCover(ctx, canvas, images[0]); }
+  function resize(){ sizeCanvasCrisp(canvas); drawCover(ctx, canvas, images[0]); }
   window.addEventListener('resize', resize);
   resize();
   if(reduceMotion){ drawCover(ctx, canvas, images[0]); return; }
-  var frame = 0, last = 0, fps = 20;
+  var frame = 0, last = 0, fps = 24;
   function loop(t){
     if(t - last > 1000/fps){ drawCover(ctx, canvas, images[frame]); frame = (frame+1) % images.length; last = t; }
     requestAnimationFrame(loop);
@@ -1060,6 +1059,7 @@ async function setupHeroFrameLoop(urls, reduceMotion){
 async function setupPPFFrameScrub(urls){
   var images = (await preloadImages(urls)).filter(Boolean);
   if(!images.length) return;
+  window.__ppfFramesActive = true;
   var stage = document.querySelector('.ppf-stage');
   var svg = stage.querySelector('svg');
   var canvas = document.createElement('canvas');
@@ -1069,15 +1069,27 @@ async function setupPPFFrameScrub(urls){
   svg.style.display = 'none';
   var ctx = canvas.getContext('2d');
   var currentFrame = 0;
-  function resize(){ canvas.width = canvas.clientWidth; canvas.height = canvas.clientHeight; drawCover(ctx, canvas, images[currentFrame]); }
+  var targetFrame = 0;
+  function resize(){ sizeCanvasCrisp(canvas); drawCover(ctx, canvas, images[Math.round(currentFrame)]); }
   window.addEventListener('resize', resize);
   resize();
   if(window.gsap && window.ScrollTrigger){
+    // Smooth-scrub: ease the displayed frame toward the scroll-driven target frame
+    // every animation tick, instead of snapping — this is what removes the jump/stutter feel.
+    var raf = null;
+    function tick(){
+      if(currentFrame !== targetFrame){
+        currentFrame += (targetFrame - currentFrame) * 0.35;
+        if(Math.abs(targetFrame - currentFrame) < 0.4) currentFrame = targetFrame;
+        drawCover(ctx, canvas, images[Math.round(currentFrame)]);
+        raf = requestAnimationFrame(tick);
+      } else { raf = null; }
+    }
     ScrollTrigger.create({
-      trigger:'#ppf-scene', start:'top top', end:'bottom bottom', scrub:0.3,
+      trigger:'#ppf-scene', start:'top top', end:'bottom bottom', scrub:0.15,
       onUpdate:function(self){
-        var idx = Math.min(images.length-1, Math.floor(self.progress * images.length));
-        if(idx !== currentFrame){ currentFrame = idx; drawCover(ctx, canvas, images[idx]); }
+        targetFrame = Math.min(images.length-1, Math.round(self.progress * (images.length-1)));
+        if(raf === null) raf = requestAnimationFrame(tick);
       }
     });
   }
@@ -1214,23 +1226,17 @@ document.addEventListener('DOMContentLoaded', async function(){
   var plateHood = document.getElementById('plateHood');
   var plateFront = document.getElementById('plateFront');
   var plateSide = document.getElementById('plateSide');
-  var headings = document.querySelectorAll('.ppf-heading');
-  var callouts = document.querySelectorAll('.ppf-callout');
-  var finalMsg = document.querySelector('.ppf-final-msg');
   var progressDots = document.querySelectorAll('.ppf-progress i');
 
   function setStage(stage){
-    headings.forEach(function(h){ h.classList.toggle('active', parseInt(h.dataset.stage)===Math.min(stage,4)); });
-    callouts.forEach(function(c){ c.classList.toggle('active', parseInt(c.dataset.stage)===stage); });
-    finalMsg.classList.toggle('active', stage===5);
     progressDots.forEach(function(d){ d.classList.toggle('active', parseInt(d.dataset.p)<=stage); });
   }
   setStage(0);
 
-  if(window.gsap && window.ScrollTrigger && !reduceMotion){
+  if(window.gsap && window.ScrollTrigger && !reduceMotion && !window.__ppfFramesActive){
     gsap.timeline({
       scrollTrigger:{
-        trigger:'#ppf-scene', start:'top top', end:'bottom bottom', scrub:0.6,
+        trigger:'#ppf-scene', start:'top top', end:'bottom bottom', scrub:0.4,
         onUpdate: function(self){
           var p = self.progress;
           var stage = p < 0.12 ? 0 : p < 0.30 ? 1 : p < 0.48 ? 2 : p < 0.64 ? 3 : p < 0.88 ? 4 : 5;
@@ -1245,6 +1251,14 @@ document.addEventListener('DOMContentLoaded', async function(){
     .to(plateHood, {opacity:0, y:0, duration:0.8}, 0.76)
     .to(plateFront, {opacity:0, x:0, y:0, duration:0.8}, 0.78)
     .to(plateSide, {opacity:0, y:0, duration:0.8}, 0.80);
+  } else if(window.__ppfFramesActive && window.ScrollTrigger){
+    ScrollTrigger.create({
+      trigger:'#ppf-scene', start:'top top', end:'bottom bottom', scrub:0.4,
+      onUpdate:function(self){
+        var stage = Math.min(5, Math.floor(self.progress*6));
+        setStage(stage);
+      }
+    });
   } else { setStage(5); }
 
   /* ---------- Process interactive tabs ---------- */
