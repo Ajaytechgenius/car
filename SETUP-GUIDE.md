@@ -69,19 +69,20 @@ Each field is independent — upload one or all of them, click **Upload Selected
 - **Stats tab** → edit the odometer numbers directly.
 
 ### Frame sequences (the scroll-scrub canvas effect) — now actually renders on the page
-This was the gap before: sequences uploaded through the admin panel were saved but nothing on the live site read them back. That's fixed — here's what happens with each section now:
+Sequences uploaded through the admin panel now actually play on the live site:
 
 - **Hero sequence** → autoplays as a smooth looping animation in place of the background video
-- **PPF sequence** → genuinely scrubs frame-by-frame in sync with scroll position through the pinned "Protection beneath the surface" scene, replacing the illustrative SVG car
-- **Mods sequence** → uploads and saves correctly, but there's no dedicated pinned scene wired to play it yet (the Modifications service is currently folded into the regular Services section, which isn't a scroll-pinned scene). Say the word if you want a dedicated pinned Mods scene built the way PPF has one, and I'll wire that section too.
+- **Mods sequence** → uploads and saves correctly, but there's no dedicated pinned scene wired to play it yet. Say the word if you want one built.
+
+> **Note:** the old PPF "Signature Sequence" scroll-scrub scene has been replaced with the new **Studio Experience** section (the animated amenity cards — Valet Parking, Waiting Room, etc., pulled from your studio poster). That section doesn't use frame sequences at all, so the `ppf` upload option was removed from the admin panel. If you'd like a scroll-scrub moment back somewhere else on the site, let me know which section and I'll wire it the same way Hero works now.
 
 Steps to upload a sequence:
 1. **Shoot or render the sequence** — a turntable video works well; export it as a numbered image sequence (most editing tools, or `ffmpeg`, can do "export frame per file")
 2. **Name files so they sort correctly** — `frame-0001.jpg`, `frame-0002.jpg`, etc. Zero-padded numbers matter; without padding, `frame-2.jpg` can sort after `frame-10.jpg` and scramble the sequence
-3. **Compress before uploading** — aim for 60–120KB per frame (see the spec table in the animation plan doc). Large unoptimized frames will make the effect feel sluggish regardless of how good the code is
-4. Go to `admin.html` → **Frame Sequences tab**, pick a project (optional), pick the section (Hero or PPF), select all frame files at once (they're sorted numerically before upload, so exact selection order doesn't matter), click **Upload Sequence**
+3. **Compress before uploading** — aim for 60–120KB per frame. Large unoptimized frames will make the effect feel sluggish regardless of how good the code is
+4. Go to `admin.html` → **Frame Sequences tab**, pick a project (optional), pick the section (currently just Hero), select all frame files at once (they're sorted numerically before upload, so exact selection order doesn't matter), click **Upload Sequence**
 
-If you already uploaded a 27-frame sequence before this fix — it's still there, still recorded, but won't play until the individual frame URLs are attached to that record (the update also changed how those are stored). Easiest fix: just re-upload that same sequence once through the updated panel and it'll take over immediately.
+If you previously uploaded a sequence tagged `ppf` — it's still stored and recorded, it simply has no section on the site to play in anymore. Safe to leave alone or delete from the Frame Sequences tab.
 
 ### The hero video specifically
 You now have two ways to set it:

@@ -265,11 +265,11 @@ td select, td input{background:var(--void);border:1px solid var(--line-strong);b
     <!-- FRAME SEQUENCES -->
     <section class="panel" id="panel-frames">
       <h2>Frame Sequences</h2>
-      <p class="lede">Upload a numbered image sequence for a canvas scroll-scrub scene. Hero autoplays the sequence as a loop; PPF scrubs the sequence directly to scroll position. Select files in order — filenames are sorted numerically before upload.</p>
+      <p class="lede">Upload a numbered image sequence for the canvas player. Hero autoplays the sequence as a smooth loop behind the headline. Select files in order — filenames are sorted numerically before upload.</p>
       <div class="card">
         <div class="grid3">
           <div class="field"><label>Project (optional)</label><select id="fProject"><option value="">— General / not tied to a project —</option></select></div>
-          <div class="field"><label>Section</label><select id="fSection"><option value="hero">Hero (autoplay loop)</option><option value="ppf">PPF Signature Scene (scroll-scrub)</option><option value="mods">Mods Scene (reserved)</option></select></div>
+          <div class="field"><label>Section</label><select id="fSection"><option value="hero">Hero (autoplay loop)</option><option value="mods">Mods Scene (reserved)</option></select></div>
           <div class="field"><label>Frames (multi-select)</label><input type="file" id="fFiles" accept="image/*" multiple></div>
         </div>
         <button class="btn" id="uploadFramesBtn">Upload Sequence</button>
