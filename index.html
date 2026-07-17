@@ -272,7 +272,8 @@ body.menu-open{overflow:hidden;}
 .studio-intro{display:grid;grid-template-columns:1.3fr 0.7fr;gap:50px;align-items:end;margin-bottom:56px;padding-bottom:44px;border-bottom:1px solid var(--line);}
 .studio-copy h2{font-size:clamp(30px,4vw,48px);margin-top:14px;}
 .studio-lede{font-family:var(--display);font-size:clamp(18px,2vw,24px);font-weight:600;color:var(--ink);margin-top:16px;}
-.studio-lede .accent-ignite{color:var(--ignition-bright);font-style:italic;}
+.grad-text{background:linear-gradient(100deg, var(--ignition-bright) 10%, var(--accent-bright) 90%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.studio-lede .accent-ignite{font-style:italic;}
 .studio-sub{color:var(--ink-dim);font-size:15.5px;margin-top:10px;max-width:440px;}
 .studio-stat{text-align:right;}
 .studio-stat-num{font-family:var(--display);font-size:clamp(46px,6vw,84px);font-weight:700;color:var(--ink);line-height:1;}
@@ -281,16 +282,23 @@ body.menu-open{overflow:hidden;}
 
 .amenity-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;}
 .amenity-card{
-  position:relative;padding:30px 22px;border-radius:12px;background:var(--surface);border:1px solid var(--line);
-  overflow:hidden;isolation:isolate;
-  transition:transform .45s var(--ease-out),border-color .45s var(--ease),background .45s var(--ease);
+  position:relative;padding:30px 22px;border-radius:14px;
+  background:linear-gradient(160deg, rgba(255,255,255,0.055) 0%, rgba(255,255,255,0.015) 100%);
+  border:1px solid var(--line-strong);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);
+  overflow:hidden;isolation:isolate;box-shadow:0 14px 34px rgba(0,0,0,0.22);
+  transition:transform .45s var(--ease-out),border-color .45s var(--ease),box-shadow .45s var(--ease);
 }
 .amenity-card::before{
   content:'';position:absolute;inset:0;z-index:-1;opacity:0;
-  background:radial-gradient(circle at 50% 0%, rgba(232,70,42,0.16) 0%, transparent 70%);
+  background:radial-gradient(circle at 50% 0%, rgba(232,70,42,0.2) 0%, transparent 70%);
   transition:opacity .5s var(--ease);
 }
-.amenity-card:hover{transform:translateY(-8px);border-color:var(--ignition-line);background:var(--surface-raised);}
+.amenity-card .amenity-photo{
+  position:absolute;inset:0;z-index:-2;background-size:cover;background-position:center;opacity:0;transition:opacity .6s var(--ease);
+}
+.amenity-card .amenity-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg, rgba(10,10,11,0.55) 0%, rgba(10,10,11,0.88) 100%);}
+.amenity-card.has-photo .amenity-photo{opacity:1;}
+.amenity-card:hover{transform:rotate(var(--tilt,0deg)) translateY(-8px) scale(1.015);border-color:var(--ignition-line);box-shadow:0 20px 46px rgba(0,0,0,0.34);}
 .amenity-card:hover::before{opacity:1;}
 .amenity-icon{
   width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;
@@ -298,7 +306,7 @@ body.menu-open{overflow:hidden;}
   transition:transform .5s var(--ease-out),background .4s var(--ease),color .4s var(--ease);
 }
 .amenity-icon svg{width:22px;height:22px;}
-.amenity-card:hover .amenity-icon{transform:scale(1.12) rotate(-6deg);background:var(--ignition-dim);color:var(--ignition-bright);}
+.amenity-card:hover .amenity-icon{transform:scale(1.15) rotate(-8deg);background:var(--ignition-dim);color:var(--ignition-bright);}
 .amenity-card h4{font-size:15.5px;font-weight:600;color:var(--ink);margin-bottom:8px;line-height:1.3;}
 .amenity-card p{font-size:13px;color:var(--ink-faint);line-height:1.5;}
 @media(max-width:1024px){ .amenity-grid{grid-template-columns:repeat(3,1fr);} }
@@ -329,7 +337,9 @@ body.menu-open{overflow:hidden;}
 
 .service-media{
   position:sticky;top:96px;aspect-ratio:1/1;max-width:380px;margin-left:auto;border-radius:10px;overflow:hidden;
-  background:var(--surface);border:1px solid var(--line);box-shadow:0 20px 50px rgba(0,0,0,0.3);
+  background:linear-gradient(160deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.015) 100%);
+  border:1px solid var(--line-strong);backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);
+  box-shadow:0 20px 50px rgba(0,0,0,0.3);
   transition:border-color .5s var(--ease);
 }
 .service-media.ignite-active{border-color:var(--ignition-line);}
@@ -432,24 +442,42 @@ body.menu-open{overflow:hidden;}
    PROCESS
    ============================================================ */
 #process{background:var(--graphite);}
-.process-tabs{display:flex;flex-wrap:wrap;gap:10px;border-bottom:1px solid var(--line);padding-bottom:26px;margin-bottom:34px;}
-.process-tab{font-family:var(--mono);font-size:13px;padding:10px 18px;border-radius:100px;border:1px solid var(--line-strong);background:transparent;color:var(--ink-dim);cursor:pointer;transition:border-color .3s var(--ease),background .3s var(--ease),color .3s var(--ease);}
-.process-tab:hover{border-color:var(--ink-dim);color:var(--ink);}
-.process-tab.active{border-color:var(--accent-line);background:var(--accent-dim);color:var(--accent-bright);}
-.process-panel{min-height:150px;}
-.process-panel .step-eyebrow{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;}
+.process-tabs{display:flex;flex-wrap:wrap;gap:12px;border-bottom:1px solid var(--line);padding-bottom:30px;margin-bottom:36px;}
+.process-tab{
+  font-family:var(--mono);font-size:13px;font-weight:500;padding:11px 20px;border-radius:100px;border:1px solid transparent;
+  cursor:pointer;transition:transform .3s var(--ease-out),box-shadow .35s var(--ease),border-color .35s var(--ease);
+  box-shadow:0 6px 18px rgba(0,0,0,0.18);
+}
+.jiggle-item{transform:rotate(var(--tilt,0deg));}
+.process-tab:nth-child(odd){background:#050506;color:#f2f1ee;}
+.process-tab:nth-child(even){background:#f2f1ee;color:#050506;}
+.process-tab:hover{transform:rotate(var(--tilt,0deg)) translateY(-3px);}
+.process-tab.active{
+  background:linear-gradient(135deg, var(--ignition) 0%, var(--accent) 100%);
+  color:#0a0a0b;border-color:transparent;
+  box-shadow:0 10px 28px rgba(232,70,42,0.35);
+  transform:rotate(var(--tilt,0deg)) translateY(-3px) scale(1.04);
+}
+.process-panel{
+  min-height:150px;padding:32px 34px;border-radius:14px;
+  background:linear-gradient(155deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.015) 100%);
+  border:1px solid var(--line-strong);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+}
+.process-panel .step-eyebrow{font-family:var(--mono);font-size:12px;color:var(--ignition-bright);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;}
 .process-panel h4{font-family:var(--display);font-size:clamp(22px,2.6vw,30px);font-weight:600;margin-bottom:14px;}
 .process-panel p{color:var(--ink-dim);font-size:15.5px;max-width:560px;line-height:1.6;}
 @media(max-width:768px){
   .process-tabs{gap:8px;}
-  .process-tab{padding:8px 14px;font-size:12px;}
+  .process-tab{padding:9px 16px;font-size:12px;}
+  .process-panel{padding:26px 22px;}
 }
 
 /* ============================================================
    TESTIMONIALS
    ============================================================ */
 #testimonials{background:var(--void);}
-.testi-wrap{max-width:760px;}
+.testi-wrap{max-width:760px;padding:44px 46px;border-radius:16px;background:linear-gradient(160deg, rgba(255,255,255,0.045) 0%, rgba(255,255,255,0.012) 100%);border:1px solid var(--line-strong);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);}
+@media(max-width:640px){ .testi-wrap{padding:30px 24px;} }
 .testi-quote{font-family:var(--display);font-size:clamp(20px,2.6vw,30px);font-weight:500;line-height:1.35;min-height:150px;}
 .testi-meta{display:flex;align-items:center;gap:14px;margin-top:28px;}
 .testi-avatar{width:44px;height:44px;border-radius:50%;background:var(--surface-raised);border:1px solid var(--line-strong);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;color:var(--accent);}
@@ -478,7 +506,12 @@ body.menu-open{overflow:hidden;}
 .field textarea:focus + label,.field textarea:not(:placeholder-shown) + label{transform:translateY(-20px);font-size:11px;color:var(--accent);}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
 .booking-form-wrap{position:relative;}
-.confirm-card{position:absolute;inset:0;background:var(--graphite);border:1px solid var(--accent-line);border-radius:6px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:40px;opacity:0;transform:scale(.97);pointer-events:none;transition:opacity .5s var(--ease),transform .5s var(--ease);}
+.booking-form-wrap form{
+  padding:34px 32px;border-radius:16px;
+  background:linear-gradient(160deg, rgba(255,255,255,0.045) 0%, rgba(255,255,255,0.012) 100%);
+  border:1px solid var(--line-strong);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+}
+.confirm-card{position:absolute;inset:0;background:rgba(19,19,21,0.75);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border:1px solid var(--accent-line);border-radius:16px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:40px;opacity:0;transform:scale(.97);pointer-events:none;transition:opacity .5s var(--ease),transform .5s var(--ease);}
 .confirm-card.show{opacity:1;transform:scale(1);pointer-events:auto;}
 .confirm-card svg{width:36px;height:36px;color:var(--accent);margin-bottom:16px;}
 .confirm-card h4{font-size:20px;margin-bottom:8px;}
@@ -615,7 +648,7 @@ footer{background:var(--graphite);border-top:1px solid var(--line);padding:80px 
     <div class="hero-eyebrow">Jaipur · Custom Builds &amp; Protection</div>
     <h1>
       <span class="line"><span>Where Jaipur's cars</span></span>
-      <span class="line"><span>get built, not just washed.</span></span>
+      <span class="line"><span>get <span class="grad-text">built</span>, not just washed.</span></span>
     </h1>
     <p class="sub">Custom modifications, precision PPF, ceramic coatings and studio-grade detailing — engineered and installed in-house, to one uncompromising standard.</p>
     <div class="hero-actions">
@@ -670,7 +703,7 @@ footer{background:var(--graphite);border-top:1px solid var(--line);padding:80px 
       <div class="studio-copy reveal">
         <div class="eyebrow ignite">The Studio</div>
         <h2>Jaipur's biggest studio.</h2>
-        <p class="studio-lede">Not just a studio — <span class="accent-ignite">it's a destination.</span></p>
+        <p class="studio-lede">Not just a studio — <span class="accent-ignite grad-text">it's a destination.</span></p>
         <p class="studio-sub">6,000 sq ft of automotive excellence, built for space, precision and perfection.</p>
       </div>
       <div class="studio-stat reveal">
@@ -680,27 +713,32 @@ footer{background:var(--graphite);border-top:1px solid var(--line);padding:80px 
     </div>
 
     <div class="amenity-grid">
-      <div class="amenity-card reveal">
+      <div class="amenity-card jiggle-item" data-amenity-key="amenity_0">
+        <div class="amenity-photo"></div>
         <div class="amenity-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 17h14M6 17V9a2 2 0 012-2h8a2 2 0 012 2v8M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2"/><circle cx="8" cy="19" r="1.5"/><circle cx="16" cy="19" r="1.5"/></svg></div>
         <h4>Valet Parking</h4>
         <p>Your car, our responsibility.</p>
       </div>
-      <div class="amenity-card reveal">
+      <div class="amenity-card jiggle-item" data-amenity-key="amenity_1">
+        <div class="amenity-photo"></div>
         <div class="amenity-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M8 10h1M15 10h1M9.5 14a2 2 0 005 0"/></svg></div>
         <h4>Waiting Room with PS5</h4>
         <p>Relax. Play. Enjoy the wait.</p>
       </div>
-      <div class="amenity-card reveal">
+      <div class="amenity-card jiggle-item" data-amenity-key="amenity_2">
+        <div class="amenity-photo"></div>
         <div class="amenity-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3h12l-1 9a5 5 0 01-10 0L6 3z"/><path d="M12 12v6M9 21h6"/></svg></div>
         <h4>Snacks &amp; Beverages</h4>
         <p>Refreshments on us.</p>
       </div>
-      <div class="amenity-card reveal">
+      <div class="amenity-card jiggle-item" data-amenity-key="amenity_3">
+        <div class="amenity-photo"></div>
         <div class="amenity-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></div>
         <h4>Premium Work Guaranteed</h4>
         <p>Quality work, lasting impact.</p>
       </div>
-      <div class="amenity-card reveal">
+      <div class="amenity-card jiggle-item" data-amenity-key="amenity_4">
+        <div class="amenity-photo"></div>
         <div class="amenity-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l2.4 6.8L21 11l-6.6 2.2L12 20l-2.4-6.8L3 11l6.6-2.2z"/></svg></div>
         <h4>Every Detail Perfected</h4>
         <p>Perfection is in the details.</p>
@@ -771,7 +809,7 @@ footer{background:var(--graphite);border-top:1px solid var(--line);padding:80px 
   <div class="container">
     <div class="section-head reveal">
       <div class="eyebrow ignite">Recent builds</div>
-      <h2>Proof, not promises.</h2>
+      <h2>Proof, not <span class="grad-text">promises</span>.</h2>
       <p>A running log of what's left the studio. Drag or scroll through — real project photos go here once you send them over.</p>
     </div>
   </div>
@@ -923,15 +961,15 @@ footer{background:var(--graphite);border-top:1px solid var(--line);padding:80px 
       <h2>Craftsmanship, made visible.</h2>
       <p>Every vehicle moves through the same eight-stage process — no shortcuts, regardless of the model on the lift.</p>
     </div>
-    <div class="process-tabs reveal" id="processTabs">
-      <button class="process-tab active" data-step="0">01</button>
-      <button class="process-tab" data-step="1">02</button>
-      <button class="process-tab" data-step="2">03</button>
-      <button class="process-tab" data-step="3">04</button>
-      <button class="process-tab" data-step="4">05</button>
-      <button class="process-tab" data-step="5">06</button>
-      <button class="process-tab" data-step="6">07</button>
-      <button class="process-tab" data-step="7">08</button>
+    <div class="process-tabs" id="processTabs">
+      <button class="process-tab active jiggle-item" data-step="0">01</button>
+      <button class="process-tab jiggle-item" data-step="1">02</button>
+      <button class="process-tab jiggle-item" data-step="2">03</button>
+      <button class="process-tab jiggle-item" data-step="3">04</button>
+      <button class="process-tab jiggle-item" data-step="4">05</button>
+      <button class="process-tab jiggle-item" data-step="5">06</button>
+      <button class="process-tab jiggle-item" data-step="6">07</button>
+      <button class="process-tab jiggle-item" data-step="7">08</button>
     </div>
     <div class="process-panel reveal" id="processPanel">
       <div class="step-eyebrow" id="processStepLabel">Step 01 / 08</div>
@@ -967,7 +1005,7 @@ footer{background:var(--graphite);border-top:1px solid var(--line);padding:80px 
   <div class="container booking-grid">
     <div class="reveal">
       <div class="eyebrow">Book an inspection</div>
-      <h2>Build the car you've been picturing.</h2>
+      <h2>Build the car you've been <span class="grad-text">picturing</span>.</h2>
       <p>Tell us about your vehicle and what you're after — mods, protection, or both. Our team responds within one business day with availability and a plan.</p>
       <div style="margin-top:34px;">
         <a href="#" class="btn btn-liquid magnetic" id="waFormLink">
@@ -1148,6 +1186,16 @@ async function loadDynamicContent(){
         }
       }
     }
+    for(var ai=0; ai<5; ai++){
+      var akey = 'amenity_'+ai;
+      if(m[akey]){
+        var card = document.querySelector('.amenity-card[data-amenity-key="'+akey+'"]');
+        if(card){
+          card.classList.add('has-photo');
+          card.querySelector('.amenity-photo').style.backgroundImage = 'url('+m[akey]+')';
+        }
+      }
+    }
   }catch(e){ console.warn('site media load failed, keeping static assets', e); }
 
   try{
@@ -1298,6 +1346,49 @@ document.addEventListener('DOMContentLoaded', async function(){
     entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
   }, {threshold:0.15});
   document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  /* ---------- Jiggle scroll-reveal: staggered elastic pop-in, settling at scattered tilts ---------- */
+  var TILTS = { tabs:[-3,2.5,-2,3.5,-1.5,2,-3,1.5], amenity:[-2.5,3,-2,2.5,-1.5] };
+  (function initJiggleReveal(){
+    var containers = document.querySelectorAll('.amenity-grid, .process-tabs');
+    containers.forEach(function(container){
+      var items = Array.prototype.slice.call(container.querySelectorAll('.jiggle-item'));
+      if(!items.length) return;
+      var tilts = container.classList.contains('process-tabs') ? TILTS.tabs : TILTS.amenity;
+      var finalTilt = function(i){ return tilts[i % tilts.length]; };
+
+      function settle(){
+        items.forEach(function(el,i){ el.style.setProperty('--tilt', finalTilt(i)+'deg'); });
+        if(window.gsap) gsap.set(items, {clearProps:'transform,opacity'});
+        else items.forEach(function(el){ el.style.transform=''; el.style.opacity=''; });
+      }
+      if(reduceMotion || !window.gsap){ settle(); return; }
+
+      gsap.set(items, {opacity:0, y:28, scale:0.7, rotate:function(i){ return i%2===0 ? -18 : 18; }});
+      function playEnter(){
+        gsap.to(items, {
+          opacity:1, y:0, scale:1, rotate:finalTilt, duration:0.85, ease:'back.out(2.3)', stagger:0.08,
+          onComplete: settle
+        });
+      }
+      if(window.ScrollTrigger){
+        ScrollTrigger.create({ trigger: container, start:'top 85%', once:true, onEnter: playEnter });
+      } else { playEnter(); }
+    });
+  })();
+
+  /* ---------- Hover wobble on tabs & amenity cards ---------- */
+  document.querySelectorAll('.process-tab, .amenity-card').forEach(function(el){
+    el.addEventListener('mouseenter', function(){
+      if(reduceMotion || !window.gsap) return;
+      var base = parseFloat(getComputedStyle(el).getPropertyValue('--tilt')) || 0;
+      gsap.timeline()
+        .to(el, {'--tilt': (base+9)+'deg', duration:.12, ease:'power1.out'})
+        .to(el, {'--tilt': (base-6)+'deg', duration:.12, ease:'power1.inOut'})
+        .to(el, {'--tilt': (base+3)+'deg', duration:.1, ease:'power1.inOut'})
+        .to(el, {'--tilt': base+'deg', duration:.35, ease:'elastic.out(1,0.5)'});
+    });
+  });
 
   /* ---------- Magnetic buttons ---------- */
   document.querySelectorAll('.magnetic').forEach(function(btn){
