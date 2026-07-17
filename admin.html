@@ -258,6 +258,17 @@ td select, td input{background:var(--void);border:1px solid var(--line-strong);b
           <div class="field"><label>06 — Interior</label><input type="file" id="media_service_5" accept="image/*"><p class="muted" id="cur_service_5" style="margin-top:6px;"></p></div>
         </div>
       </div>
+      <div class="card">
+        <h3>Studio Experience — amenity card photos</h3>
+        <p class="lede" style="margin-bottom:16px;">These become the background photo for each animated card in the "Studio Experience" section.</p>
+        <div class="grid3">
+          <div class="field"><label>Valet Parking</label><input type="file" id="media_amenity_0" accept="image/*"><p class="muted" id="cur_amenity_0" style="margin-top:6px;"></p></div>
+          <div class="field"><label>Waiting Room with PS5</label><input type="file" id="media_amenity_1" accept="image/*"><p class="muted" id="cur_amenity_1" style="margin-top:6px;"></p></div>
+          <div class="field"><label>Snacks &amp; Beverages</label><input type="file" id="media_amenity_2" accept="image/*"><p class="muted" id="cur_amenity_2" style="margin-top:6px;"></p></div>
+          <div class="field"><label>Premium Work Guaranteed</label><input type="file" id="media_amenity_3" accept="image/*"><p class="muted" id="cur_amenity_3" style="margin-top:6px;"></p></div>
+          <div class="field"><label>Every Detail Perfected</label><input type="file" id="media_amenity_4" accept="image/*"><p class="muted" id="cur_amenity_4" style="margin-top:6px;"></p></div>
+        </div>
+      </div>
       <button class="btn" id="uploadMediaBtn">Upload Selected Files</button>
       <div class="progress-line" id="mediaUploadStatus"></div>
     </section>
@@ -289,7 +300,7 @@ td select, td input{background:var(--void);border:1px solid var(--line-strong);b
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 <script>
-var MEDIA_KEYS = ['hero_video','hero_poster','compare_before','compare_after','service_0','service_1','service_2','service_3','service_4','service_5'];
+var MEDIA_KEYS = ['hero_video','hero_poster','compare_before','compare_after','service_0','service_1','service_2','service_3','service_4','service_5','amenity_0','amenity_1','amenity_2','amenity_3','amenity_4'];
 var db = null;
 var configured = false;
 
